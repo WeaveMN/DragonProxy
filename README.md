@@ -9,3 +9,4 @@ Coming soon...
 
 ### Credits
 * Glowstone's Netty Networking Library in Java([Link](http://github.com/GlowstonePlusPlus/GlowstonePlusPlus))
+* Glowstone's fork of Bukkit API([Link](http://github.com/GlowstonePlusPlus/Glowkit))
