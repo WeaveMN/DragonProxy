@@ -5,7 +5,7 @@ A proxy for Minecraft: Pocket Edition connecting to Minecraft PC/Mac servers.
 Coming soon... 
 
 ## Installation
-* [![Build Status](https://drone.io/github.com/DragonetMC/DragonProxy/status.png)](https://drone.io/github.com/DragonetMC/DragonProxy/files) (You )(Drone)[https://drone.io/github.com/DragonetMC/DragonProxy/files]
+[![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)  
 
 ### Credits
 * Glowstone's Netty Networking Library in Java([Link](http://github.com/GlowstonePlusPlus/GlowstonePlusPlus))
