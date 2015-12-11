@@ -11,8 +11,3 @@ checkout:
 test:
     post:
         - cp target/*.jar $CIRCLE_ARTIFACTS/
-
-deployment:
-  # docker images deployment on Docker Hub (https://hub.docker.com/)
-  hub:
-    branch: master
