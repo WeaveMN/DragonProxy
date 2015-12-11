@@ -14,8 +14,8 @@ package org.dragonet.proxy;
 
 import java.io.IOException;
 import lombok.Getter;
-import org.dragonet.proxy.config.Lang;
-import org.dragonet.proxy.config.ServerConfig;
+import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.configuration.ServerConfig;
 import org.dragonet.proxy.utilities.Versioning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
