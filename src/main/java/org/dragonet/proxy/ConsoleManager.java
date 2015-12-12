@@ -37,6 +37,16 @@ public class ConsoleManager {
         }
 
         logger.addHandler(new FancyConsoleHandler());
+        
+        // reader must be initialized before standard streams are changed
+        try {
+            reader = new ConsoleReader();
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "Exception initializing console reader", ex);
+        }
+        
+        System.setOut(new PrintStream(new LoggerOutputStream(Level.INFO), true));
+        System.setErr(new PrintStream(new LoggerOutputStream(Level.WARNING), true));
     }
 
     public void startConsole() {
@@ -48,8 +58,10 @@ public class ConsoleManager {
 
     public void startFile(String logfile) {
         File parent = new File(logfile).getParentFile();
-        if (!parent.isDirectory() && !parent.mkdirs()) {
-            logger.warning("Could not create log folder: " + parent);
+        if(parent != null){
+            if (!parent.isDirectory() && !parent.mkdirs()) {
+                logger.warning("Could not create log folder: " + parent);
+            }
         }
         Handler fileHandler = new RotatingFileHandler(logfile);
         fileHandler.setFormatter(new DateOutputFormatter(FILE_DATE, false));

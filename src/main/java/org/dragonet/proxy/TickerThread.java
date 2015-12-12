@@ -17,6 +17,7 @@ public class TickerThread extends Thread {
 
     public TickerThread(DragonProxy proxy) {
         this.proxy = proxy;
+        setDaemon(true);
     }
 
     @Override

@@ -35,4 +35,12 @@ public class UpstreamSession {
         
     }
     
+    /**
+     * Called when this client disconnects.
+     * Only callable from class RaknetInterface. 
+     */
+    public void onDisconnect(){
+        //TODO
+    }
+    
 }

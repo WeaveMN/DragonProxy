@@ -33,7 +33,6 @@ public class RaknetInterface implements ServerInstance {
     public RaknetInterface(DragonProxy proxy, String ip, int port)  {
         this.proxy = proxy;
         rakServer = new RakNetServer(port, ip);
-        rakServer.start();
         handler = new ServerHandler(rakServer, this);
     }
     
@@ -49,7 +48,7 @@ public class RaknetInterface implements ServerInstance {
 
     @Override
     public void closeSession(String identifier, String reason) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
@@ -59,17 +58,14 @@ public class RaknetInterface implements ServerInstance {
 
     @Override
     public void handleRaw(String address, int port, byte[] payload) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void notifyACK(String identifier, int identifierACK) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void handleOption(String option, String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
