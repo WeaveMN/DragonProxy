@@ -17,9 +17,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
+import org.dragonet.net.packet.minecraft.LoginPacket;
+import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 
 /**
@@ -85,11 +88,22 @@ public class UpstreamSession {
         packetProcessor.putPacket(packet.buffer);
     }
 
-    public void onLogin(String username) {
+    public void onLogin(LoginPacket packet) {
         if(this.username != null){
             disconnect("Error! ");
             return;
         }
+        
+        LoginStatusPacket status = new LoginStatusPacket();
+        if(packet.protocol1 != Versioning.MINECRAFT_PE_PROTOCOL){
+            status.status = LoginStatusPacket.LOGIN_FAILED_CLIENT;
+            sendPacket(status, true);
+            disconnect(proxy.getLang().get(Lang.MESSAGE_UNSUPPORTED_CLIENT));
+            return;
+        }
+        status.status = LoginStatusPacket.LOGIN_SUCCESS;
+        sendPacket(status, true);
+        
         this.username = username;
         downstream.connect(proxy.getRemoteServerAddress());
     }

@@ -36,6 +36,8 @@ public class Lang extends ConfigFile {
     
     public final static String SHUTTING_DOWN = "shutting_down";
     
+    public final static String MESSAGE_UNSUPPORTED_CLIENT = "message_unsupported_client";
+    
     public Lang(String langFileName) throws IOException{
         super("/resources/en_US.properties", langFileName, false);
     }

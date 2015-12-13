@@ -63,8 +63,7 @@ public class PEPacketProcessor implements Runnable {
         //TODO
         switch(packet.pid()){
             case PEPacketIDs.LOGIN_PACKET:
-                LoginPacket pk = (LoginPacket)packet;
-                client.onLogin(pk.username);
+                client.onLogin((LoginPacket)packet);
                 break;
             default:
                 //TODO: Translate and send
