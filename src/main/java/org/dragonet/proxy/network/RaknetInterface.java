@@ -10,10 +10,15 @@
  *
  * @author The Dragonet Team
  */
-package org.dragonet.proxy;
+package org.dragonet.proxy.network;
 
 import java.net.InetSocketAddress;
 import lombok.Getter;
+import org.dragonet.net.packet.minecraft.BatchPacket;
+import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.proxy.DragonProxy;
+import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.raknet.RakNet;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.dragonet.raknet.server.RakNetServer;
 import org.dragonet.raknet.server.ServerHandler;
@@ -23,6 +28,8 @@ public class RaknetInterface implements ServerInstance {
     
     @Getter
     private final DragonProxy proxy;
+    
+    private final SessionRegister sessions;
     
     @Getter
     private final RakNetServer rakServer;
@@ -34,6 +41,7 @@ public class RaknetInterface implements ServerInstance {
         this.proxy = proxy;
         rakServer = new RakNetServer(port, ip);
         handler = new ServerHandler(rakServer, this);
+        sessions = this.proxy.getSessionRegister();
     }
     
     public void onTick(){
@@ -43,17 +51,21 @@ public class RaknetInterface implements ServerInstance {
     @Override
     public void openSession(String identifier, String address, int port, long clientID) {
         UpstreamSession session = new UpstreamSession(proxy, identifier, new InetSocketAddress(address, port));
-        proxy.getSessionRegister().newSession(session);
+        sessions.newSession(session);
     }
 
     @Override
     public void closeSession(String identifier, String reason) {
-        
+        UpstreamSession session = sessions.getSession(identifier);
+        if(session == null) return;
+        session.onDisconnect(proxy.getLang().get(Lang.MESSAGE_CLIENT_DISCONNECT)); //It will handle rest of the things. 
     }
 
     @Override
     public void handleEncapsulated(String identifier, EncapsulatedPacket packet, int flags) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        UpstreamSession session = sessions.getSession(identifier);
+        if(session == null) return;
+        session.handlePacketBinary(packet);
     }
 
     @Override
@@ -67,5 +79,30 @@ public class RaknetInterface implements ServerInstance {
     @Override
     public void handleOption(String option, String value) {
     }
+
+    public void shutdown() {
+        rakServer.shutdown();
+    }
     
+    public void disconnect(String identifier, String reason){
+        handler.closeSession(identifier, reason);
+    }
+    
+    public void sendPacket(String identifier, PEPacket packet, boolean immediate){
+        if(identifier == null || packet == null) return;
+        packet.encode();
+        if(packet.getData().length > 512 && !BatchPacket.class.isAssignableFrom(packet.getClass())){
+            BatchPacket pkBatch = new BatchPacket();
+            pkBatch.packets.add(packet);
+            sendPacket(identifier, pkBatch, immediate);
+            return;
+        }
+        
+        EncapsulatedPacket encapsulated = new EncapsulatedPacket();
+        encapsulated.buffer = packet.getData();
+        encapsulated.needACK = true;
+        encapsulated.reliability = (byte)2;
+        encapsulated.messageIndex = 0;
+        this.handler.sendEncapsulated(identifier, encapsulated, RakNet.FLAG_NEED_ACK | (immediate ? RakNet.PRIORITY_IMMEDIATE : RakNet.PRIORITY_NORMAL));
+    }
 }

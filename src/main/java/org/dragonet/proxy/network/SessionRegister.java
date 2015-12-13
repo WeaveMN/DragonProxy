@@ -10,12 +10,14 @@
  *
  * @author The Dragonet Team
  */
-package org.dragonet.proxy;
+package org.dragonet.proxy.network;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.dragonet.proxy.DragonProxy;
+import org.dragonet.proxy.DragonProxy;
 
 public class SessionRegister {
     
@@ -41,5 +43,9 @@ public class SessionRegister {
     
     public void removeSession(UpstreamSession session){
         clients.remove(session.getRaknetID());
+    }
+    
+    public UpstreamSession getSession(String identifier){
+        return clients.get(identifier);
     }
 }

@@ -12,6 +12,42 @@
  */
 package org.dragonet.proxy.commands;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import org.dragonet.proxy.DragonProxy;
+import org.dragonet.proxy.configuration.Lang;
+
 public final class CommandRegister {
-    //TODO
+    private final Map<String, ConsoleCommand> commandMap = Collections.synchronizedMap(new HashMap<String, ConsoleCommand>());
+
+    private final DragonProxy proxy;
+
+    public CommandRegister(DragonProxy proxy) {
+        this.proxy = proxy;
+    }
+    
+    public void callCommand(String cmd){
+        String trimedCmd = cmd.trim();
+        String label = null;
+        String[] args = null;
+        if(!cmd.trim().contains(" ")){
+            label = trimedCmd.toLowerCase();
+            args = new String[0];
+        }else{
+            label = trimedCmd.substring(0, trimedCmd.indexOf(" ")).toLowerCase();
+            String argLine = trimedCmd.substring(label.length());
+            args = argLine.contains(" ") ? argLine.split(" ") : new String[]{argLine};
+        }
+        if(label == null){
+            proxy.getLogger().warning(proxy.getLang().get(Lang.COMMAND_NOT_FOUND));
+            return;
+        }
+        ConsoleCommand command = commandMap.get(label);
+        if(command == null){
+            proxy.getLogger().warning(proxy.getLang().get(Lang.COMMAND_NOT_FOUND));
+            return;
+        }
+        command.execute(proxy, args);
+    }
 }

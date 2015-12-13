@@ -10,13 +10,25 @@
  *
  * @author The Dragonet Team
  */
-package org.dragonet.proxy.utilities;
+package org.dragonet.net.packet;
 
-public class Versioning {
-    public final static String RELEASE_VERSION = "0.0.1";
-    
-    public final static String MINECRAFT_PC_VERSION = "1.8.8";
-    
-    public final static String MINECRAFT_PE_VERSION = "0.13.0";
-    public final static int MINECRAFT_PE_PROTOCOL = 38;
+import lombok.Getter;
+import lombok.Setter;
+
+public abstract class BinaryPacket {
+
+    private @Getter
+    @Setter
+    byte[] data;
+
+    public BinaryPacket() {
+    }
+
+    public BinaryPacket(byte[] data) {
+        this.data = data;
+    }
+
+    public abstract void encode();
+
+    public abstract void decode();
 }

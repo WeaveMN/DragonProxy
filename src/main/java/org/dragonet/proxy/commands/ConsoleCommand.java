@@ -12,6 +12,8 @@
  */
 package org.dragonet.proxy.commands;
 
+import org.dragonet.proxy.DragonProxy;
+
 public interface ConsoleCommand {
-    public void execute(String[] args);
+    public void execute(DragonProxy proxy, String[] args);
 }

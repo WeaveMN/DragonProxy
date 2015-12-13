@@ -12,14 +12,19 @@
  */
 package org.dragonet.proxy;
 
+import org.dragonet.proxy.network.SessionRegister;
+import org.dragonet.proxy.network.RaknetInterface;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import lombok.Getter;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.configuration.ServerConfig;
 import org.dragonet.proxy.utilities.Versioning;
 import java.util.logging.Logger;
+import org.dragonet.proxy.commands.CommandRegister;
 
 public class DragonProxy {
     public static void main(String[] args){
@@ -46,7 +51,13 @@ public class DragonProxy {
     private boolean shuttingDown;
     
     @Getter
-    private Executor generalThreadPool;
+    private ScheduledExecutorService generalThreadPool;
+    
+    @Getter
+    private CommandRegister commandRegister;
+    
+    @Getter
+    private InetSocketAddress remoteServerAddress;
     
     private ConsoleManager console;
     
@@ -71,11 +82,15 @@ public class DragonProxy {
             return;
         }
         logger.info(lang.get(Lang.INIT_LOADING, Versioning.RELEASE_VERSION));
+        logger.info(lang.get(Lang.INIT_MC_PC_SUPPORT, Versioning.MINECRAFT_PC_VERSION));
+        logger.info(lang.get(Lang.INIT_MC_PE_SUPPORT, Versioning.MINECRAFT_PE_VERSION));
+        remoteServerAddress = new InetSocketAddress(config.getConfig().getProperty("remote_ip"), Integer.parseInt(config.getConfig().getProperty("remote_port")));
         sessionRegister = new SessionRegister(this);
+        commandRegister = new CommandRegister(this);
 
         //Create thread pool
         logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
-        generalThreadPool = Executors.newFixedThreadPool(Integer.parseInt(config.getConfig().getProperty("thread_pool_size")));
+        generalThreadPool = Executors.newScheduledThreadPool(Integer.parseInt(config.getConfig().getProperty("thread_pool_size")));
         
         //Bind
         logger.info(lang.get(Lang.INIT_BINDING, config.getConfig().getProperty("udp_bind_ip"), config.getConfig().getProperty("udp_bind_port")));
@@ -92,7 +107,12 @@ public class DragonProxy {
     }
     
     public void shutdown(){
+        logger.info(lang.get(Lang.SHUTTING_DOWN));
         this.shuttingDown = true;
-        
+        network.shutdown();
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 }

@@ -18,11 +18,23 @@ public class Lang extends ConfigFile {
     
     public final static String INIT_LOADING = "init_loading";
     
+    public final static String INIT_MC_PC_SUPPORT = "init_mc_pc_support";
+    
+    public final static String INIT_MC_PE_SUPPORT = "init_mc_pe_support";
+    
     public final static String INIT_CREATING_THREAD_POOL = "init_creating_thread_pool";
     
     public final static String INIT_BINDING = "init_binding";
     
     public final static String INIT_DONE = "init_done";
+    
+    public final static String MESSAGE_CLIENT_DISCONNECT = "message_client_disconnect";
+    
+    public final static String CLIENT_DISCONNECTED = "client_disconnected";
+    
+    public final static String COMMAND_NOT_FOUND = "command_not_found";
+    
+    public final static String SHUTTING_DOWN = "shutting_down";
     
     public Lang(String langFileName) throws IOException{
         super("/resources/en_US.properties", langFileName, false);
