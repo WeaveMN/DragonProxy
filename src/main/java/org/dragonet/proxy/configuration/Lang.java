@@ -28,7 +28,17 @@ public class Lang extends ConfigFile {
     
     public final static String INIT_DONE = "init_done";
     
+    public final static String MESSAGE_CLIENT_CONNECTED = "message_client_connected";
+    
+    public final static String MESSAGE_REMOTE_CONNECTED = "message_remote_connected";
+    
+    public final static String MESSAGE_REMOTE_CONNECT_FAILURE = "message_remote_connect_failure";
+    
     public final static String MESSAGE_CLIENT_DISCONNECT = "message_client_disconnect";
+    
+    public final static String MESSAGE_REMOTE_ERROR = "message_remote_error";
+    
+    public final static String MESSAGE_REMOTE_DISCONNECTED = "message_remote_disconnected";
     
     public final static String CLIENT_DISCONNECTED = "client_disconnected";
     

@@ -85,6 +85,7 @@ public class UpstreamSession {
      * Called when this client disconnects.
      */
     public void onDisconnect(String reason) {
+        System.out.println("onDisconnect() called! ");
         proxy.getLogger().info(proxy.getLang().get(Lang.CLIENT_DISCONNECTED, username, remoteAddress, reason));
         proxy.getSessionRegister().removeSession(this);
         packetProcessorScheule.cancel(true);
@@ -95,7 +96,7 @@ public class UpstreamSession {
     }
 
     public void onLogin(LoginPacket packet) {
-        if (this.username != null) {
+        if (username != null) {
             disconnect("Error! ");
             return;
         }
@@ -110,7 +111,9 @@ public class UpstreamSession {
         status.status = LoginStatusPacket.LOGIN_SUCCESS;
         sendPacket(status, true);
 
-        this.username = username;
+        proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_CLIENT_CONNECTED, username, remoteAddress));
+        
+        this.username = packet.username;
         downstream.connect(proxy.getRemoteServerAddress());
     }
 
