@@ -110,10 +110,11 @@ public class UpstreamSession {
         }
         status.status = LoginStatusPacket.LOGIN_SUCCESS;
         sendPacket(status, true);
-
-        proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_CLIENT_CONNECTED, username, remoteAddress));
         
         this.username = packet.username;
+        
+        proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_CLIENT_CONNECTED, username, remoteAddress));
+        
         downstream.connect(proxy.getRemoteServerAddress());
     }
 

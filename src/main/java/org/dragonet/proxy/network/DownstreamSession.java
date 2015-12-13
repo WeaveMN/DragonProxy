@@ -29,6 +29,7 @@ import net.glowstone.net.pipeline.FramingHandler;
 import net.glowstone.net.pipeline.MessageHandler;
 import net.glowstone.net.pipeline.NoopHandler;
 import net.glowstone.net.protocol.GlowProtocol;
+import net.glowstone.net.protocol.HandshakeProtocol;
 import net.glowstone.net.protocol.LoginProtocol;
 import net.glowstone.net.protocol.ProtocolType;
 import org.dragonet.proxy.DragonProxy;
@@ -67,11 +68,11 @@ public class DownstreamSession extends NetworkClient {
 
     @Override
     public Session newSession(Channel c) {
-        session = new DynamicSession(c, new LoginProtocol());
+        session = new DynamicSession(this, c, new HandshakeProtocol());
         MessageHandler handler = new MessageHandler(this);
         CodecsHandler codecs = new CodecsHandler(ProtocolType.HANDSHAKE.getProtocol());
         FramingHandler framing = new FramingHandler();
-
+        
         c.pipeline().remove("handler");
         c.pipeline()
                 .addLast("encryption", NoopHandler.INSTANCE)
@@ -82,10 +83,10 @@ public class DownstreamSession extends NetworkClient {
                 .addLast("writeidletimeout", new IdleStateHandler(0, WRITE_IDLE_TIMEOUT, 0))
                 .addLast("handler", handler);
 
-        c.write(new HandshakeMessage(Versioning.MINECRAFT_PC_PROTOCOL, proxy.getRemoteServerAddress().getHostName(), proxy.getRemoteServerAddress().getPort(), 2));
+        session.send(new HandshakeMessage(Versioning.MINECRAFT_PC_PROTOCOL, proxy.getRemoteServerAddress().getHostString(), proxy.getRemoteServerAddress().getPort(), 2));
         session.setProtocol(new LoginProtocol());
 
-        c.writeAndFlush(new LoginStartMessage(upstream.getUsername()));
+        session.send(new LoginStartMessage(upstream.getUsername()));
 
         return session;
     }
@@ -122,15 +123,19 @@ public class DownstreamSession extends NetworkClient {
     }
 
     public void disconnect() {
-        if(session != null && session.isActive()){
+        if (session != null && session.isActive()) {
             session.disconnect();
         }
     }
 
     public class DynamicSession extends BasicSession {
 
-        public DynamicSession(Channel channel, AbstractProtocol bootstrapProtocol) {
+        @Getter
+        private final DownstreamSession downstream;
+
+        public DynamicSession(DownstreamSession downstream, Channel channel, AbstractProtocol bootstrapProtocol) {
             super(channel, bootstrapProtocol);
+            this.downstream = downstream;
         }
 
         @Override
