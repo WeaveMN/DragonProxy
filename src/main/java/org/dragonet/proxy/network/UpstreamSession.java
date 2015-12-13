@@ -85,8 +85,8 @@ public class UpstreamSession {
      * Called when this client disconnects.
      */
     public void onDisconnect(String reason) {
-        System.out.println("onDisconnect() called! ");
         proxy.getLogger().info(proxy.getLang().get(Lang.CLIENT_DISCONNECTED, username, remoteAddress, reason));
+        downstream.disconnect();
         proxy.getSessionRegister().removeSession(this);
         packetProcessorScheule.cancel(true);
     }

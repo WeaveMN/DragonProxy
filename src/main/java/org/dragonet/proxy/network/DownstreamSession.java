@@ -121,6 +121,12 @@ public class DownstreamSession extends NetworkClient {
         //TODO
     }
 
+    public void disconnect() {
+        if(session != null && session.isActive()){
+            session.disconnect();
+        }
+    }
+
     public class DynamicSession extends BasicSession {
 
         public DynamicSession(Channel channel, AbstractProtocol bootstrapProtocol) {
