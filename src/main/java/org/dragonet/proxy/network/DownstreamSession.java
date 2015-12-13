@@ -82,7 +82,7 @@ public class DownstreamSession extends NetworkClient {
                 .addLast("writeidletimeout", new IdleStateHandler(0, WRITE_IDLE_TIMEOUT, 0))
                 .addLast("handler", handler);
 
-        c.write(new HandshakeMessage(Versioning.MINECRAFT_PC_PROTOCOL, proxy.getRemoteServerAddress().getHostName(), proxy.getRemoteServerAddress().getPort(), 3));
+        c.write(new HandshakeMessage(Versioning.MINECRAFT_PC_PROTOCOL, proxy.getRemoteServerAddress().getHostName(), proxy.getRemoteServerAddress().getPort(), 2));
         session.setProtocol(new LoginProtocol());
 
         c.writeAndFlush(new LoginStartMessage(upstream.getUsername()));
