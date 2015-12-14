@@ -12,26 +12,30 @@
  */
 package org.dragonet.proxy.network;
 
+import com.flowpowered.networking.ConnectionManager;
 import com.flowpowered.networking.Message;
-import com.flowpowered.networking.NetworkClient;
 import com.flowpowered.networking.protocol.AbstractProtocol;
 import com.flowpowered.networking.session.BasicSession;
 import com.flowpowered.networking.session.Session;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
-import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import java.net.SocketAddress;
 import lombok.Getter;
 import net.glowstone.net.message.handshake.HandshakeMessage;
 import net.glowstone.net.message.login.LoginStartMessage;
 import net.glowstone.net.pipeline.CodecsHandler;
-import net.glowstone.net.pipeline.FramingHandler;
-import net.glowstone.net.pipeline.MessageHandler;
-import net.glowstone.net.pipeline.NoopHandler;
+import net.glowstone.net.pipeline.CompressionHandler;
+import net.glowstone.net.pipeline.GlowChannelInitializer;
 import net.glowstone.net.protocol.GlowProtocol;
 import net.glowstone.net.protocol.HandshakeProtocol;
 import net.glowstone.net.protocol.LoginProtocol;
-import net.glowstone.net.protocol.ProtocolType;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.utilities.Versioning;
@@ -39,19 +43,10 @@ import org.dragonet.proxy.utilities.Versioning;
 /**
  * Maintaince the connection between the proxy and remote Minecraft server.
  */
-public class DownstreamSession extends NetworkClient {
+public class DownstreamSession implements ConnectionManager {
 
-    /**
-     * The time in seconds which are elapsed before a client is disconnected due
-     * to a read timeout.
-     */
-    private static final int READ_TIMEOUT = 20;
-
-    /**
-     * The time in seconds which are elapsed before a client is deemed idle due
-     * to a write timeout.
-     */
-    private static final int WRITE_IDLE_TIMEOUT = 15;
+    private final Bootstrap bootstrap = new Bootstrap();
+    private final EventLoopGroup workerGroup = new NioEventLoopGroup();
 
     @Getter
     private final DragonProxy proxy;
@@ -64,24 +59,15 @@ public class DownstreamSession extends NetworkClient {
     public DownstreamSession(DragonProxy proxy, UpstreamSession upstream) {
         this.proxy = proxy;
         this.upstream = upstream;
+        bootstrap.
+                group(workerGroup).
+                channel(NioSocketChannel.class)
+                .handler(new GlowChannelInitializer(this));
     }
 
     @Override
     public Session newSession(Channel c) {
         session = new DynamicSession(this, c, new HandshakeProtocol());
-        MessageHandler handler = new MessageHandler(this);
-        CodecsHandler codecs = new CodecsHandler(ProtocolType.HANDSHAKE.getProtocol());
-        FramingHandler framing = new FramingHandler();
-        
-        c.pipeline().remove("handler");
-        c.pipeline()
-                .addLast("encryption", NoopHandler.INSTANCE)
-                .addLast("framing", framing)
-                .addLast("compression", NoopHandler.INSTANCE)
-                .addLast("codecs", codecs)
-                .addLast("readtimeout", new ReadTimeoutHandler(READ_TIMEOUT))
-                .addLast("writeidletimeout", new IdleStateHandler(0, WRITE_IDLE_TIMEOUT, 0))
-                .addLast("handler", handler);
 
         session.send(new HandshakeMessage(Versioning.MINECRAFT_PC_PROTOCOL, proxy.getRemoteServerAddress().getHostString(), proxy.getRemoteServerAddress().getPort(), 2));
         session.setProtocol(new LoginProtocol());
@@ -95,6 +81,8 @@ public class DownstreamSession extends NetworkClient {
         err.printStackTrace();
         proxy.getLogger().info(String.format("%s[%s]: ", upstream.getUsername(), upstream.getRemoteAddress()) + proxy.getLang().get(Lang.MESSAGE_REMOTE_ERROR));
         upstream.disconnect(proxy.getLang().get(Lang.MESSAGE_REMOTE_ERROR));
+        session.disconnect();
+        shutdown();
     }
 
     @Override
@@ -103,15 +91,18 @@ public class DownstreamSession extends NetworkClient {
         upstream.disconnect(proxy.getLang().get(Lang.MESSAGE_REMOTE_DISCONNECTED));
     }
 
-    @Override
-    public void onConnectFailure(SocketAddress address, Throwable t) {
-        proxy.getLogger().info(String.format("%s[%s]: ", upstream.getUsername(), upstream.getRemoteAddress()) + proxy.getLang().get(Lang.MESSAGE_REMOTE_CONNECT_FAILURE));
-        upstream.disconnect(proxy.getLang().get(Lang.MESSAGE_REMOTE_CONNECT_FAILURE));
-    }
-
-    @Override
-    public void onConnectSuccess(SocketAddress address) {
-        proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_REMOTE_CONNECTED, upstream.getUsername(), upstream.getRemoteAddress()));
+    public ChannelFuture connect(final SocketAddress address) {
+        return bootstrap.connect(address).addListener(new GenericFutureListener<Future<? super Void>>() {
+            @Override
+            public void operationComplete(Future<? super Void> f) throws Exception {
+                if (f.isSuccess()) {
+                    proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_REMOTE_CONNECTED, upstream.getUsername(), upstream.getRemoteAddress()));
+                } else {
+                    proxy.getLogger().info(String.format("%s[%s]: ", upstream.getUsername(), upstream.getRemoteAddress()) + proxy.getLang().get(Lang.MESSAGE_REMOTE_CONNECT_FAILURE));
+                    upstream.disconnect(proxy.getLang().get(Lang.MESSAGE_REMOTE_CONNECT_FAILURE));
+                }
+            }
+        });
     }
 
     public void messageReceived(Message message) {
@@ -128,7 +119,12 @@ public class DownstreamSession extends NetworkClient {
         }
     }
 
-    public class DynamicSession extends BasicSession {
+    @Override
+    public void shutdown() {
+        workerGroup.shutdownGracefully();
+    }
+
+    public static class DynamicSession extends BasicSession {
 
         @Getter
         private final DownstreamSession downstream;
@@ -143,9 +139,18 @@ public class DownstreamSession extends NetworkClient {
             if (!GlowProtocol.class.isAssignableFrom(protocol.getClass())) {
                 return;
             }
-            getChannel().flush();
-            getChannel().pipeline().replace("codecs", "codecs", new CodecsHandler((GlowProtocol) protocol));
+            updatePipeline("codecs", new CodecsHandler((GlowProtocol) protocol));
             super.setProtocol(protocol);
+        }
+        
+        public void updatePipeline(String name, ChannelHandler newHandler){
+            getChannel().flush();
+            getChannel().pipeline().replace(name, name, newHandler);
+        }
+
+        @Override
+        public void messageReceived(Message message) {
+            downstream.messageReceived(message);
         }
 
         @Override
@@ -161,6 +166,10 @@ public class DownstreamSession extends NetworkClient {
         @Override
         public void onInboundThrowable(Throwable throwable) {
             throwable.printStackTrace();
+        }
+
+        public void enableCompression(int threshold) {
+            updatePipeline("compression", new CompressionHandler(threshold));
         }
     }
 }

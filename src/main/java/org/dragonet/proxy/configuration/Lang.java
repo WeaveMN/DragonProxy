@@ -34,6 +34,8 @@ public class Lang extends ConfigFile {
     
     public final static String MESSAGE_REMOTE_CONNECT_FAILURE = "message_remote_connect_failure";
     
+    public final static String MESSAGE_KICKED = "message_kicked";
+    
     public final static String MESSAGE_CLIENT_DISCONNECT = "message_client_disconnect";
     
     public final static String MESSAGE_REMOTE_ERROR = "message_remote_error";
