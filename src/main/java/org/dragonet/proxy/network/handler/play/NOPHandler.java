@@ -10,18 +10,18 @@
  *
  * @author The Dragonet Team
  */
-package org.dragonet.proxy.network.handler.login;
+package org.dragonet.proxy.network.handler.play;
 
+import com.flowpowered.networking.Message;
 import com.flowpowered.networking.MessageHandler;
-import net.glowstone.net.message.SetCompressionMessage;
 import org.dragonet.proxy.network.DownstreamSession;
 
-public class SetCompressionHandler implements MessageHandler<DownstreamSession.DynamicSession, SetCompressionMessage> {
+public class NOPHandler implements MessageHandler<DownstreamSession.DynamicSession, Message> {
 
+    public final static NOPHandler INSTANCE = new NOPHandler();
+    
     @Override
-    public void handle(DownstreamSession.DynamicSession session, SetCompressionMessage message) {
-        session.enableCompression(message.threshold);
-        System.out.println("Compression enabled! ");
+    public void handle(DownstreamSession.DynamicSession arg0, Message arg1) {
     }
 
 }
