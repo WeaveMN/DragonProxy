@@ -105,14 +105,6 @@ public class DownstreamSession implements ConnectionManager {
         });
     }
 
-    public void messageReceived(Message message) {
-        if (message == null) {
-            return;
-        }
-        System.out.println("Received PC message: " + message.getClass().getSimpleName());
-        //TODO
-    }
-
     public void disconnect() {
         if (session != null && session.isActive()) {
             session.disconnect();
@@ -150,7 +142,8 @@ public class DownstreamSession implements ConnectionManager {
 
         @Override
         public void messageReceived(Message message) {
-            downstream.messageReceived(message);
+            System.out.println("Received PC message: " + message.getClass().getSimpleName());
+            super.messageReceived(message);
         }
 
         @Override

@@ -24,8 +24,8 @@ public final class LoginProtocol extends GlowProtocol {
         outbound(0x00, LoginStartMessage.class, LoginStartCodec.class);
         outbound(0x01, EncryptionKeyResponseMessage.class, EncryptionKeyResponseCodec.class);
 
-        inbound(0x01, EncryptionKeyRequestMessage.class, EncryptionKeyRequestCodec.class, EncryptionKeyRequestHandler.class);
         inbound(0x00, KickMessage.class, KickCodec.class, KickHandler.class);
+        inbound(0x01, EncryptionKeyRequestMessage.class, EncryptionKeyRequestCodec.class, EncryptionKeyRequestHandler.class);
         inbound(0x02, LoginSuccessMessage.class, LoginSuccessCodec.class, LoginSuccessHandler.class);
         inbound(0x03, SetCompressionMessage.class, SetCompressionCodec.class, SetCompressionHandler.class);
     }

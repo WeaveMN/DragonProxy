@@ -14,13 +14,15 @@ package org.dragonet.proxy.network.handler.login;
 
 import com.flowpowered.networking.MessageHandler;
 import net.glowstone.net.message.login.EncryptionKeyRequestMessage;
+import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.DownstreamSession;
 
 public class EncryptionKeyRequestHandler implements MessageHandler<DownstreamSession.DynamicSession, EncryptionKeyRequestMessage>{
 
     @Override
     public void handle(DownstreamSession.DynamicSession session, EncryptionKeyRequestMessage message) {
-        session.getDownstream().getProxy().getLogger().info("Processing EncryptionKeyRequestMessage!!!! Yay!!!! ");
+        session.getDownstream().getUpstream().disconnect(session.getDownstream().getProxy().getLang().get(Lang.MESSAGE_REMOTE_IS_ONLINE));
+        session.getDownstream().getProxy().getLogger().info(session.getDownstream().getProxy().getLang().get(Lang.MESSAGE_REMOTE_IS_ONLINE));
     }
 
 }
