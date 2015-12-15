@@ -30,8 +30,6 @@ public class PCChatPacketTranslator implements PCPacketTranslator<ServerChatPack
                 ret.type = ChatPacket.TextType.CHAT;
                 break;
             case NOTIFICATION:
-                ret.type = ChatPacket.TextType.POPUP;
-                break;
             case SYSTEM:
             default:
                 ret.type = ChatPacket.TextType.CHAT;
