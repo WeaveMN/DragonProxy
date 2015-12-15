@@ -15,10 +15,12 @@ package org.dragonet.proxy.network;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
 import java.util.HashMap;
 import java.util.Map;
+import org.dragonet.net.packet.minecraft.ChatPacket;
 import org.dragonet.net.packet.minecraft.MovePlayerPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.network.translator.PEPacketTranslator;
 import org.dragonet.proxy.network.translator.pc.*;
+import org.dragonet.proxy.network.translator.pe.PEChatPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEMovePlayerPacketTranslator;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerChatPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
@@ -56,6 +58,10 @@ public final class TranslatorRegister {
         PC_TO_PE_TRANSLATOR.put(ServerEntityVelocityPacket.class, new PCEntityVelocityPacketTranslator());
 
         /* PE to PC */
+        //Chatting
+        PE_TO_PC_TRANSLATOR.put(ChatPacket.class, new PEChatPacketTranslator());
+        
+        //Entity
         PE_TO_PC_TRANSLATOR.put(MovePlayerPacket.class, new PEMovePlayerPacketTranslator());
     }
 
