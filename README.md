@@ -5,6 +5,7 @@ A proxy for Minecraft: Pocket Edition connecting to Minecraft PC/Mac servers.
 ### This project is under early-development stage, it CAN NOT work yet. 
 
 ## Usage
+Note: Target server must be off-line mode for now, we may add online authentication later. 
 * Step 1. Install Java 8(or higher), download the JAR file. 
 * Step 2. Set up a normal Minecraft PC/Mac server. You can also use `Bukkit`/`Spigot`/`Glowstone`/`SpongeVanilla`. 
 * Step 3. Run the proxy by running command: `java -Xmx256M -jar dragonproxy-x.x.x.jar` where `256M` indicates memory size and `dragonproxy-x.x.x.jar` is the file name. 
