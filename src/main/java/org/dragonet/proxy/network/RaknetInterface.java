@@ -81,7 +81,7 @@ public class RaknetInterface implements ServerInstance {
     }
 
     public void shutdown() {
-        rakServer.shutdown();
+        handler.shutdown();
     }
     
     public void disconnect(String identifier, String reason){
