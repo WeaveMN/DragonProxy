@@ -18,6 +18,12 @@
             <layout>default</layout>
             <url>https://oss.sonatype.org/content/repositories/public/</url>
         </repository>
+		<repository>
+            <id>spacehq</id>
+            <name>SpaceHQ Repository</name>
+            <layout>default</layout>
+            <url>https://repo.spacehq.org/content/repositories/releases/</url>
+        </repository>
     </repositories>
     
     
@@ -26,6 +32,13 @@
             <groupId>org.spacehq</groupId>
             <artifactId>mcprotocollib</artifactId>
             <version>1.8.8-SNAPSHOT</version>
+        </dependency>
+		<dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.14.8</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>jline</groupId>

@@ -12,9 +12,9 @@
  */
 package org.dragonet.entity.metadata.type;
 
-import com.google.common.base.Charsets;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import org.dragonet.entity.metadata.EntityMetaData;
 import org.dragonet.entity.metadata.EntityMetaDataObject;
 
@@ -27,7 +27,7 @@ public class ByteArrayMeta implements EntityMetaDataObject {
     }
     
     public ByteArrayMeta(String data){
-        this(data.getBytes(Charsets.UTF_8));
+        this(data.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override

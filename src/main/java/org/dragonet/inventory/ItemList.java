@@ -12,10 +12,8 @@
  */
 package org.dragonet.inventory;
 
-import com.google.common.collect.Lists;
 import java.util.ArrayList;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import java.util.Arrays;
 
 public class ItemList {
 
@@ -30,7 +28,7 @@ public class ItemList {
     }
 
     public ItemList(ItemStack[] items) {
-        this.items = Lists.newArrayList(items);
+        this.items = Arrays.asList(items);
     }
 
     public ItemList(Inventory inventory) {
