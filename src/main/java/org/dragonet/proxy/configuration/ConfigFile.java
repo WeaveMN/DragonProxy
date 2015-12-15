@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import lombok.Getter;
 
@@ -32,7 +33,16 @@ public class ConfigFile {
         if(file.exists()){
             config.load(new FileInputStream(fileName));
         }else{
-            if(saveDefault) defaultConfig.store(new FileOutputStream(fileName), "");
+            if(saveDefault) {
+                FileOutputStream fos = new FileOutputStream(fileName);
+                InputStream ris = ConfigFile.class.getResourceAsStream(defaultResourcePath);
+                int d = -1;
+                while((d = ris.read()) != -1){
+                    fos.write(d);
+                }
+                fos.close();
+                ris.close();
+            }
         }
     }
 }
