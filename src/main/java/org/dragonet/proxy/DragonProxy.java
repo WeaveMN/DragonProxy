@@ -85,6 +85,11 @@ public class DragonProxy {
             return;
         }
         logger.info(lang.get(Lang.INIT_LOADING, Versioning.RELEASE_VERSION));
+        logger.info(lang.get(Lang.INIT_MC_PC_SUPPORT, Versioning.MINECRAFT_PC_VERSION));
+        logger.info(lang.get(Lang.INIT_MC_PE_SUPPORT, Versioning.MINECRAFT_PE_VERSION));
+        remoteServerAddress = new InetSocketAddress(config.getConfig().getProperty("remote_ip"), Integer.parseInt(config.getConfig().getProperty("remote_port")));
+        sessionRegister = new SessionRegister(this);
+        commandRegister = new CommandRegister(this);
         if(IS_RELEASE){
             try {
                 metrics = new ServerMetrics(this);
@@ -92,11 +97,6 @@ public class DragonProxy {
             } catch (IOException ex) {
             }
         }
-        logger.info(lang.get(Lang.INIT_MC_PC_SUPPORT, Versioning.MINECRAFT_PC_VERSION));
-        logger.info(lang.get(Lang.INIT_MC_PE_SUPPORT, Versioning.MINECRAFT_PE_VERSION));
-        remoteServerAddress = new InetSocketAddress(config.getConfig().getProperty("remote_ip"), Integer.parseInt(config.getConfig().getProperty("remote_port")));
-        sessionRegister = new SessionRegister(this);
-        commandRegister = new CommandRegister(this);
 
         //Create thread pool
         logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
