@@ -27,6 +27,10 @@ public final class CommandRegister {
         this.proxy = proxy;
     }
     
+    public void registerDefaults(){
+        commandMap.put("stop", new StopCommand());
+    }
+    
     public void callCommand(String cmd){
         String trimedCmd = cmd.trim();
         String label = null;

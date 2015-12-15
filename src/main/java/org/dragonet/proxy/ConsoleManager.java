@@ -81,8 +81,7 @@ public class ConsoleManager {
                         continue;
                     }
 
-                    //TODO: Commands
-                    //proxy.getGeneralThreadPool().execute(() -> );
+                    proxy.getCommandRegister().callCommand(command);
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, "Error while reading commands", ex);
                 }
