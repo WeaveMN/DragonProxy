@@ -38,6 +38,8 @@ public class DownstreamSession {
     private final UpstreamSession upstream;
 
     private Client remoteClient;
+    
+    private MinecraftProtocol protocol;
 
     public DownstreamSession(DragonProxy proxy, UpstreamSession upstream) {
         this.proxy = proxy;
@@ -66,11 +68,9 @@ public class DownstreamSession {
         shutdown();
     }
 
-    public void connect(final SocketAddress address) {
-        MinecraftProtocol protocol = null;
-        try {
-            protocol = new MinecraftProtocol(upstream.getUsername());
-        } catch (Exception e) {
+    public void connect(final MinecraftProtocol protocol, final SocketAddress address) {
+        this.protocol = protocol;
+        if(this.protocol == null){
             upstream.disconnect("ERROR! ");
             return;
         }
@@ -105,7 +105,7 @@ public class DownstreamSession {
                     if (packets.length == 1) {
                         upstream.sendPacket(packets[0]);
                     } else {
-                        upstream.sendAllPacket(packets);
+                        upstream.sendAllPacket(packets, true);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

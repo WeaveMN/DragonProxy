@@ -29,7 +29,7 @@ public class ServerMetrics extends Metrics {
         g.addPlotter(new Plotter("OnlineMode") {
             @Override
             public int getValue() {
-                return proxy.getOnlineMode() ? 1 : 0;
+                return proxy.isOnlineMode()? 1 : 0;
             }
         });
     }

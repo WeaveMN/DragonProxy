@@ -23,7 +23,7 @@ public class PCPlayerPositionRotationPacketTranslator implements PCPacketTransla
 
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerPlayerPositionRotationPacket packet) {
-        MovePlayerPacket pk = new MovePlayerPacket((int) session.getDataCache().get(CacheKey.PLAYER_EID), (float) packet.getX(), (float) packet.getY(), (float) packet.getZ(), packet.getYaw(), packet.getPitch(), packet.getYaw(), false);
+        MovePlayerPacket pk = new MovePlayerPacket(0, (float) packet.getX(), (float) packet.getY(), (float) packet.getZ(), packet.getYaw(), packet.getPitch(), packet.getYaw(), false);
         return new PEPacket[]{pk};
     }
 

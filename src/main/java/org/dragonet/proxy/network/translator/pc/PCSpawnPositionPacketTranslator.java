@@ -30,9 +30,9 @@ public class PCSpawnPositionPacketTranslator implements PCPacketTranslator<Serve
             session.disconnect(session.getProxy().getLang().get(Lang.MESSAGE_REMOTE_ERROR));
             return null;
         }
-        ServerJoinGamePacket restored = (ServerJoinGamePacket) session.getDataCache().get(CacheKey.PACKET_JOIN_GAME_PACKET);
+        ServerJoinGamePacket restored = (ServerJoinGamePacket) session.getDataCache().remove(CacheKey.PACKET_JOIN_GAME_PACKET);
         StartGamePacket ret = new StartGamePacket();
-        ret.eid = restored.getEntityId();
+        ret.eid = 0; //Use EID 0 for eaisier management
         ret.dimension = (byte) (restored.getDimension() & 0xFF);
         ret.seed = 0;
         ret.generator = 1;

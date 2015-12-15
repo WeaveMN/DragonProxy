@@ -20,14 +20,18 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import org.dragonet.net.packet.minecraft.BatchPacket;
+import org.dragonet.net.packet.minecraft.ChatPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.net.packet.minecraft.StartGamePacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.cache.EntityCache;
 import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
+import org.spacehq.mc.auth.exception.request.RequestException;
+import org.spacehq.mc.protocol.MinecraftProtocol;
 
 /**
  * Maintaince the connection between the proxy and Minecraft: Pocket Edition
@@ -54,13 +58,15 @@ public class UpstreamSession {
 
     @Getter
     private final DownstreamSession downstream;
-    
+
     @Getter
     private final Map<String, Object> dataCache = Collections.synchronizedMap(new HashMap<String, Object>());
 
     @Getter
     private final EntityCache entityCache = new EntityCache(this);
-    
+
+    private MinecraftProtocol protocol;
+
     public UpstreamSession(DragonProxy proxy, String raknetID, InetSocketAddress remoteAddress) {
         this.proxy = proxy;
         this.raknetID = raknetID;
@@ -77,20 +83,22 @@ public class UpstreamSession {
     public void sendPacket(PEPacket packet, boolean immediate) {
         proxy.getNetwork().sendPacket(raknetID, packet, immediate);
     }
-    
-    public void sendAllPacket(PEPacket[] packets) {
-        if(packets.length < 5){
-            for(PEPacket packet : packets){
+
+    public void sendAllPacket(PEPacket[] packets, boolean immediate) {
+        if (packets.length < 5) {
+            for (PEPacket packet : packets) {
                 sendPacket(packet);
             }
-        }else{
+        } else {
             BatchPacket batch = new BatchPacket();
-            boolean mustImmediate = false;
-            for(PEPacket packet : packets){
-                if(packet.isShouldSendImmidate()) {
-                    batch.packets.add(packet);
-                    mustImmediate = true;
-                    break;
+            boolean mustImmediate = immediate;
+            if (!mustImmediate) {
+                for (PEPacket packet : packets) {
+                    if (packet.isShouldSendImmidate()) {
+                        batch.packets.add(packet);
+                        mustImmediate = true;
+                        break;
+                    }
                 }
             }
             sendPacket(batch, mustImmediate);
@@ -108,7 +116,8 @@ public class UpstreamSession {
 
     /**
      * Called when this client disconnects.
-     * @param reason The reason of disconnection. 
+     *
+     * @param reason The reason of disconnection.
      */
     public void onDisconnect(String reason) {
         proxy.getLogger().info(proxy.getLang().get(Lang.CLIENT_DISCONNECTED, username, remoteAddress, reason));
@@ -136,11 +145,74 @@ public class UpstreamSession {
         }
         status.status = LoginStatusPacket.LOGIN_SUCCESS;
         sendPacket(status, true);
-        
+
         this.username = packet.username;
-        
+
         proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_CLIENT_CONNECTED, username, remoteAddress));
-        
-        downstream.connect(proxy.getRemoteServerAddress());
+
+        if (proxy.isOnlineMode()) {
+            StartGamePacket pkStartGame = new StartGamePacket();
+            pkStartGame.eid = 0; //Use EID 0 for eaisier management
+            pkStartGame.dimension = (byte) 1;
+            pkStartGame.seed = 0;
+            pkStartGame.generator = 1;
+            pkStartGame.spawnX = 0;
+            pkStartGame.spawnY = 0;
+            pkStartGame.spawnZ = 0;
+            pkStartGame.x = 0.0f;
+            pkStartGame.y = 72.0f;
+            pkStartGame.z = 0.0f;
+            sendPacket(pkStartGame, true);
+
+            LoginStatusPacket pkStat = new LoginStatusPacket();
+            pkStat.status = LoginStatusPacket.PLAYER_SPAWN;
+            sendPacket(pkStat, true);
+
+            dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
+
+            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, this.username));
+            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
+
+        } else {
+            downstream.connect(protocol, proxy.getRemoteServerAddress());
+        }
+    }
+
+    public void sendChat(String chat) {
+        if (chat.contains("\n")) {
+            String[] lines = chat.split("\n");
+            ChatPacket[] pks = new ChatPacket[lines.length];
+            for (int i = 0; i < lines.length; i++) {
+                pks[i] = new ChatPacket();
+                pks[i].type = ChatPacket.TextType.CHAT;
+                pks[i].source = "";
+                pks[i].message = lines[i];
+            }
+            sendAllPacket(pks, true);
+            return;
+        }
+        ChatPacket pk = new ChatPacket();
+        sendPacket(pk, true);
+    }
+
+    public void authenticate(String password) {
+        proxy.getGeneralThreadPool().execute(() -> {
+            try {
+                protocol = new MinecraftProtocol((String) dataCache.get(CacheKey.AUTHENTICATION_EMAIL), password, true);
+            } catch (RequestException ex) {
+                ex.printStackTrace();
+                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
+                disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
+                return;
+            }
+            if (protocol.getAccessToken() == null) {
+                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
+                disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
+                return;
+            }
+            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS));
+            disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS));
+            downstream.connect(protocol, proxy.getRemoteServerAddress());
+        });
     }
 }

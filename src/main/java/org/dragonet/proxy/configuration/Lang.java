@@ -30,6 +30,20 @@ public class Lang extends ConfigFile {
     
     public final static String MESSAGE_CLIENT_CONNECTED = "message_client_connected";
     
+    public final static String MESSAGE_ONLINE_NOTICE = "message_online_notice";
+    
+    public final static String MESSAGE_ONLINE_EMAIL = "message_online_email";
+    
+    public final static String MESSAGE_ONLINE_ERROR = "message_online_error";
+    
+    public final static String MESSAGE_ONLINE_PASSWORD = "message_online_password";
+    
+    public final static String MESSAGE_ONLINE_LOGGIN_IN = "message_online_logging_in";
+    
+    public final static String MESSAGE_ONLINE_LOGIN_SUCCESS = "message_online_login_success";
+    
+    public final static String MESSAGE_ONLINE_LOGIN_FAILD = "message_online_login_faild";
+    
     public final static String MESSAGE_REMOTE_CONNECTED = "message_remote_connected";
     
     public final static String MESSAGE_REMOTE_CONNECT_FAILURE = "message_remote_connect_failure";
@@ -59,7 +73,7 @@ public class Lang extends ConfigFile {
     }
     
     public String get(String key){
-        return getConfig().getProperty(key).replace("[PROJNAME]", getConfig().getProperty("project_name"));
+        return getConfig().getProperty(key).replace("[PROJNAME]", getConfig().getProperty("project_name").replace("[CRLF]", "\n"));
     }
     
     public String get(String key, Object... repl){

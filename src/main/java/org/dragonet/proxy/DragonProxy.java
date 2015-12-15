@@ -60,6 +60,9 @@ public class DragonProxy {
     @Getter
     private InetSocketAddress remoteServerAddress;
     
+    @Getter
+    private boolean onlineMode;
+    
     private ConsoleManager console;
     
     private Metrics metrics;
@@ -87,6 +90,7 @@ public class DragonProxy {
         logger.info(lang.get(Lang.INIT_LOADING, Versioning.RELEASE_VERSION));
         logger.info(lang.get(Lang.INIT_MC_PC_SUPPORT, Versioning.MINECRAFT_PC_VERSION));
         logger.info(lang.get(Lang.INIT_MC_PE_SUPPORT, Versioning.MINECRAFT_PE_VERSION));
+        onlineMode = config.getConfig().getProperty("online_mode").toLowerCase().contains("true") || config.getConfig().getProperty("online_mode").trim().equals("1") ? true : false;
         remoteServerAddress = new InetSocketAddress(config.getConfig().getProperty("remote_ip"), Integer.parseInt(config.getConfig().getProperty("remote_port")));
         sessionRegister = new SessionRegister(this);
         commandRegister = new CommandRegister(this);
@@ -124,13 +128,5 @@ public class DragonProxy {
 
     public Logger getLogger() {
         return logger;
-    }
-    
-    /**
-     * This method is a placeholder for future updates. 
-     * @return Always false because online authentication isn't implemented yet. 
-     */
-    public boolean getOnlineMode() {
-        return false;
     }
 }

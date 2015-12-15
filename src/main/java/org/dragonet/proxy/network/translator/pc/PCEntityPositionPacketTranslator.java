@@ -14,6 +14,7 @@ package org.dragonet.proxy.network.translator.pc;
 
 import org.dragonet.net.packet.minecraft.MoveEntitiesPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.cache.CachedEntity;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
