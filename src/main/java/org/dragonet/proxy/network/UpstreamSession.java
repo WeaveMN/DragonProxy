@@ -170,7 +170,7 @@ public class UpstreamSession {
 
             dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
 
-            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, this.username));
+            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
 
         } else {
@@ -187,6 +187,9 @@ public class UpstreamSession {
             return;
         }
         ChatPacket pk = new ChatPacket();
+        pk.type = ChatPacket.TextType.CHAT;
+        pk.source = "";
+        pk.message = chat;
         sendPacket(pk, true);
     }
 

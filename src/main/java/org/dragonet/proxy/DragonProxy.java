@@ -90,7 +90,7 @@ public class DragonProxy {
         logger.info(lang.get(Lang.INIT_LOADING, Versioning.RELEASE_VERSION));
         logger.info(lang.get(Lang.INIT_MC_PC_SUPPORT, Versioning.MINECRAFT_PC_VERSION));
         logger.info(lang.get(Lang.INIT_MC_PE_SUPPORT, Versioning.MINECRAFT_PE_VERSION));
-        onlineMode = config.getConfig().getProperty("online_mode").toLowerCase().contains("true") || config.getConfig().getProperty("online_mode").trim().equals("1") ? true : false;
+        onlineMode = config.getConfig().getProperty("online_mode").toLowerCase().contains("true") || config.getConfig().getProperty("online_mode").trim().equals("1");
         remoteServerAddress = new InetSocketAddress(config.getConfig().getProperty("remote_ip"), Integer.parseInt(config.getConfig().getProperty("remote_port")));
         sessionRegister = new SessionRegister(this);
         commandRegister = new CommandRegister(this);
