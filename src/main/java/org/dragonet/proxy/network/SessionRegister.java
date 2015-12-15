@@ -51,4 +51,8 @@ public class SessionRegister {
     public Map<String, UpstreamSession> getAll(){
         return Collections.unmodifiableMap(clients);
     }
+    
+    public int getOnlineCount(){
+        return clients.size();
+    }
 }

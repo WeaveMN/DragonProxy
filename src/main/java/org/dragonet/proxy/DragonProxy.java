@@ -24,11 +24,13 @@ import org.dragonet.proxy.configuration.ServerConfig;
 import org.dragonet.proxy.utilities.Versioning;
 import java.util.logging.Logger;
 import org.dragonet.proxy.commands.CommandRegister;
+import org.mcstats.Metrics;
 
 public class DragonProxy {
     public static void main(String[] args){
         new DragonProxy().run(args);
     }
+    public final static boolean IS_RELEASE = true;
     
     private final Logger logger = Logger.getLogger("DragonProxy");
     
@@ -60,6 +62,8 @@ public class DragonProxy {
     
     private ConsoleManager console;
     
+    private Metrics metrics;
+    
     public void run(String[] args){
         //Initialize console
         console = new ConsoleManager(this);
@@ -81,6 +85,13 @@ public class DragonProxy {
             return;
         }
         logger.info(lang.get(Lang.INIT_LOADING, Versioning.RELEASE_VERSION));
+        if(IS_RELEASE){
+            try {
+                metrics = new ServerMetrics(this);
+                metrics.start();
+            } catch (IOException ex) {
+            }
+        }
         logger.info(lang.get(Lang.INIT_MC_PC_SUPPORT, Versioning.MINECRAFT_PC_VERSION));
         logger.info(lang.get(Lang.INIT_MC_PE_SUPPORT, Versioning.MINECRAFT_PE_VERSION));
         remoteServerAddress = new InetSocketAddress(config.getConfig().getProperty("remote_ip"), Integer.parseInt(config.getConfig().getProperty("remote_port")));
@@ -113,5 +124,13 @@ public class DragonProxy {
 
     public Logger getLogger() {
         return logger;
+    }
+    
+    /**
+     * This method is a placeholder for future updates. 
+     * @return Always false because online authentication isn't implemented yet. 
+     */
+    public boolean getOnlineMode() {
+        return false;
     }
 }
