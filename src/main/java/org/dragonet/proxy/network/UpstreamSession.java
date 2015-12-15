@@ -25,6 +25,7 @@ import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.network.cache.EntityCache;
 import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 
@@ -57,6 +58,9 @@ public class UpstreamSession {
     @Getter
     private final Map<String, Object> dataCache = Collections.synchronizedMap(new HashMap<String, Object>());
 
+    @Getter
+    private final EntityCache entityCache = new EntityCache(this);
+    
     public UpstreamSession(DragonProxy proxy, String raknetID, InetSocketAddress remoteAddress) {
         this.proxy = proxy;
         this.raknetID = raknetID;
@@ -94,7 +98,7 @@ public class UpstreamSession {
     }
 
     public void onTick() {
-        //Nothing here for now. 
+        entityCache.onTick();
     }
 
     public void disconnect(String reason) {

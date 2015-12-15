@@ -25,10 +25,12 @@ public final class CommandRegister {
 
     public CommandRegister(DragonProxy proxy) {
         this.proxy = proxy;
+        registerDefaults();
     }
     
     public void registerDefaults(){
         commandMap.put("stop", new StopCommand());
+        commandMap.put("test", new TestCommand());
     }
     
     public void callCommand(String cmd){
@@ -40,7 +42,7 @@ public final class CommandRegister {
             args = new String[0];
         }else{
             label = trimedCmd.substring(0, trimedCmd.indexOf(" ")).toLowerCase();
-            String argLine = trimedCmd.substring(label.length());
+            String argLine = trimedCmd.substring(trimedCmd.indexOf(" ") + 1);
             args = argLine.contains(" ") ? argLine.split(" ") : new String[]{argLine};
         }
         if(label == null){

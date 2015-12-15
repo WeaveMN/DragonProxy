@@ -64,6 +64,7 @@ public class MoveEntitiesPacket extends PEPacket {
         public float y;
         public float z;
         public float yaw;
+        public float headYaw;
         public float pitch;
     }
 

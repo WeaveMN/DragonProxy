@@ -29,7 +29,7 @@ import org.spacehq.packetlib.tcp.TcpSessionFactory;
 /**
  * Maintaince the connection between the proxy and remote Minecraft server.
  */
-public class DownstreamSession  {
+public class DownstreamSession {
 
     @Getter
     private final DragonProxy proxy;
@@ -43,18 +43,18 @@ public class DownstreamSession  {
         this.proxy = proxy;
         this.upstream = upstream;
     }
-    
-    public boolean isConnected(){
+
+    public boolean isConnected() {
         return remoteClient != null && remoteClient.getSession().isConnected();
     }
-    
-    public void send(Packet... packets){
-        for(Packet p : packets){
+
+    public void send(Packet... packets) {
+        for (Packet p : packets) {
             send(p);
         }
     }
-    
-    public void send(Packet packet){
+
+    public void send(Packet packet) {
         remoteClient.getSession().send(packet);
     }
 
@@ -66,21 +66,16 @@ public class DownstreamSession  {
         shutdown();
     }
 
-    public void sessionInactivated() {
-        proxy.getLogger().info(String.format("%s[%s]: ", upstream.getUsername(), upstream.getRemoteAddress()) + proxy.getLang().get(Lang.MESSAGE_REMOTE_DISCONNECTED));
-        upstream.disconnect(proxy.getLang().get(Lang.MESSAGE_REMOTE_DISCONNECTED));
-    }
-
     public void connect(final SocketAddress address) {
         MinecraftProtocol protocol = null;
-        try{
+        try {
             protocol = new MinecraftProtocol(upstream.getUsername());
-        }catch(Exception e){
+        } catch (Exception e) {
             upstream.disconnect("ERROR! ");
             return;
         }
         remoteClient = new Client(proxy.getRemoteServerAddress().getHostString(), proxy.getRemoteServerAddress().getPort(), protocol, new TcpSessionFactory());
-        remoteClient.getSession().addListener(new SessionAdapter(){
+        remoteClient.getSession().addListener(new SessionAdapter() {
             @Override
             public void connected(ConnectedEvent event) {
                 proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_REMOTE_CONNECTED, upstream.getUsername(), upstream.getRemoteAddress()));
@@ -93,15 +88,28 @@ public class DownstreamSession  {
 
             @Override
             public void packetReceived(PacketReceivedEvent event) {
-                System.out.println(event.getPacket().getClass().getSimpleName() + " > " + event.getPacket().toString());
+                if (!event.getPacket().getClass().getSimpleName().toLowerCase().contains("block")
+                        && !event.getPacket().getClass().getSimpleName().toLowerCase().contains("position")
+                        && !event.getPacket().getClass().getSimpleName().toLowerCase().contains("time")) {
+                    System.out.println(event.getPacket().getClass().getSimpleName() + " > " + event.getPacket().toString());
+                }
                 //Handle the packet
-                PEPacket[] packets = TranslatorRegister.translateToPE(upstream, event.getPacket());
-                if(packets == null) return;
-                if(packets.length <= 0) return;
-                if(packets.length == 1){
-                    upstream.sendPacket(packets[0]);
-                }else{
-                    upstream.sendAllPacket(packets);
+                try {
+                    PEPacket[] packets = TranslatorRegister.translateToPE(upstream, event.getPacket());
+                    if (packets == null) {
+                        return;
+                    }
+                    if (packets.length <= 0) {
+                        return;
+                    }
+                    if (packets.length == 1) {
+                        upstream.sendPacket(packets[0]);
+                    } else {
+                        upstream.sendAllPacket(packets);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
                 }
             }
         });
@@ -110,7 +118,7 @@ public class DownstreamSession  {
 
     public void disconnect() {
         if (remoteClient != null && remoteClient.getSession().isConnected()) {
-            remoteClient.getSession().disconnect("Disconnect");;
+            remoteClient.getSession().disconnect("Disconnect");
         }
     }
 

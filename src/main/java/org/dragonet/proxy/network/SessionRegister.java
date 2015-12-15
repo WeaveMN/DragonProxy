@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.dragonet.proxy.DragonProxy;
-import org.dragonet.proxy.DragonProxy;
 
 public class SessionRegister {
     
@@ -47,5 +46,9 @@ public class SessionRegister {
     
     public UpstreamSession getSession(String identifier){
         return clients.get(identifier);
+    }
+    
+    public Map<String, UpstreamSession> getAll(){
+        return Collections.unmodifiableMap(clients);
     }
 }
