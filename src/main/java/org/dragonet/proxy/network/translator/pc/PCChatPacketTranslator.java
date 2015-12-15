@@ -28,27 +28,6 @@ public class PCChatPacketTranslator implements PCPacketTranslator<ServerChatPack
         ChatPacket ret = new ChatPacket();
         ret.source = "";
         ret.message = packet.getMessage().getFullText();
-        if(session.getDataCache().get(CacheKey.AUTHENTICATION_STATE) != null){
-            if(session.getDataCache().get(CacheKey.AUTHENTICATION_STATE).equals("email")){
-                if(!PatternChecker.matchEmail(ret.message.trim())){
-                    session.sendChat(session.getProxy().getLang().get(Lang.MESSAGE_ONLINE_ERROR));
-                    session.disconnect(session.getProxy().getLang().get(Lang.MESSAGE_ONLINE_ERROR));
-                    return null;
-                }
-                session.getDataCache().put(CacheKey.AUTHENTICATION_EMAIL, ret.message.trim());
-                session.getDataCache().put(CacheKey.AUTHENTICATION_STATE, "password");
-                session.sendChat(session.getProxy().getLang().get(Lang.MESSAGE_ONLINE_PASSWORD));
-            }else if(session.getDataCache().get(CacheKey.AUTHENTICATION_STATE).equals("password")){
-                if(session.getDataCache().get(CacheKey.AUTHENTICATION_EMAIL) == null || ret.message.equals(" ")){
-                    session.sendChat(session.getProxy().getLang().get(Lang.MESSAGE_ONLINE_ERROR));
-                    session.disconnect(session.getProxy().getLang().get(Lang.MESSAGE_ONLINE_ERROR));
-                    return null;
-                }
-                session.sendChat(session.getProxy().getLang().get(Lang.MESSAGE_ONLINE_LOGGIN_IN));
-                session.authenticate(ret.message); //We NEVER cache password for better security. 
-            }
-            return null;
-        }
         switch(packet.getType()){
             case CHAT:
                 ret.type = ChatPacket.TextType.CHAT;

@@ -67,7 +67,6 @@ public class PEPacketProcessor implements Runnable {
                 client.onLogin((LoginPacket)packet);
                 break;
             default:
-                //TODO: Translate and send
                 if(client.getDownstream() == null) break;
                 if(!client.getDownstream().isConnected()) break;
                 Packet[] translated = TranslatorRegister.translateToPC(client, packet);
