@@ -1,0 +1,46 @@
+/*
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ *                       Version 3, 29 June 2007
+ *
+ * Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+ *
+ * You can view LICENCE file for details. 
+ *
+ * @author The Dragonet Team
+ */
+package org.dragonet.proxy.network.translator.pc;
+
+import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.net.packet.minecraft.StartGamePacket;
+import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.network.UpstreamSession;
+import org.dragonet.proxy.network.translator.PCPacketTranslator;
+import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
+import org.spacehq.mc.protocol.packet.ingame.server.world.ServerSpawnPositionPacket;
+
+public class PCSpawnPositionPacketTranslator implements PCPacketTranslator<ServerSpawnPositionPacket> {
+
+    @Override
+    public PEPacket[] translate(UpstreamSession session, ServerSpawnPositionPacket packet) {
+        if (session.getDataCache().get("cachedJoinGamePacket") == null) {
+            session.disconnect(session.getProxy().getLang().get(Lang.MESSAGE_REMOTE_ERROR));
+            return null;
+        }
+        ServerJoinGamePacket restored = (ServerJoinGamePacket) session.getDataCache().get("cachedJoinGamePacket");
+        StartGamePacket ret = new StartGamePacket();
+        ret.eid = restored.getEntityId();
+        ret.dimension = (byte) (restored.getDimension() & 0xFF);
+        ret.seed = 0;
+        ret.generator = 1;
+        ret.spawnX = packet.getPosition().getX();
+        ret.spawnY = packet.getPosition().getY();
+        ret.spawnZ = packet.getPosition().getZ();
+        ret.x = packet.getPosition().getX();
+        ret.y = packet.getPosition().getY();
+        ret.z = packet.getPosition().getZ();
+        return new PEPacket[]{ret};
+    }
+
+}

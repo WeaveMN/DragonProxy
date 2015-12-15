@@ -12,16 +12,9 @@
  */
 package org.dragonet.proxy.network;
 
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import java.net.SocketAddress;
 import lombok.Getter;
+import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
 import org.spacehq.mc.protocol.MinecraftProtocol;
@@ -43,13 +36,11 @@ public class DownstreamSession  {
     @Getter
     private final UpstreamSession upstream;
 
-    private MinecraftProtocol protocol;
     private Client remoteClient;
 
     public DownstreamSession(DragonProxy proxy, UpstreamSession upstream) {
         this.proxy = proxy;
         this.upstream = upstream;
-        protocol = new MinecraftProtocol(upstream.getUsername());
     }
 
     public void onError(Throwable err) {
@@ -66,6 +57,13 @@ public class DownstreamSession  {
     }
 
     public void connect(final SocketAddress address) {
+        MinecraftProtocol protocol = null;
+        try{
+            protocol = new MinecraftProtocol(upstream.getUsername());
+        }catch(Exception e){
+            upstream.disconnect("ERROR! ");
+            return;
+        }
         remoteClient = new Client(proxy.getRemoteServerAddress().getHostString(), proxy.getRemoteServerAddress().getPort(), protocol, new TcpSessionFactory());
         remoteClient.getSession().addListener(new SessionAdapter(){
             @Override
@@ -81,8 +79,18 @@ public class DownstreamSession  {
             @Override
             public void packetReceived(PacketReceivedEvent event) {
                 System.out.println(event.getPacket().getClass().getSimpleName() + " > " + event.getPacket().toString());
+                //Handle the packet
+                PEPacket[] packets = TranslatorRegister.translateToPE(upstream, event.getPacket());
+                if(packets == null) return;
+                if(packets.length <= 0) return;
+                if(packets.length == 1){
+                    upstream.sendPacket(packets[0]);
+                }else{
+                    upstream.sendAllPacket(packets);
+                }
             }
         });
+        remoteClient.getSession().connect();
     }
 
     public void disconnect() {

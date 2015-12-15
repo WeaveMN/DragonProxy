@@ -90,11 +90,12 @@ public class RaknetInterface implements ServerInstance {
     
     public void sendPacket(String identifier, PEPacket packet, boolean immediate){
         if(identifier == null || packet == null) return;
+        boolean overridedImmediate = immediate || packet.isShouldSendImmidate();
         packet.encode();
         if(packet.getData().length > 512 && !BatchPacket.class.isAssignableFrom(packet.getClass())){
             BatchPacket pkBatch = new BatchPacket();
             pkBatch.packets.add(packet);
-            sendPacket(identifier, pkBatch, immediate);
+            sendPacket(identifier, pkBatch, overridedImmediate);
             return;
         }
         
@@ -103,6 +104,6 @@ public class RaknetInterface implements ServerInstance {
         encapsulated.needACK = true;
         encapsulated.reliability = (byte)2;
         encapsulated.messageIndex = 0;
-        this.handler.sendEncapsulated(identifier, encapsulated, RakNet.FLAG_NEED_ACK | (immediate ? RakNet.PRIORITY_IMMEDIATE : RakNet.PRIORITY_NORMAL));
+        this.handler.sendEncapsulated(identifier, encapsulated, RakNet.FLAG_NEED_ACK | (overridedImmediate ? RakNet.PRIORITY_IMMEDIATE : RakNet.PRIORITY_NORMAL));
     }
 }

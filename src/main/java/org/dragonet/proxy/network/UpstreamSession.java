@@ -13,9 +13,13 @@
 package org.dragonet.proxy.network;
 
 import java.net.InetSocketAddress;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
+import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
@@ -49,6 +53,9 @@ public class UpstreamSession {
 
     @Getter
     private final DownstreamSession downstream;
+    
+    @Getter
+    private final Map<String, Object> dataCache = Collections.synchronizedMap(new HashMap<String, Object>());
 
     public UpstreamSession(DragonProxy proxy, String raknetID, InetSocketAddress remoteAddress) {
         this.proxy = proxy;
@@ -65,6 +72,25 @@ public class UpstreamSession {
 
     public void sendPacket(PEPacket packet, boolean immediate) {
         proxy.getNetwork().sendPacket(raknetID, packet, immediate);
+    }
+    
+    public void sendAllPacket(PEPacket[] packets) {
+        if(packets.length < 5){
+            for(PEPacket packet : packets){
+                sendPacket(packet);
+            }
+        }else{
+            BatchPacket batch = new BatchPacket();
+            boolean mustImmediate = false;
+            for(PEPacket packet : packets){
+                if(packet.isShouldSendImmidate()) {
+                    batch.packets.add(packet);
+                    mustImmediate = true;
+                    break;
+                }
+            }
+            sendPacket(batch, mustImmediate);
+        }
     }
 
     public void onTick() {
@@ -113,6 +139,4 @@ public class UpstreamSession {
         
         downstream.connect(proxy.getRemoteServerAddress());
     }
-
-    
 }
