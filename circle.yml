@@ -4,9 +4,6 @@ machine:
 
 checkout:
     post:
-        - git submodule sync
-        - git submodule update --init --recursive
-        - (cd MCProtocolLib && mvn install)
         - mvn package
 test:
     post:
