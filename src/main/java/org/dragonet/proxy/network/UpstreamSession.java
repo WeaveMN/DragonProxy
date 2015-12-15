@@ -147,13 +147,11 @@ public class UpstreamSession {
         sendPacket(status, true);
 
         this.username = packet.username;
-
         proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_CLIENT_CONNECTED, username, remoteAddress));
-
         if (proxy.isOnlineMode()) {
             StartGamePacket pkStartGame = new StartGamePacket();
             pkStartGame.eid = 0; //Use EID 0 for eaisier management
-            pkStartGame.dimension = (byte) 0;
+            pkStartGame.dimension = (byte) 1;
             pkStartGame.seed = 0;
             pkStartGame.generator = 1;
             pkStartGame.spawnX = 0;
@@ -163,16 +161,15 @@ public class UpstreamSession {
             pkStartGame.y = 72.0f;
             pkStartGame.z = 0.0f;
             sendPacket(pkStartGame, true);
-
+            
             LoginStatusPacket pkStat = new LoginStatusPacket();
             pkStat.status = LoginStatusPacket.PLAYER_SPAWN;
             sendPacket(pkStat, true);
-
+            
             dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
-
+            
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
-
         } else {
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         }
@@ -182,7 +179,7 @@ public class UpstreamSession {
         if (chat.contains("\n")) {
             String[] lines = chat.split("\n");
             for (String line : lines) {
-                sendChat(chat);
+                sendChat(line);
             }
             return;
         }
@@ -196,7 +193,7 @@ public class UpstreamSession {
     public void authenticate(String password) {
         proxy.getGeneralThreadPool().execute(() -> {
             try {
-                protocol = new MinecraftProtocol((String) dataCache.get(CacheKey.AUTHENTICATION_EMAIL), password, true);
+                protocol = new MinecraftProtocol((String) dataCache.get(CacheKey.AUTHENTICATION_EMAIL), password, false);
             } catch (RequestException ex) {
                 ex.printStackTrace();
                 sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
@@ -208,7 +205,14 @@ public class UpstreamSession {
                 disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
                 return;
             }
+
+            if (!username.equals(protocol.getProfile().getName())) {
+                username = protocol.getProfile().getName();
+                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME));
+            }
+
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS));
+
             proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE, username, remoteAddress));
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         });

@@ -42,6 +42,7 @@ public class PEChatPacketTranslator implements PEPacketTranslator<ChatPacket> {
                     return null;
                 }
                 session.sendChat(session.getProxy().getLang().get(Lang.MESSAGE_ONLINE_LOGGIN_IN));
+                session.getDataCache().remove(CacheKey.AUTHENTICATION_STATE);
                 session.authenticate(packet.message); //We NEVER cache password for better security. 
             }
             return null;

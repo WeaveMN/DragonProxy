@@ -44,6 +44,8 @@ public class Lang extends ConfigFile {
     
     public final static String MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE = "message_online_login_success_console";
     
+    public final static String MESSAGE_ONLINE_USERNAME = "message_online_username";
+    
     public final static String MESSAGE_ONLINE_LOGIN_FAILD = "message_online_login_faild";
     
     public final static String MESSAGE_REMOTE_CONNECTED = "message_remote_connected";
@@ -75,7 +77,7 @@ public class Lang extends ConfigFile {
     }
     
     public String get(String key){
-        return getConfig().getProperty(key).replace("[PROJNAME]", getConfig().getProperty("project_name").replace("[CRLF]", "\n"));
+        return getConfig().getProperty(key).replace("[PROJNAME]", getConfig().getProperty("project_name"));
     }
     
     public String get(String key, Object... repl){
