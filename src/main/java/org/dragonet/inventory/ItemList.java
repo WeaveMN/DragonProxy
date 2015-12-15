@@ -14,10 +14,13 @@ package org.dragonet.inventory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import org.spacehq.mc.protocol.data.game.ItemStack;
+import org.spacehq.opennbt.tag.builtin.CompoundTag;
 
 public class ItemList {
 
-    private ArrayList<ItemStack> items;
+    private List<ItemStack> items;
 
     public ItemList() {
         this.items = new ArrayList<>();
@@ -31,18 +34,9 @@ public class ItemList {
         this.items = Arrays.asList(items);
     }
 
-    public ItemList(Inventory inventory) {
-        this();
-        for (int i = 0; i < inventory.getSize(); i++) {
-            if (inventory.getItem(i) != null) {
-                this.items.add(inventory.getItem(i));
-            }
-        }
-    }
-
     public boolean tryToRemove(ItemStack item) {
         ArrayList<ItemStack> original = this.cloneList();
-        if (item == null || item.getTypeId() == 0) {
+        if (item == null || item.getId() == 0) {
             return true;
         }
         int toRemove = item.getAmount();
@@ -53,14 +47,15 @@ public class ItemList {
             if (items.get(i) == null) {
                 continue;
             }
-            int typeID = items.get(i).getTypeId();
-            int damage = items.get(i).getDurability();
+            int typeID = items.get(i).getId();
+            int damage = items.get(i).getData();
             int amount = items.get(i).getAmount();
-            if (typeID == item.getTypeId() && damage == item.getDurability()) {
+            CompoundTag nbt = items.get(i).getNBT();
+            if (typeID == item.getId() && damage == item.getData()) {
                 //We found the item
                 if (amount > toRemove) {
                     //SUCCESS
-                    items.get(i).setAmount(amount - toRemove);
+                    items.set(i, new ItemStack(typeID, amount - toRemove, damage, nbt));
                     return true;
                 } else {
                     items.set(i, null);
@@ -79,12 +74,12 @@ public class ItemList {
     private ArrayList<ItemStack> cloneList() {
         ArrayList<ItemStack> cloned = new ArrayList<>();
         for (ItemStack item : this.items) {
-            cloned.add(item.clone());
+            cloned.add(new ItemStack(item.getId(), item.getAmount(), item.getData(), item.getNBT()));
         }
         return cloned;
     }
 
-    public ArrayList<ItemStack> getItems() {
+    public List<ItemStack> getItems() {
         return items;
     }
 

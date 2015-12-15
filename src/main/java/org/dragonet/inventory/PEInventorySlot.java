@@ -14,13 +14,14 @@ package org.dragonet.inventory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import net.glowstone.util.nbt.CompoundTag;
-import net.glowstone.util.nbt.NBTInputStream;
-import net.glowstone.util.nbt.NBTOutputStream;
-import org.bukkit.inventory.ItemStack;
 import org.dragonet.utilities.io.PEBinaryReader;
 import org.dragonet.utilities.io.PEBinaryWriter;
+import org.spacehq.mc.protocol.data.game.ItemStack;
+import org.spacehq.opennbt.NBTIO;
+import org.spacehq.opennbt.tag.builtin.CompoundTag;
 
 public class PEInventorySlot {
 
@@ -37,7 +38,7 @@ public class PEInventorySlot {
         this.id = id;
         this.count = count;
         this.meta = meta;
-        nbt = new CompoundTag();
+        nbt = new CompoundTag("");
     }
 
     public PEInventorySlot(short id, byte count, short meta, CompoundTag nbt) {
@@ -61,9 +62,7 @@ public class PEInventorySlot {
             return new PEInventorySlot(id, count, meta);
         }
         byte[] nbtData = reader.read(lNbt);
-        NBTInputStream nbtin = new NBTInputStream(new ByteArrayInputStream(nbtData));
-        CompoundTag nbt = nbtin.readCompound();
-        nbtin.close();
+        CompoundTag nbt = (CompoundTag) NBTIO.readTag(new DataInputStream(new ByteArrayInputStream(nbtData)));
         return new PEInventorySlot(id, count, meta, nbt);
     }
 
@@ -79,8 +78,7 @@ public class PEInventorySlot {
             writer.writeShort((short) 0);
         }else{
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            NBTOutputStream nos = new NBTOutputStream(bos);
-            nos.writeTag(slot.nbt);
+            NBTIO.writeTag(new DataOutputStream(bos), slot.nbt);
             byte[] nbtdata = bos.toByteArray();
             writer.writeShort((short)(nbtdata.length & 0xFFFF));
             writer.write(nbtdata);
@@ -89,21 +87,13 @@ public class PEInventorySlot {
     
     public static PEInventorySlot fromItemStack(ItemStack item){
         PEInventorySlot slot = new PEInventorySlot();
-        slot.id = (short)(item.getTypeId() & 0xFFFF);
+        slot.id = (short)(item.getId() & 0xFFFF);
         if(slot.id <= 0){
             return slot;
         }
         slot.count = (byte)(item.getAmount() & 0xFF);
-        slot.meta = (short)(item.getDurability() & 0xFFFF);
-        
-        if(item.getItemMeta().getDisplayName() != null){
-            slot.nbt = new CompoundTag();
-            
-            CompoundTag display = new CompoundTag();
-            display.putString("Name", item.getItemMeta().getDisplayName());
-            
-            slot.nbt.putCompound("display", display);
-        }
+        slot.meta = (short)(item.getData() & 0xFFFF);
+        slot.nbt = item.getNBT();
         return slot;
     }
 

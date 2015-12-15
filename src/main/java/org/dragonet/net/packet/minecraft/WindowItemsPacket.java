@@ -16,7 +16,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.bukkit.Material;
 import org.dragonet.inventory.PEInventorySlot;
 import org.dragonet.inventory.PEWindowConstantID;
 import org.dragonet.net.inf.mcpe.NetworkChannel;
@@ -89,11 +88,15 @@ public class WindowItemsPacket extends PEPacket {
         CREATIVE_INVENTORY = new WindowItemsPacket();
         CREATIVE_INVENTORY.windowID = PEWindowConstantID.PLAYER_CREATIVE;
         ArrayList<PEInventorySlot> slots = new ArrayList<>();
+        /*
         for(Material mat : Material.values()){
             for(int i = 0; i < mat.getMaxDurability() && i < 16; i++){
                 slots.add(new PEInventorySlot((short)mat.getId(), (byte)1, (short)(i & 0xFF)));
             }
         }
+        */
+        //HACK
+        slots.add(new PEInventorySlot((short)1, (byte)1, (short)0));
         CREATIVE_INVENTORY.slots = slots.toArray(new PEInventorySlot[0]);
     }
 }

@@ -12,19 +12,7 @@
  */
 package org.dragonet.net.packet.minecraft;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
-import org.dragonet.inventory.PEInventorySlot;
-import org.dragonet.net.inf.mcpe.NetworkChannel;
-import org.dragonet.utilities.io.PEBinaryWriter;
 
 public class CraftingDataPacket extends PEPacket {
 
@@ -51,6 +39,7 @@ public class CraftingDataPacket extends PEPacket {
 
     @Override
     public void encode() {
+        /*
         enchants = 0;
         try {
             setChannel(NetworkChannel.CHANNEL_WORLD_EVENTS);
@@ -65,7 +54,6 @@ public class CraftingDataPacket extends PEPacket {
                         writer.writeInt(ENTRY_SHAPELESS);
                         ByteArrayOutputStream ebos = new ByteArrayOutputStream();
                         PEBinaryWriter ewriter = new PEBinaryWriter(ebos);
-                        /* Write data */
                         {
                             ewriter.writeInt(((ShapelessRecipe) r).getIngredientList().size());
                             for (ItemStack stack : ((ShapelessRecipe) r).getIngredientList()) {
@@ -82,7 +70,6 @@ public class CraftingDataPacket extends PEPacket {
                             writer.writeInt(ENTRY_FURNACE_DATA);
                             ByteArrayOutputStream ebos = new ByteArrayOutputStream();
                             PEBinaryWriter ewriter = new PEBinaryWriter(ebos);
-                            /* Write data */
                             {
                                 ewriter.writeInt(f.getInput().getTypeId() << 16 | f.getInput().getDurability());
                                 PEInventorySlot.writeSlot(ewriter, PEInventorySlot.fromItemStack(f.getResult()));
@@ -93,7 +80,6 @@ public class CraftingDataPacket extends PEPacket {
                             writer.writeInt(ENTRY_FURNACE);
                             ByteArrayOutputStream ebos = new ByteArrayOutputStream();
                             PEBinaryWriter ewriter = new PEBinaryWriter(ebos);
-                            /* Write data */
                             {
                                 ewriter.writeInt(f.getInput().getTypeId());
                                 PEInventorySlot.writeSlot(ewriter, PEInventorySlot.fromItemStack(f.getResult()));
@@ -106,7 +92,6 @@ public class CraftingDataPacket extends PEPacket {
                         writer.writeInt(ENTRY_SHAPED);
                         ByteArrayOutputStream ebos = new ByteArrayOutputStream();
                         PEBinaryWriter ewriter = new PEBinaryWriter(ebos);
-                        /* Write data */
                         {
                             ewriter.writeInt(sr.getShape()[0].length());
                             ewriter.writeInt(sr.getShape().length);
@@ -133,7 +118,6 @@ public class CraftingDataPacket extends PEPacket {
                                                 writer.writeInt(ENTRY_ENCHANT);
                             ByteArrayOutputStream ebos = new ByteArrayOutputStream();
                             PEBinaryWriter ewriter = new PEBinaryWriter(ebos);
-                            /* Write data */
                             {
                                 ewriter.writeInt(enchants);
                                 enchants ++;
@@ -147,10 +131,12 @@ public class CraftingDataPacket extends PEPacket {
                 }
             }
 
+
             writer.writeInt(recipies.size());
             this.setData(bos.toByteArray());
         } catch (IOException e) {
         }
+        */
     }
 
     @Override

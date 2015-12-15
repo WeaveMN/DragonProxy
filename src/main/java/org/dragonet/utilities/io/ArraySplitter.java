@@ -12,7 +12,7 @@
  */
 package org.dragonet.utilities.io;
 
-import org.apache.commons.lang.ArrayUtils;
+import java.util.Arrays;
 
 public final class ArraySplitter {
 
@@ -27,11 +27,11 @@ public final class ArraySplitter {
         int slice = 0;
         while (slice < ret.length) {
             if (pos + singleSlice < array.length) {
-                ret[slice] = ArrayUtils.subarray(array, pos, singleSlice);
+                ret[slice] = Arrays.copyOfRange(array, pos, pos + singleSlice);
                 pos += singleSlice;
                 slice++;
             } else {
-                ret[slice] = ArrayUtils.subarray(array, pos, array.length);
+                ret[slice] = Arrays.copyOfRange(array, pos, array.length);
                 pos += array.length - pos;
                 slice++;
             }

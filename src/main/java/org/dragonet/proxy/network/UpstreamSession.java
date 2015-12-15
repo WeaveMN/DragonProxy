@@ -12,11 +12,6 @@
  */
 package org.dragonet.proxy.network;
 
-import com.flowpowered.networking.Message;
-import com.flowpowered.networking.MessageHandler;
-import com.flowpowered.networking.protocol.AbstractProtocol;
-import com.flowpowered.networking.session.BasicSession;
-import io.netty.channel.Channel;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -83,6 +78,7 @@ public class UpstreamSession {
 
     /**
      * Called when this client disconnects.
+     * @param reason The reason of disconnection. 
      */
     public void onDisconnect(String reason) {
         proxy.getLogger().info(proxy.getLang().get(Lang.CLIENT_DISCONNECTED, username, remoteAddress, reason));
