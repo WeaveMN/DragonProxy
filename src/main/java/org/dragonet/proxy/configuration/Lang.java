@@ -42,6 +42,8 @@ public class Lang extends ConfigFile {
     
     public final static String MESSAGE_ONLINE_LOGIN_SUCCESS = "message_online_login_success";
     
+    public final static String MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE = "message_online_login_success_console";
+    
     public final static String MESSAGE_ONLINE_LOGIN_FAILD = "message_online_login_faild";
     
     public final static String MESSAGE_REMOTE_CONNECTED = "message_remote_connected";

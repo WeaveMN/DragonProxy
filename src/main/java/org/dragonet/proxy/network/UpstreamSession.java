@@ -153,7 +153,7 @@ public class UpstreamSession {
         if (proxy.isOnlineMode()) {
             StartGamePacket pkStartGame = new StartGamePacket();
             pkStartGame.eid = 0; //Use EID 0 for eaisier management
-            pkStartGame.dimension = (byte) 1;
+            pkStartGame.dimension = (byte) 0;
             pkStartGame.seed = 0;
             pkStartGame.generator = 1;
             pkStartGame.spawnX = 0;
@@ -181,14 +181,9 @@ public class UpstreamSession {
     public void sendChat(String chat) {
         if (chat.contains("\n")) {
             String[] lines = chat.split("\n");
-            ChatPacket[] pks = new ChatPacket[lines.length];
-            for (int i = 0; i < lines.length; i++) {
-                pks[i] = new ChatPacket();
-                pks[i].type = ChatPacket.TextType.CHAT;
-                pks[i].source = "";
-                pks[i].message = lines[i];
+            for (String line : lines) {
+                sendChat(chat);
             }
-            sendAllPacket(pks, true);
             return;
         }
         ChatPacket pk = new ChatPacket();
@@ -211,7 +206,7 @@ public class UpstreamSession {
                 return;
             }
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS));
-            disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS));
+            proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE, username, remoteAddress));
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         });
     }
