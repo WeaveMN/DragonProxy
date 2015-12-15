@@ -33,8 +33,8 @@ public class ChangeDimensionPacket extends PEPacket {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             PEBinaryWriter writer = new PEBinaryWriter(bos);
             writer.writeByte((byte) (this.pid() & 0xFF));
-            writer.writeByte(action);
-            writer.writeLong(eid);
+//            writer.writeByte(action);
+//            writer.writeLong(eid);
             this.setData(bos.toByteArray());
         } catch (IOException e) {
         }
