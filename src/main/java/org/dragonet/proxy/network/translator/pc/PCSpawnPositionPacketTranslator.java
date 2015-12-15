@@ -12,9 +12,11 @@
  */
 package org.dragonet.proxy.network.translator.pc;
 
+import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.StartGamePacket;
 import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
@@ -24,11 +26,11 @@ public class PCSpawnPositionPacketTranslator implements PCPacketTranslator<Serve
 
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerSpawnPositionPacket packet) {
-        if (session.getDataCache().get("cachedJoinGamePacket") == null) {
+        if (session.getDataCache().get(CacheKey.PACKET_JOIN_GAME_PACKET) == null) {
             session.disconnect(session.getProxy().getLang().get(Lang.MESSAGE_REMOTE_ERROR));
             return null;
         }
-        ServerJoinGamePacket restored = (ServerJoinGamePacket) session.getDataCache().get("cachedJoinGamePacket");
+        ServerJoinGamePacket restored = (ServerJoinGamePacket) session.getDataCache().get(CacheKey.PACKET_JOIN_GAME_PACKET);
         StartGamePacket ret = new StartGamePacket();
         ret.eid = restored.getEntityId();
         ret.dimension = (byte) (restored.getDimension() & 0xFF);
@@ -40,7 +42,10 @@ public class PCSpawnPositionPacketTranslator implements PCPacketTranslator<Serve
         ret.x = packet.getPosition().getX();
         ret.y = packet.getPosition().getY();
         ret.z = packet.getPosition().getZ();
-        return new PEPacket[]{ret};
+        
+        LoginStatusPacket stat = new LoginStatusPacket();
+        stat.status = LoginStatusPacket.PLAYER_SPAWN;
+        return new PEPacket[]{ret, stat};
     }
 
 }

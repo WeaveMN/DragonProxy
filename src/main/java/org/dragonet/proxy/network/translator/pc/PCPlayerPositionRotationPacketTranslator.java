@@ -12,20 +12,19 @@
  */
 package org.dragonet.proxy.network.translator.pc;
 
+import org.dragonet.net.packet.minecraft.MovePlayerPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
-import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
+import org.spacehq.mc.protocol.packet.ingame.server.entity.player.ServerPlayerPositionRotationPacket;
 
-public class PCJoinGamePacketTranslator implements PCPacketTranslator<ServerJoinGamePacket> {
+public class PCPlayerPositionRotationPacketTranslator implements PCPacketTranslator<ServerPlayerPositionRotationPacket> {
 
     @Override
-    public PEPacket[] translate(UpstreamSession session, ServerJoinGamePacket packet) {
-        //This packet is not fully useable, we cache it for now. 
-        session.getDataCache().put(CacheKey.PLAYER_EID, packet.getEntityId());
-        session.getDataCache().put(CacheKey.PACKET_JOIN_GAME_PACKET, packet);
-        return null;
+    public PEPacket[] translate(UpstreamSession session, ServerPlayerPositionRotationPacket packet) {
+        MovePlayerPacket pk = new MovePlayerPacket((int) session.getDataCache().get(CacheKey.PLAYER_EID), (float) packet.getX(), (float) packet.getY(), (float) packet.getZ(), packet.getYaw(), packet.getPitch(), packet.getYaw(), false);
+        return new PEPacket[]{pk};
     }
 
 }

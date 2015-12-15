@@ -23,6 +23,7 @@ import org.spacehq.packetlib.event.session.ConnectedEvent;
 import org.spacehq.packetlib.event.session.DisconnectedEvent;
 import org.spacehq.packetlib.event.session.PacketReceivedEvent;
 import org.spacehq.packetlib.event.session.SessionAdapter;
+import org.spacehq.packetlib.packet.Packet;
 import org.spacehq.packetlib.tcp.TcpSessionFactory;
 
 /**
@@ -41,6 +42,20 @@ public class DownstreamSession  {
     public DownstreamSession(DragonProxy proxy, UpstreamSession upstream) {
         this.proxy = proxy;
         this.upstream = upstream;
+    }
+    
+    public boolean isConnected(){
+        return remoteClient != null && remoteClient.getSession().isConnected();
+    }
+    
+    public void send(Packet... packets){
+        for(Packet p : packets){
+            send(p);
+        }
+    }
+    
+    public void send(Packet packet){
+        remoteClient.getSession().send(packet);
     }
 
     public void onError(Throwable err) {

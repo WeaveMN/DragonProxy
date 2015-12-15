@@ -15,11 +15,15 @@ package org.dragonet.proxy.network;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
 import java.util.HashMap;
 import java.util.Map;
+import org.dragonet.net.packet.minecraft.MovePlayerPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.network.translator.PEPacketTranslator;
-import org.dragonet.proxy.network.translator.pc.PCJoinGamePacketTranslator;
-import org.dragonet.proxy.network.translator.pc.PCSpawnPositionPacketTranslator;
+import org.dragonet.proxy.network.translator.pc.*;
+import org.dragonet.proxy.network.translator.pe.PEMovePlayerPacketTranslator;
+import org.spacehq.mc.protocol.packet.ingame.server.ServerChatPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
+import org.spacehq.mc.protocol.packet.ingame.server.entity.player.ServerPlayerPositionRotationPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiChunkDataPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerSpawnPositionPacket;
 import org.spacehq.packetlib.packet.Packet;
 
@@ -33,7 +37,17 @@ public final class TranslatorRegister {
         PC_TO_PE_TRANSLATOR.put(ServerJoinGamePacket.class, new PCJoinGamePacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerSpawnPositionPacket.class, new PCSpawnPositionPacketTranslator());
         
+        //Chat
+        PC_TO_PE_TRANSLATOR.put(ServerChatPacket.class, new PCChatPacketTranslator());
         
+        //Map
+        PC_TO_PE_TRANSLATOR.put(ServerMultiChunkDataPacket.class, new PCMultiChunkDataPacketTranslator());
+        
+        //Movement
+        PC_TO_PE_TRANSLATOR.put(ServerPlayerPositionRotationPacket.class, new PCPlayerPositionRotationPacketTranslator());
+        
+        /* PE to PC */
+        PE_TO_PC_TRANSLATOR.put(MovePlayerPacket.class, new PEMovePlayerPacketTranslator());
     }
     
     public static PEPacket[] translateToPE(UpstreamSession session, Packet packet){

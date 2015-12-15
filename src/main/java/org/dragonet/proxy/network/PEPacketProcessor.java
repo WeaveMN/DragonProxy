@@ -20,6 +20,7 @@ import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PEPacketIDs;
+import org.spacehq.packetlib.packet.Packet;
 
 public class PEPacketProcessor implements Runnable {
 
@@ -67,6 +68,11 @@ public class PEPacketProcessor implements Runnable {
                 break;
             default:
                 //TODO: Translate and send
+                if(client.getDownstream() == null) break;
+                if(!client.getDownstream().isConnected()) break;
+                Packet[] translated = TranslatorRegister.translateToPC(client, packet);
+                if(translated == null || translated.length == 0) break;
+                client.getDownstream().send(translated);
                 break;
         }
     }
