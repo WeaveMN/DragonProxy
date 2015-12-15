@@ -61,11 +61,15 @@ public class PEPacketProcessor implements Runnable {
             return;
         }
         client.getProxy().getLogger().info("Received packet: " + packet.getClass().getSimpleName());
-        //TODO
         switch(packet.pid()){
             case PEPacketIDs.LOGIN_PACKET:
                 client.onLogin((LoginPacket)packet);
                 break;
+            case PEPacketIDs.TEXT_PACKET:  //Login
+                if (client.getDataCache().get(CacheKey.AUTHENTICATION_STATE) != null) {
+                    TranslatorRegister.translateToPC(client, packet);
+                    break;
+                }
             default:
                 if(client.getDownstream() == null) break;
                 if(!client.getDownstream().isConnected()) break;
