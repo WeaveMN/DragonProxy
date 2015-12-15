@@ -2,7 +2,10 @@
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)  
 A proxy for Minecraft: Pocket Edition connecting to Minecraft PC/Mac servers. 
 
-### This project is under early-development stage, it CAN NOT work yet. 
+### This project is under early-development stage, it CAN NOT work yet.
+
+## Installation
+[![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master) [Download from CircleCI](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)
 
 ## Usage
 Note: Target server must be off-line mode for now, we may add online authentication later. 
@@ -13,9 +16,20 @@ Note: Target server must be off-line mode for now, we may add online authenticat
 * Step 5. Edit `config.properties` and change `remote_ip` and `remote_port` to your Minecraft PC/Mac server, such as `127.0.0.1` and `25565`. 
 * Step 6. Do `Step 3` again, and you should be able to connect to a PC/Mac server through your computer/server from a MCPE. 
 
-## Installation
-[![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master) [Download from CircleCI](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)
+## Development
 
-### Credits
+### Cloning the project
+
+```
+git clone git@github.com:DragonetMC/DragonProxy.git
+```
+
+### Using IntelliJ IDEA
+
+* Download and install [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/#chooseYourEdition) (free download)
+* Just "open" the project in **IntelliJ**, it should work and compile seamlessly
+* Add "Lombok Plugin" to add first class support for Lombok annotations in **IntelliJ**
+
+## Credits
 * Glowstone's Netty Networking Library in Java([Link](http://github.com/GlowstonePlusPlus/GlowstonePlusPlus))
 * Glowstone's fork of Bukkit API([Link](http://github.com/GlowstonePlusPlus/Glowkit))
