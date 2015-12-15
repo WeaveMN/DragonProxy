@@ -6,7 +6,7 @@ checkout:
     post:
         - git submodule sync
         - git submodule update --init --recursive
-        - (cd Glowkit && mvn install)
+        - (cd MCProtocolLib && mvn install)
         - mvn package
 test:
     post:
