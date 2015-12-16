@@ -12,14 +12,20 @@
  */
 package org.dragonet.proxy.network.cache;
 
+import java.util.UUID;
 import lombok.Data;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
 
 @Data
 public class CachedEntity {
+    
     public final int eid;
+    
     public final int pcType;
     public final int peType;
+    
+    public final boolean player;
+    public final UUID playerUniqueId;
     
     public double x;
     public double y;
@@ -33,7 +39,7 @@ public class CachedEntity {
     public float pitch;
     
     public EntityMetadata[] pcMeta;
-    
+
     public CachedEntity relativeMove(double rx, double ry, double rz, float yaw, float pitch){
         x += rx;
         y += ry;
