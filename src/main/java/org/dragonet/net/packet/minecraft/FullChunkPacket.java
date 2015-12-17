@@ -46,7 +46,7 @@ public class FullChunkPacket extends PEPacket {
     @Override
     public void encode() {
         try {
-            setShouldSendImmidate(true);
+            setShouldSendImmidate(false);
             
             setChannel(NetworkChannel.CHANNEL_WORLD_CHUNKS);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
