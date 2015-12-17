@@ -12,29 +12,42 @@
  */
 package org.dragonet.proxy.network.cache;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import lombok.Getter;
 import org.dragonet.proxy.entity.EntityType;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.spacehq.mc.protocol.data.game.values.MagicValues;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnMobPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
 
 public final class EntityCache {
 
     @Getter
     private final UpstreamSession upstream;
 
-    @Getter
     private final Map<Integer, CachedEntity> entities = Collections.synchronizedMap(new HashMap<Integer, CachedEntity>());
-
+    
+    private final List<Integer> playerEntities = Collections.synchronizedList(new ArrayList<Integer>());
+    
+    
     public EntityCache(UpstreamSession upstream) {
         this.upstream = upstream;
     }
 
     public CachedEntity get(int eid) {
         return entities.get(eid);
+    }
+    
+    public CachedEntity remove(int eid){
+        CachedEntity e = entities.remove(eid);
+        if(e == null) return null;
+        playerEntities.remove((Integer)eid);
+        return e;
     }
 
     /**
@@ -48,7 +61,7 @@ public final class EntityCache {
         if (peType == null) {
             return null; //Not supported
         }
-        CachedEntity e = new CachedEntity(packet.getEntityId(), MagicValues.value(Integer.class, packet.getType()), peType.getPeType());
+        CachedEntity e = new CachedEntity(packet.getEntityId(), MagicValues.value(Integer.class, packet.getType()), peType.getPeType(), false, null);
         e.x = packet.getX();
         e.y = packet.getY();
         e.z = packet.getZ();
@@ -57,8 +70,26 @@ public final class EntityCache {
         e.motionZ = packet.getMotionZ();
         e.yaw = packet.getYaw();
         e.pitch = packet.getPitch();
+        e.pcMeta = packet.getMetadata();
         entities.put(e.eid, e);
         return e;
+    }
+    
+    public CachedEntity newPlayer(ServerSpawnPlayerPacket packet){
+        CachedEntity e = new CachedEntity(packet.getEntityId(), -1, -1, true, packet.getUUID());
+        e.x = packet.getX();
+        e.y = packet.getY();
+        e.z = packet.getZ();
+        e.yaw = packet.getYaw();
+        e.pitch = packet.getPitch();
+        e.pcMeta = packet.getMetadata();
+        entities.put(e.eid, e);
+        playerEntities.add(e.eid);
+        return e;
+    }
+    
+    public boolean isPlayerEntity(int eid){
+        return playerEntities.contains(eid);
     }
     
     public void onTick(){

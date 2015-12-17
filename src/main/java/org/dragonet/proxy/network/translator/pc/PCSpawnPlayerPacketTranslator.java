@@ -41,7 +41,8 @@ public class PCSpawnPlayerPacketTranslator implements PCPacketTranslator<ServerS
 
             //pkAddPlayer.metadata = EntityMetaData.getMetaDataFromPlayer((GlowPlayer) this.getSession().getPlayer().getWorld().getEntityManager().getEntity(packet.getId()));
 
-            PlayerListPacket lst = new PlayerListPacket(new PlayerListPacket.PlayerInfo(packet.getUUID(), packet.getEntityId(), pkAddPlayer.username, true, false, DefaultSkin.getDefaultSkin()));
+            PlayerListPacket lst = new PlayerListPacket(new PlayerListPacket.PlayerInfo(packet.getUUID(), packet.getEntityId(), pkAddPlayer.username, "Default", new byte[0]));
+            //TODO: get the default skin to work.
             return new PEPacket[]{pkAddPlayer, lst};
         } catch (Exception e) {
             e.printStackTrace();

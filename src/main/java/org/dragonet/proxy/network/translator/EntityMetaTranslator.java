@@ -1,0 +1,71 @@
+/*
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ *                       Version 3, 29 June 2007
+ *
+ * Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+ *
+ * You can view LICENCE file for details. 
+ *
+ * @author The Dragonet Team
+ */
+package org.dragonet.proxy.network.translator;
+
+import org.dragonet.entity.metadata.EntityMetaData;
+import org.dragonet.entity.metadata.type.ByteArrayMeta;
+import org.dragonet.entity.metadata.type.ByteMeta;
+import org.dragonet.entity.metadata.type.ShortMeta;
+import org.spacehq.mc.protocol.data.game.EntityMetadata;
+
+public final class EntityMetaTranslator {
+    public EntityMetaData translateToPE(EntityMetadata[] pcMeta){
+        /*
+         * Following format was fetched from http://wiki.vg/Entities#Entity_Metadata_Format
+         */
+        EntityMetaData peMeta = new EntityMetaData();
+        for(EntityMetadata m : pcMeta){
+            if(m == null) continue;
+            switch(m.getId()){
+                case 0://Flags
+                    byte pcFlags = ((byte)m.getValue());
+                    byte peFlags= (byte)((pcFlags & 0x01) > 0 ? EntityMetaData.Constants.DATA_FLAG_ONFIRE : 0);
+                    peFlags |= (pcFlags & 0x02) > 0 ? EntityMetaData.Constants.DATA_FLAG_SNEAKING : 0;
+                    peFlags |= (pcFlags & 0x08) > 0 ? EntityMetaData.Constants.DATA_FLAG_SPRINTING : 0;
+                    peFlags |= (pcFlags & 0x10) > 0 ? EntityMetaData.Constants.DATA_FLAG_ACTION : 0;
+                    peFlags |= (pcFlags & 0x20) > 0 ? EntityMetaData.Constants.DATA_FLAG_INVISIBLE : 0;
+                    peMeta.map.put(EntityMetaData.Constants.DATA_FLAGS, new ByteMeta(peFlags));
+                    break;
+                case 1://Air
+                    peMeta.map.put(EntityMetaData.Constants.DATA_AIR, new ShortMeta((short)m.getValue()));
+                    break;
+                case 2://Name tag
+                    peMeta.map.put(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta((String)m.getValue()));
+                    break;
+                case 3://Always show name tag
+                    peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte)m.getValue()));
+                    break;
+                case 6://Health
+                    //Not supported on MCPE yet
+                    break;
+                case 7://Potion color
+                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_COLOR, new ByteMeta((byte)m.getValue()));
+                    break;
+                case 8://Potion visible
+                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_VISIBLE, new ByteMeta((byte)m.getValue()));
+                    break;
+                case 9://Arrows stick into player's body
+                    //Not supported on MCPE yet
+                    break;
+                case 15://Has no AI
+                    peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte)m.getValue()));
+                    break;
+                case 12://Age
+                    //Not supported on MCPE yet
+                    break;
+                //TODO: More
+            }
+        }
+        return peMeta;
+    }
+}
