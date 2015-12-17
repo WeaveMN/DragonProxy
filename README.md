@@ -2,7 +2,8 @@
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)  
 A proxy for Minecraft: Pocket Edition connecting to Minecraft PC/Mac servers. 
 
-![Screenshot](https://raw.githubusercontent.com/DragonetMC/Dragonet/master/screenshots/Hypixel.png)
+![Screenshot](https://raw.githubusercontent.com/DragonetMC/DragonProxy/master/screenshots/Hypixel.png)
+Hypixel on MCPE, yay!! 
 
 ## Installation
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master) [Download from CircleCI](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)
