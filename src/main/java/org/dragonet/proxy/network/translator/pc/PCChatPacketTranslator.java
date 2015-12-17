@@ -14,11 +14,8 @@ package org.dragonet.proxy.network.translator.pc;
 
 import org.dragonet.net.packet.minecraft.ChatPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
-import org.dragonet.proxy.configuration.Lang;
-import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
-import org.dragonet.proxy.utilities.PatternChecker;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerChatPacket;
 
 public class PCChatPacketTranslator implements PCPacketTranslator<ServerChatPacket> {

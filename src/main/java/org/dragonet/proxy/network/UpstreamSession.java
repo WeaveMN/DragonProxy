@@ -161,13 +161,13 @@ public class UpstreamSession {
             pkStartGame.y = 72.0f;
             pkStartGame.z = 0.0f;
             sendPacket(pkStartGame, true);
-            
+
             LoginStatusPacket pkStat = new LoginStatusPacket();
             pkStat.status = LoginStatusPacket.PLAYER_SPAWN;
             sendPacket(pkStat, true);
-            
+
             dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
-            
+
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
         } else {
@@ -195,15 +195,15 @@ public class UpstreamSession {
             try {
                 protocol = new MinecraftProtocol((String) dataCache.get(CacheKey.AUTHENTICATION_EMAIL), password, false);
             } catch (RequestException ex) {
-                ex.printStackTrace();
-                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
-                disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
-                return;
-            }
-            if (protocol.getAccessToken() == null) {
-                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
-                disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
-                return;
+                if (ex.getMessage().toLowerCase().contains("invalid")) {
+                    sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
+                    disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
+                    return;
+                } else {
+                    sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
+                    disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
+                    return;
+                }
             }
 
             if (!username.equals(protocol.getProfile().getName())) {
@@ -211,9 +211,9 @@ public class UpstreamSession {
                 sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME));
             }
 
-            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS));
+            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
 
-            proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE, username, remoteAddress));
+            proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE, username, remoteAddress, username));
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         });
     }
