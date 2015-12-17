@@ -151,7 +151,7 @@ public class UpstreamSession {
         if (proxy.isOnlineMode()) {
             StartGamePacket pkStartGame = new StartGamePacket();
             pkStartGame.eid = 0; //Use EID 0 for eaisier management
-            pkStartGame.dimension = (byte) 1;
+            pkStartGame.dimension = (byte) 0;
             pkStartGame.seed = 0;
             pkStartGame.generator = 1;
             pkStartGame.spawnX = 0;
