@@ -28,9 +28,7 @@ public class LoginPacket extends PEPacket {
     public String serverAddress;
     public String clientSecret;
 
-    public boolean skinTransparent;
-    
-    public boolean slim;
+    public String skinName;
     public byte[] skin;
 
     public LoginPacket(byte[] data) {
@@ -59,8 +57,7 @@ public class LoginPacket extends PEPacket {
             this.serverAddress = reader.readString();
             this.clientSecret = reader.readString();
             
-            this.slim = (reader.readByte() & 0xF) > 0;
-            this.skinTransparent = (reader.readByte() & 0xF) > 0;
+            this.skinName = reader.readString();
             int len = reader.readShort();
             this.skin = reader.read(len);
             this.setLength(reader.totallyRead());
