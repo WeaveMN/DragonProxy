@@ -76,14 +76,14 @@ public class DragonProxy {
         try {
             config = new ServerConfig();
         } catch (IOException ex) {
-            logger.severe("Faild to load configuration file! ");
+            logger.severe("Failed to load configuration file! ");
             ex.printStackTrace();
             return;
         }
         try {
             lang = new Lang(config.getConfig().getProperty(ServerConfig.LANG_FILE));
         } catch (IOException ex) {
-            logger.severe("Faild to load language file! ");
+            logger.severe("Failed to load language file! ");
             ex.printStackTrace();
             return;
         }
