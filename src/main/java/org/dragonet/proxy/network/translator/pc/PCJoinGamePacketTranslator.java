@@ -22,13 +22,14 @@ public class PCJoinGamePacketTranslator implements PCPacketTranslator<ServerJoin
 
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerJoinGamePacket packet) {
+        //This packet is not fully useable, we cache it for now. 
+        session.getDataCache().put(CacheKey.PLAYER_EID, packet.getEntityId());  //Stores the real entity ID
+        
         if(session.getProxy().isOnlineMode()) {
             //Online mode already sent packets
             return null;
         }
         
-        //This packet is not fully useable, we cache it for now. 
-        session.getDataCache().put(CacheKey.PLAYER_EID, packet.getEntityId());  //Stores the real entity ID
         session.getDataCache().put(CacheKey.PACKET_JOIN_GAME_PACKET, packet);
         return null;
     }
