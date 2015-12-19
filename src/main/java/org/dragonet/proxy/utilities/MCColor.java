@@ -11,7 +11,7 @@
  * @author The Dragonet Team
  */
 
-package org.dragonet.utilities;
+package org.dragonet.proxy.utilities;
 
 public enum MCColor {
     BLACK("0"),

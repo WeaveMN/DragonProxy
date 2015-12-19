@@ -9,7 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import org.dragonet.inventory.PEInventorySlot;
 import org.dragonet.net.inf.mcpe.NetworkChannel;
-import org.dragonet.utilities.io.PEBinaryReader;
+import org.dragonet.proxy.utilities.io.PEBinaryReader;
 
 public class DropItemPacket extends PEPacket {
 

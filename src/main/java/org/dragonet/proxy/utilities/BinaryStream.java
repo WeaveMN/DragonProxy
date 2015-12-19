@@ -1,4 +1,4 @@
-package org.dragonet.utilities;
+package org.dragonet.proxy.utilities;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

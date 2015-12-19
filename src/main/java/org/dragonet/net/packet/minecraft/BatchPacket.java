@@ -14,8 +14,8 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 import org.dragonet.net.packet.Protocol;
-import org.dragonet.utilities.io.PEBinaryReader;
-import org.dragonet.utilities.io.PEBinaryWriter;
+import org.dragonet.proxy.utilities.io.PEBinaryReader;
+import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class BatchPacket extends PEPacket {
 

@@ -29,7 +29,7 @@ import org.dragonet.raknet.protocol.packet.DATA_PACKET_A;
 import org.dragonet.raknet.RakNet;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.dragonet.raknet.protocol.Packet;
-import org.dragonet.utilities.Binary;
+import org.dragonet.proxy.utilities.Binary;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

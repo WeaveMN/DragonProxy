@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
-import org.dragonet.utilities.io.PEBinaryReader;
+import org.dragonet.proxy.utilities.io.PEBinaryReader;
 
 public class LoginPacket extends PEPacket {
 

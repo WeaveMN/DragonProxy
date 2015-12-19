@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import org.dragonet.utilities.io.PEBinaryWriter;
+import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class ServerHandshakePacket extends PEPacket {
 

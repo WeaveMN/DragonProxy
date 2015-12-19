@@ -10,7 +10,7 @@
  *
  * @author The Dragonet Team
  */
-package org.dragonet.utilities.io;
+package org.dragonet.proxy.utilities.io;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

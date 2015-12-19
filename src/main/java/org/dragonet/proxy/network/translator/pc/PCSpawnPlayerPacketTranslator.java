@@ -6,7 +6,7 @@ import org.dragonet.net.packet.minecraft.PlayerListPacket;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.cache.CachedEntity;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
-import org.dragonet.utilities.DefaultSkin;
+import org.dragonet.proxy.utilities.DefaultSkin;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
 

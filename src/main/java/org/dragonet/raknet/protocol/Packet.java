@@ -1,6 +1,6 @@
 package org.dragonet.raknet.protocol;
 
-import org.dragonet.utilities.Binary;
+import org.dragonet.proxy.utilities.Binary;
 
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;

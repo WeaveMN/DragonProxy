@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import org.dragonet.inventory.PEInventorySlot;
 import org.dragonet.inventory.PEWindowConstantID;
 import org.dragonet.net.inf.mcpe.NetworkChannel;
-import org.dragonet.utilities.io.PEBinaryReader;
-import org.dragonet.utilities.io.PEBinaryWriter;
+import org.dragonet.proxy.utilities.io.PEBinaryReader;
+import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class WindowItemsPacket extends PEPacket {
 

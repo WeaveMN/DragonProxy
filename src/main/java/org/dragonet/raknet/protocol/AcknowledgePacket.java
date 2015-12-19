@@ -1,7 +1,7 @@
 package org.dragonet.raknet.protocol;
 
-import org.dragonet.utilities.Binary;
-import org.dragonet.utilities.BinaryStream;
+import org.dragonet.proxy.utilities.Binary;
+import org.dragonet.proxy.utilities.BinaryStream;
 
 import java.util.TreeMap;
 

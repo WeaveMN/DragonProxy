@@ -14,7 +14,7 @@ package org.dragonet.net.packet.minecraft;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import org.dragonet.utilities.io.PEBinaryReader;
+import org.dragonet.proxy.utilities.io.PEBinaryReader;
 
 public class ClientConnectPacket extends PEPacket {
 

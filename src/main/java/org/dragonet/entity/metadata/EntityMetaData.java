@@ -19,7 +19,7 @@ import java.util.Map;
 import org.dragonet.entity.metadata.type.ByteArrayMeta;
 import org.dragonet.entity.metadata.type.ByteMeta;
 import org.dragonet.entity.metadata.type.ShortMeta;
-import org.dragonet.utilities.io.PEBinaryWriter;
+import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class EntityMetaData {
 

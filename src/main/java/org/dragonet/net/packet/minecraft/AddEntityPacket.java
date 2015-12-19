@@ -17,7 +17,7 @@ import java.io.IOException;
 import lombok.Data;
 import org.dragonet.entity.metadata.EntityMetaData;
 import org.dragonet.net.inf.mcpe.NetworkChannel;
-import org.dragonet.utilities.io.PEBinaryWriter;
+import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class AddEntityPacket extends PEPacket {
 

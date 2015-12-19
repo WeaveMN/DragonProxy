@@ -15,7 +15,7 @@ package org.dragonet.net.packet.minecraft;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.dragonet.net.inf.mcpe.NetworkChannel;
-import org.dragonet.utilities.io.PEBinaryWriter;
+import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class ChangeDimensionPacket extends PEPacket {
     

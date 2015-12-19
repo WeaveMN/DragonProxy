@@ -18,7 +18,7 @@ import java.util.UUID;
 import org.dragonet.entity.metadata.EntityMetaData;
 import org.dragonet.inventory.PEInventorySlot;
 import org.dragonet.net.inf.mcpe.NetworkChannel;
-import org.dragonet.utilities.io.PEBinaryWriter;
+import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class AddPlayerPacket extends PEPacket {
 
