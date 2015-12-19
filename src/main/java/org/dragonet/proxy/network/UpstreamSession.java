@@ -28,6 +28,7 @@ import org.dragonet.net.packet.minecraft.StartGamePacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.cache.EntityCache;
+import org.dragonet.proxy.network.cache.WindowCache;
 import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.spacehq.mc.auth.exception.request.RequestException;
@@ -59,12 +60,21 @@ public class UpstreamSession {
     @Getter
     private final DownstreamSession downstream;
 
+    /* =======================================================================================================
+     * |                                 Caches for Protocol Compatibility                                   |
+    /* ======================================================================================================= */
+    
     @Getter
     private final Map<String, Object> dataCache = Collections.synchronizedMap(new HashMap<String, Object>());
 
     @Getter
     private final EntityCache entityCache = new EntityCache(this);
+    
+    @Getter
+    private final WindowCache windowCache = new WindowCache(this);
 
+    /* ======================================================================================================= */
+    
     private MinecraftProtocol protocol;
 
     public UpstreamSession(DragonProxy proxy, String raknetID, InetSocketAddress remoteAddress) {
@@ -171,6 +181,7 @@ public class UpstreamSession {
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
         } else {
+            protocol = new MinecraftProtocol(username);
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         }
     }

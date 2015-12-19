@@ -21,6 +21,7 @@ import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PEPacketIDs;
+import org.dragonet.net.packet.minecraft.PlayerEquipmentPacket;
 import org.spacehq.packetlib.packet.Packet;
 
 public class PEPacketProcessor implements Runnable {
@@ -70,6 +71,9 @@ public class PEPacketProcessor implements Runnable {
                     TranslatorRegister.translateToPC(client, packet);
                     break;
                 }
+            case PEPacketIDs.MOB_EQUIPMENT_PACKET:
+                PlayerEquipmentPacket p = (PlayerEquipmentPacket) packet;
+                client.getProxy().getLogger().info("PlayerEquipmentPacket => Slot: " + p.item.toString() + ", Selected: " + p.selectedSlot + ", Slot: " + p.slot);
             default:
                 if(client.getDownstream() == null) break;
                 if(!client.getDownstream().isConnected()) break;
