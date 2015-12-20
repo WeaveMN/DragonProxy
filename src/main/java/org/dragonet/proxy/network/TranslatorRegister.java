@@ -34,6 +34,7 @@ import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlay
 import org.spacehq.mc.protocol.packet.ingame.server.window.ServerWindowItemsPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiChunkDataPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerSpawnPositionPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.world.ServerUpdateTimePacket;
 import org.spacehq.packetlib.packet.Packet;
 
 public final class TranslatorRegister {
@@ -54,6 +55,7 @@ public final class TranslatorRegister {
 
         // Map
         PC_TO_PE_TRANSLATOR.put(ServerMultiChunkDataPacket.class, new PCMultiChunkDataPacketTranslator());
+        PC_TO_PE_TRANSLATOR.put(ServerUpdateTimePacket.class, new PCUpdateTimePacketTranslator());
 
         // Entity
         PC_TO_PE_TRANSLATOR.put(ServerPlayerPositionRotationPacket.class, new PCPlayerPositionRotationPacketTranslator());

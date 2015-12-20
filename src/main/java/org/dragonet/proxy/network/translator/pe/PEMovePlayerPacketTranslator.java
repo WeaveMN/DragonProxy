@@ -13,7 +13,6 @@
 package org.dragonet.proxy.network.translator.pe;
 
 import org.dragonet.net.packet.minecraft.MovePlayerPacket;
-import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PEPacketTranslator;
 import org.spacehq.mc.protocol.packet.ingame.client.player.ClientPlayerPositionRotationPacket;
@@ -23,7 +22,7 @@ public class PEMovePlayerPacketTranslator implements PEPacketTranslator<MovePlay
 
     @Override
     public Packet[] translate(UpstreamSession session, MovePlayerPacket packet) {
-        ClientPlayerPositionRotationPacket pk = new ClientPlayerPositionRotationPacket(!packet.teleport, packet.x, packet.y - 1.62f, packet.z, packet.yaw, packet.pitch);
+        ClientPlayerPositionRotationPacket pk = new ClientPlayerPositionRotationPacket(packet.teleport, packet.x, packet.y - 1.62f, packet.z, packet.yaw, packet.pitch);
         return new Packet[]{pk};
     }
 
