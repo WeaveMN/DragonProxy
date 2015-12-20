@@ -30,6 +30,8 @@ public class PCSpawnPlayerPacketTranslator implements PCPacketTranslator<ServerS
             }
             if(pkAddPlayer.username == null) pkAddPlayer.username = "_";
 
+            pkAddPlayer.uuid = packet.getUUID();
+            
             pkAddPlayer.x = (float) packet.getX() / 32;
             pkAddPlayer.y = (float) packet.getY() / 32;
             pkAddPlayer.z = (float) packet.getZ() / 32;
