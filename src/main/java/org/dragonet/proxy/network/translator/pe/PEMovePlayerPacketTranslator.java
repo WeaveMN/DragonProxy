@@ -18,11 +18,11 @@ import org.dragonet.proxy.network.translator.PEPacketTranslator;
 import org.spacehq.mc.protocol.packet.ingame.client.player.ClientPlayerPositionRotationPacket;
 import org.spacehq.packetlib.packet.Packet;
 
-public class PEMovePlayerPacketTranslator implements PEPacketTranslator<MovePlayerPacket>{
+public class PEMovePlayerPacketTranslator implements PEPacketTranslator<MovePlayerPacket> {
 
     @Override
     public Packet[] translate(UpstreamSession session, MovePlayerPacket packet) {
-        ClientPlayerPositionRotationPacket pk = new ClientPlayerPositionRotationPacket(packet.teleport, packet.x, packet.y - 1.62f, packet.z, packet.yaw, packet.pitch);
+        ClientPlayerPositionRotationPacket pk = new ClientPlayerPositionRotationPacket(!packet.teleport, packet.x, packet.y, packet.z, packet.yaw, packet.pitch);
         return new Packet[]{pk};
     }
 
