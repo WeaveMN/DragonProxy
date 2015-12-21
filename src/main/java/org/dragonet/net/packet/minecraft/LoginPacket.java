@@ -13,7 +13,6 @@
 package org.dragonet.net.packet.minecraft;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 import org.dragonet.proxy.utilities.io.PEBinaryReader;

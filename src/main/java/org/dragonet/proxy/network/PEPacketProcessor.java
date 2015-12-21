@@ -27,62 +27,71 @@ import org.spacehq.packetlib.packet.Packet;
 public class PEPacketProcessor implements Runnable {
 
     public final static int MAX_PACKETS_PER_CYCLE = 200;
-    
+
     @Getter
     private final UpstreamSession client;
 
     private final Deque<byte[]> packets = new ArrayDeque<>();
-    
+
     public PEPacketProcessor(UpstreamSession client) {
         this.client = client;
     }
-    
-    public void putPacket(byte[] packet){
+
+    public void putPacket(byte[] packet) {
         packets.add(packet);
     }
-    
+
     @Override
     public void run() {
         int cnt = 0;
-        while(cnt < MAX_PACKETS_PER_CYCLE && !packets.isEmpty()){
+        while (cnt < MAX_PACKETS_PER_CYCLE && !packets.isEmpty()) {
             cnt++;
             byte[] bin = packets.pop();
             PEPacket packet = Protocol.decode(bin);
-            if(packet == null) continue;
+            if (packet == null) {
+                continue;
+            }
             handlePacket(packet);
         }
     }
-    
-    public void handlePacket(PEPacket packet){
-        if(packet == null) return;
-        if(BatchPacket.class.isAssignableFrom(packet.getClass())){
-            ((BatchPacket)packet).packets.stream().filter((pk) -> !(pk == null)).forEach((pk) -> {
+
+    public void handlePacket(PEPacket packet) {
+        if (packet == null) {
+            return;
+        }
+        if (BatchPacket.class.isAssignableFrom(packet.getClass())) {
+            ((BatchPacket) packet).packets.stream().filter((pk) -> !(pk == null)).forEach((pk) -> {
                 handlePacket(pk);
             });
             return;
         }
         client.getProxy().getLogger().log(Level.INFO, "Received packet: {0}", packet.getClass().getSimpleName());
-        switch(packet.pid()){
+        switch (packet.pid()) {
             case PEPacketIDs.LOGIN_PACKET:
-                client.onLogin((LoginPacket)packet);
+                client.onLogin((LoginPacket) packet);
                 break;
+            case PEPacketIDs.MOB_EQUIPMENT_PACKET:
+                PlayerEquipmentPacket p = (PlayerEquipmentPacket) packet;
+                client.getProxy().getLogger().info("PlayerEquipmentPacket => Slot: " + p.item.toString() + ", Selected: " + p.selectedSlot + ", Slot: " + p.slot);
             case PEPacketIDs.TEXT_PACKET:  //Login
                 if (client.getDataCache().get(CacheKey.AUTHENTICATION_STATE) != null) {
                     TranslatorRegister.translateToPC(client, packet);
                     break;
                 }
-            case PEPacketIDs.MOB_EQUIPMENT_PACKET:
-                PlayerEquipmentPacket p = (PlayerEquipmentPacket) packet;
-                client.getProxy().getLogger().info("PlayerEquipmentPacket => Slot: " + p.item.toString() + ", Selected: " + p.selectedSlot + ", Slot: " + p.slot);
             default:
-                if(client.getDownstream() == null) break;
-                if(!client.getDownstream().isConnected()) break;
+                if (client.getDownstream() == null) {
+                    break;
+                }
+                if (!client.getDownstream().isConnected()) {
+                    break;
+                }
                 Packet[] translated = TranslatorRegister.translateToPC(client, packet);
-                if(translated == null || translated.length == 0) break;
+                if (translated == null || translated.length == 0) {
+                    break;
+                }
                 client.getDownstream().send(translated);
                 break;
         }
     }
 
-    
 }
