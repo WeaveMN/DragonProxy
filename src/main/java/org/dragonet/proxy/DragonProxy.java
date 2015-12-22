@@ -111,6 +111,7 @@ public class DragonProxy {
         network = new RaknetInterface(this, 
                 config.getConfig().getProperty("udp_bind_ip"),  //IP
                 Integer.parseInt(config.getConfig().getProperty("udp_bind_port"))); //Port
+        network.setBroadcastName(lang.get(Lang.BROADCAST_TITLE, remoteServerAddress.getHostString(), remoteServerAddress.getPort()));
         ticker.start();
         logger.info(lang.get(Lang.INIT_DONE));
     }

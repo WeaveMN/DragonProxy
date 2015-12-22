@@ -18,6 +18,7 @@ import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.RakNet;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.dragonet.raknet.server.RakNetServer;
@@ -25,27 +26,39 @@ import org.dragonet.raknet.server.ServerHandler;
 import org.dragonet.raknet.server.ServerInstance;
 
 public class RaknetInterface implements ServerInstance {
-    
+
     @Getter
     private final DragonProxy proxy;
-    
+
     private final SessionRegister sessions;
-    
+
     @Getter
     private final RakNetServer rakServer;
-    
+
     @Getter
     private final ServerHandler handler;
-    
-    public RaknetInterface(DragonProxy proxy, String ip, int port)  {
+
+    public RaknetInterface(DragonProxy proxy, String ip, int port) {
         this.proxy = proxy;
         rakServer = new RakNetServer(port, ip);
         handler = new ServerHandler(rakServer, this);
         sessions = this.proxy.getSessionRegister();
     }
-    
-    public void onTick(){
-        while(handler.handlePacket()){}
+
+    public void setBroadcastName(String serverName) {
+        String name = "MCPE;";
+        name += serverName + ";";
+        name += Versioning.MINECRAFT_PE_PROTOCOL + ";";
+        name += Versioning.MINECRAFT_PE_VERSION + ";";
+        name += "-1;-1";
+        if (handler != null) {
+            handler.sendOption("name", name);
+        }
+    }
+
+    public void onTick() {
+        while (handler.handlePacket()) {
+        }
     }
 
     @Override
@@ -57,14 +70,18 @@ public class RaknetInterface implements ServerInstance {
     @Override
     public void closeSession(String identifier, String reason) {
         UpstreamSession session = sessions.getSession(identifier);
-        if(session == null) return;
+        if (session == null) {
+            return;
+        }
         session.onDisconnect(proxy.getLang().get(Lang.MESSAGE_CLIENT_DISCONNECT)); //It will handle rest of the things. 
     }
 
     @Override
     public void handleEncapsulated(String identifier, EncapsulatedPacket packet, int flags) {
         UpstreamSession session = sessions.getSession(identifier);
-        if(session == null) return;
+        if (session == null) {
+            return;
+        }
         session.handlePacketBinary(packet);
     }
 
@@ -83,26 +100,28 @@ public class RaknetInterface implements ServerInstance {
     public void shutdown() {
         handler.shutdown();
     }
-    
-    public void disconnect(String identifier, String reason){
+
+    public void disconnect(String identifier, String reason) {
         handler.closeSession(identifier, reason);
     }
-    
-    public void sendPacket(String identifier, PEPacket packet, boolean immediate){
-        if(identifier == null || packet == null) return;
+
+    public void sendPacket(String identifier, PEPacket packet, boolean immediate) {
+        if (identifier == null || packet == null) {
+            return;
+        }
         boolean overridedImmediate = immediate || packet.isShouldSendImmidate();
         packet.encode();
-        if(packet.getData().length > 512 && !BatchPacket.class.isAssignableFrom(packet.getClass())){
+        if (packet.getData().length > 512 && !BatchPacket.class.isAssignableFrom(packet.getClass())) {
             BatchPacket pkBatch = new BatchPacket();
             pkBatch.packets.add(packet);
             sendPacket(identifier, pkBatch, overridedImmediate);
             return;
         }
-        
+
         EncapsulatedPacket encapsulated = new EncapsulatedPacket();
         encapsulated.buffer = packet.getData();
         encapsulated.needACK = true;
-        encapsulated.reliability = (byte)2;
+        encapsulated.reliability = (byte) 2;
         encapsulated.messageIndex = 0;
         this.handler.sendEncapsulated(identifier, encapsulated, RakNet.FLAG_NEED_ACK | (overridedImmediate ? RakNet.PRIORITY_IMMEDIATE : RakNet.PRIORITY_NORMAL));
     }

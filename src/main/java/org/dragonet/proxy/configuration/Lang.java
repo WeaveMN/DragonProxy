@@ -28,6 +28,8 @@ public class Lang extends ConfigFile {
     
     public final static String INIT_DONE = "init_done";
     
+    public final static String BROADCAST_TITLE = "broadcast_title";
+    
     public final static String MESSAGE_CLIENT_CONNECTED = "message_client_connected";
     
     public final static String MESSAGE_ONLINE_NOTICE = "message_online_notice";
