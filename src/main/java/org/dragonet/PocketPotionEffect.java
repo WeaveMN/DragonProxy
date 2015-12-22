@@ -78,7 +78,7 @@ public class PocketPotionEffect {
     }
 
     @Getter
-    private int effect;
+    private final int effect;
 
     @Getter
     @Setter

@@ -12,6 +12,9 @@
  */
 package org.dragonet.proxy.network.cache;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
@@ -39,6 +42,8 @@ public class CachedEntity {
     public float pitch;
     
     public EntityMetadata[] pcMeta;
+    
+    public final Set<Integer> effects = Collections.synchronizedSet(new HashSet<Integer>());
 
     public CachedEntity relativeMove(double rx, double ry, double rz, float yaw, float pitch){
         x += rx;
