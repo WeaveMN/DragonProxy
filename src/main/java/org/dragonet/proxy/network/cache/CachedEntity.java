@@ -12,9 +12,13 @@
  */
 package org.dragonet.proxy.network.cache;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
+import org.spacehq.mc.protocol.data.game.values.entity.ObjectType;
 
 @Data
 public class CachedEntity {
@@ -23,6 +27,8 @@ public class CachedEntity {
     
     public final int pcType;
     public final int peType;
+    
+    public final ObjectType objType;
     
     public final boolean player;
     public final UUID playerUniqueId;
@@ -39,6 +45,10 @@ public class CachedEntity {
     public float pitch;
     
     public EntityMetadata[] pcMeta;
+    
+    public boolean spawned;
+    
+    public final Set<Integer> effects = Collections.synchronizedSet(new HashSet<Integer>());
 
     public CachedEntity relativeMove(double rx, double ry, double rz, float yaw, float pitch){
         x += rx;

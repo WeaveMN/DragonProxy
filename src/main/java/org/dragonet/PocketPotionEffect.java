@@ -45,40 +45,40 @@ public class PocketPotionEffect {
 //public final static int  ABSORPTION = 22;
 //public final static int SATURATION = 23;
 
-    private final static HashMap<Integer, PocketPotionEffect> effects = new HashMap<>();
+    private final static HashMap<Integer, PocketPotionEffect> EFFECTS = new HashMap<>();
 
     static {
-        effects.put(SPEED, new PocketPotionEffect(SPEED));
-        effects.put(SLOWNESS, new PocketPotionEffect(SLOWNESS));
-        effects.put(HASTE, new PocketPotionEffect(HASTE));
-        effects.put(SWIFTNESS, new PocketPotionEffect(SWIFTNESS));
-        effects.put(FATIGUE, new PocketPotionEffect(FATIGUE));
-        effects.put(MINING_FATIGUE, new PocketPotionEffect(MINING_FATIGUE));
-        effects.put(STRENGTH, new PocketPotionEffect(STRENGTH));
-        effects.put(JUMP, new PocketPotionEffect(JUMP));
-        effects.put(NAUSEA, new PocketPotionEffect(NAUSEA));
-        effects.put(CONFUSION, new PocketPotionEffect(CONFUSION));
-        effects.put(REGENERATION, new PocketPotionEffect(REGENERATION));
-        effects.put(DAMAGE_RESISTANCE, new PocketPotionEffect(DAMAGE_RESISTANCE));
-        effects.put(FIRE_RESISTANCE, new PocketPotionEffect(FIRE_RESISTANCE));
-        effects.put(WATER_BREATHING, new PocketPotionEffect(WATER_BREATHING));
-        effects.put(INVISIBILITY, new PocketPotionEffect(INVISIBILITY));
-        effects.put(WEAKNESS, new PocketPotionEffect(WEAKNESS));
-        effects.put(POISON, new PocketPotionEffect(POISON));
-        effects.put(WITHER, new PocketPotionEffect(WITHER));
-        effects.put(HEALTH_BOOST, new PocketPotionEffect(HEALTH_BOOST));
+        EFFECTS.put(SPEED, new PocketPotionEffect(SPEED));
+        EFFECTS.put(SLOWNESS, new PocketPotionEffect(SLOWNESS));
+        EFFECTS.put(HASTE, new PocketPotionEffect(HASTE));
+        EFFECTS.put(SWIFTNESS, new PocketPotionEffect(SWIFTNESS));
+        EFFECTS.put(FATIGUE, new PocketPotionEffect(FATIGUE));
+        EFFECTS.put(MINING_FATIGUE, new PocketPotionEffect(MINING_FATIGUE));
+        EFFECTS.put(STRENGTH, new PocketPotionEffect(STRENGTH));
+        EFFECTS.put(JUMP, new PocketPotionEffect(JUMP));
+        EFFECTS.put(NAUSEA, new PocketPotionEffect(NAUSEA));
+        EFFECTS.put(CONFUSION, new PocketPotionEffect(CONFUSION));
+        EFFECTS.put(REGENERATION, new PocketPotionEffect(REGENERATION));
+        EFFECTS.put(DAMAGE_RESISTANCE, new PocketPotionEffect(DAMAGE_RESISTANCE));
+        EFFECTS.put(FIRE_RESISTANCE, new PocketPotionEffect(FIRE_RESISTANCE));
+        EFFECTS.put(WATER_BREATHING, new PocketPotionEffect(WATER_BREATHING));
+        EFFECTS.put(INVISIBILITY, new PocketPotionEffect(INVISIBILITY));
+        EFFECTS.put(WEAKNESS, new PocketPotionEffect(WEAKNESS));
+        EFFECTS.put(POISON, new PocketPotionEffect(POISON));
+        EFFECTS.put(WITHER, new PocketPotionEffect(WITHER));
+        EFFECTS.put(HEALTH_BOOST, new PocketPotionEffect(HEALTH_BOOST));
     }
 
     public static PocketPotionEffect getByID(int id) {
-        if (effects.containsKey(id)) {
-            return effects.get((Integer) id).clone();
+        if (EFFECTS.containsKey(id)) {
+            return EFFECTS.get((Integer) id).clone();
         } else {
             return null;
         }
     }
 
     @Getter
-    private int effect;
+    private final int effect;
 
     @Getter
     @Setter

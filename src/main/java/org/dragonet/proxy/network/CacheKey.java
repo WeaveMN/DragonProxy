@@ -20,4 +20,6 @@ public final class CacheKey {
     public final static String AUTHENTICATION_STATE = "auth_state";
     
     public final static String AUTHENTICATION_EMAIL = "auth_mail";
+    
+    public final static String BLOCK_BREAKING_POSITION = "block_breaking_position";
 }

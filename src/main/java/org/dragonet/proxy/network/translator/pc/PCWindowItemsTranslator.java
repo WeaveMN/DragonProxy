@@ -46,7 +46,7 @@ public class PCWindowItemsTranslator implements PCPacketTranslator<ServerWindowI
             for(int i = 9; i < 45; i++){
                 //TODO: Add NBT support
                 if(win.slots[i] == null){
-                    ret.slots[i - 9] = new PEInventorySlot();
+                    ret.slots[i - 9] = PEInventorySlot.AIR;
                 }else{
                     ret.slots[i - 9] = new PEInventorySlot((short)win.slots[i].getId(), (byte)(win.slots[i].getAmount() & 0xFF), (short)win.slots[i].getData());
                 }

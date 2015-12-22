@@ -25,6 +25,8 @@ import org.spacehq.opennbt.tag.builtin.CompoundTag;
 
 public class PEInventorySlot {
 
+    public final static PEInventorySlot AIR = new PEInventorySlot();
+    
     public short id;
     public byte count;
     public short meta;
@@ -67,7 +69,7 @@ public class PEInventorySlot {
     }
 
     public static void writeSlot(PEBinaryWriter writer, PEInventorySlot slot) throws IOException {
-        if(slot == null || (slot != null && slot.id == 0)){
+        if(slot == null || slot.id == 0){
             writer.writeShort((short)0);
             return;
         }
