@@ -22,6 +22,7 @@ import org.dragonet.proxy.entity.EntityType;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.spacehq.mc.protocol.data.game.values.MagicValues;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnMobPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnObjectPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
 
 public final class EntityCache {
@@ -60,7 +61,7 @@ public final class EntityCache {
         if (peType == null) {
             return null; //Not supported
         }
-        CachedEntity e = new CachedEntity(packet.getEntityId(), MagicValues.value(Integer.class, packet.getType()), peType.getPeType(), false, null);
+        CachedEntity e = new CachedEntity(packet.getEntityId(), MagicValues.value(Integer.class, packet.getType()), peType.getPeType(), null, false, null);
         e.x = packet.getX();
         e.y = packet.getY();
         e.z = packet.getZ();
@@ -70,20 +71,34 @@ public final class EntityCache {
         e.yaw = packet.getYaw();
         e.pitch = packet.getPitch();
         e.pcMeta = packet.getMetadata();
+        e.spawned = true;
         entities.put(e.eid, e);
         return e;
     }
     
     public CachedEntity newPlayer(ServerSpawnPlayerPacket packet){
-        CachedEntity e = new CachedEntity(packet.getEntityId(), -1, -1, true, packet.getUUID());
+        CachedEntity e = new CachedEntity(packet.getEntityId(), -1, -1, null, true, packet.getUUID());
         e.x = packet.getX();
         e.y = packet.getY();
         e.z = packet.getZ();
         e.yaw = packet.getYaw();
         e.pitch = packet.getPitch();
         e.pcMeta = packet.getMetadata();
+        e.spawned = true;
         entities.put(e.eid, e);
         playerEntities.add(e.eid);
+        return e;
+    }
+    
+    public CachedEntity newObject(ServerSpawnObjectPacket packet){
+        CachedEntity e = new CachedEntity(packet.getEntityId(), -1, -1, packet.getType(), false, null);
+        e.x = packet.getX();
+        e.y = packet.getY();
+        e.z = packet.getZ();
+        e.yaw = packet.getYaw();
+        e.pitch = packet.getPitch();
+        e.spawned = false; //Server will update its data then we can send it. 
+        entities.put(e.eid, e);
         return e;
     }
     
