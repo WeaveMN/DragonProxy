@@ -13,9 +13,11 @@
 package org.dragonet.proxy.network.translator.pc;
 
 import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.net.packet.minecraft.SetPlayerGameTypePacket;
 import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
+import org.spacehq.mc.protocol.data.game.values.entity.player.GameMode;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
 
 public class PCJoinGamePacketTranslator implements PCPacketTranslator<ServerJoinGamePacket> {
@@ -24,12 +26,13 @@ public class PCJoinGamePacketTranslator implements PCPacketTranslator<ServerJoin
     public PEPacket[] translate(UpstreamSession session, ServerJoinGamePacket packet) {
         //This packet is not fully useable, we cache it for now. 
         session.getDataCache().put(CacheKey.PLAYER_EID, packet.getEntityId());  //Stores the real entity ID
-        
-        if(session.getProxy().isOnlineMode()) {
+
+        if (session.getProxy().isOnlineMode()) {
             //Online mode already sent packets
-            return null;
+            SetPlayerGameTypePacket pkSetGameMode = new SetPlayerGameTypePacket(packet.getGameMode() == GameMode.CREATIVE ? 1 : 0);
+            return new PEPacket[]{pkSetGameMode};
         }
-        
+
         session.getDataCache().put(CacheKey.PACKET_JOIN_GAME_PACKET, packet);
         return null;
     }

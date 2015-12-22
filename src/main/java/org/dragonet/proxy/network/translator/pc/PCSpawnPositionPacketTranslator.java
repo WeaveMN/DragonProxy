@@ -20,6 +20,7 @@ import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
+import org.spacehq.mc.protocol.data.game.values.entity.player.GameMode;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerSpawnPositionPacket;
 
@@ -42,6 +43,7 @@ public class PCSpawnPositionPacketTranslator implements PCPacketTranslator<Serve
         ret.dimension = (byte) (restored.getDimension() & 0xFF);
         ret.seed = 0;
         ret.generator = 1;
+        ret.gamemode = restored.getGameMode() == GameMode.CREATIVE ? 1 : 0;
         ret.spawnX = packet.getPosition().getX();
         ret.spawnY = packet.getPosition().getY();
         ret.spawnZ = packet.getPosition().getZ();
