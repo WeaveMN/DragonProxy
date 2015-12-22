@@ -49,21 +49,22 @@ public class PEPlayerActionPacketTranslator implements PEPacketTranslator<Player
             ClientPlayerStatePacket stat = new ClientPlayerStatePacket((int) session.getDataCache().get(CacheKey.PLAYER_EID), PlayerState.LEAVE_BED);
             return new Packet[]{stat};
         }
-        if (packet.action == PlayerActionPacket.ACTION_START_BREAK) {
-            ClientPlayerActionPacket act = new ClientPlayerActionPacket(PlayerAction.START_DIGGING, new Position(packet.x, packet.y, packet.z), MagicValues.key(Face.class, packet.face));
-            return new Packet[]{act};
-        }
         if (packet.action == PlayerActionPacket.ACTION_RELEASE_ITEM) {
             ClientPlayerActionPacket act = new ClientPlayerActionPacket(PlayerAction.DROP_ITEM, new Position(0, 0, 0), Face.TOP);
             return new Packet[]{act};
         }
+        if (packet.action == PlayerActionPacket.ACTION_START_BREAK) {
+            ClientPlayerActionPacket act = new ClientPlayerActionPacket(PlayerAction.START_DIGGING, new Position(packet.x, packet.y, packet.z), MagicValues.key(Face.class, packet.face));
+            session.getDataCache().put(CacheKey.BLOCK_BREAKING_POSITION, act.getPosition());
+            return new Packet[]{act};
+        }
         if (session.getDataCache().containsKey(CacheKey.BLOCK_BREAKING_POSITION)) {
             if (packet.action == PlayerActionPacket.ACTION_FINISH_BREAK) {
-                ClientPlayerActionPacket act = new ClientPlayerActionPacket(PlayerAction.FINISH_DIGGING, (Position) session.getDataCache().get(CacheKey.BLOCK_BREAKING_POSITION), MagicValues.key(Face.class, packet.face));
+                ClientPlayerActionPacket act = new ClientPlayerActionPacket(PlayerAction.FINISH_DIGGING, (Position) session.getDataCache().remove(CacheKey.BLOCK_BREAKING_POSITION), MagicValues.key(Face.class, packet.face));
                 return new Packet[]{act};
             }
             if (packet.action == PlayerActionPacket.ACTION_CANCEL_BREAK) {
-                ClientPlayerActionPacket act = new ClientPlayerActionPacket(PlayerAction.CANCEL_DIGGING, (Position) session.getDataCache().get(CacheKey.BLOCK_BREAKING_POSITION), MagicValues.key(Face.class, packet.face));
+                ClientPlayerActionPacket act = new ClientPlayerActionPacket(PlayerAction.CANCEL_DIGGING, (Position) session.getDataCache().remove(CacheKey.BLOCK_BREAKING_POSITION), MagicValues.key(Face.class, packet.face));
                 return new Packet[]{act};
             }
         }
