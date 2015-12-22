@@ -30,7 +30,7 @@ public class CachedWindow {
     
     public String title = "Window";
     
-    public Map<Integer, Integer> properties = Collections.synchronizedMap(new HashMap<Integer, Integer>());
+    public final Map<Integer, Integer> properties = Collections.synchronizedMap(new HashMap<Integer, Integer>());
     
     public ItemStack[] slots;
 
