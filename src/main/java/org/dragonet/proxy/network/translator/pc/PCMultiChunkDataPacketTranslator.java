@@ -17,6 +17,7 @@ import java.io.DataOutputStream;
 import org.dragonet.net.packet.minecraft.FullChunkPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.network.UpstreamSession;
+import org.dragonet.proxy.network.translator.ItemBlockTranslator;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
 import org.spacehq.mc.protocol.data.game.Chunk;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiChunkDataPacket;
@@ -48,7 +49,8 @@ public class PCMultiChunkDataPacketTranslator implements PCPacketTranslator<Serv
                                 if (pcChunks[y >> 4] == null || pcChunks[y >> 4].isEmpty()) {
                                     dos1.writeByte((byte) 0);
                                 } else {
-                                    dos1.writeByte((byte) (pcChunks[y >> 4].getBlocks().getBlock(x, y % 16, z) & 0xFF));
+                                    int pcBlock = pcChunks[y >> 4].getBlocks().getBlock(x, y % 16, z);
+                                    dos1.writeByte((byte) (ItemBlockTranslator.translateToPE(pcBlock) & 0xFF));
                                 }
                             }
                         }
@@ -88,7 +90,7 @@ public class PCMultiChunkDataPacketTranslator implements PCPacketTranslator<Serv
                         dos1.writeByte((byte) 0xB2);
                         dos1.writeByte((byte) 0x4A);
                     }
-                    dos1.write(new byte[4]);    //Little-endian int of length of NBT
+                    
                     chunkToSend.chunkData = bos1.toByteArray();
                     session.sendPacket(chunkToSend, true);
                 }
