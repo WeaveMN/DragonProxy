@@ -31,10 +31,9 @@ public final class EntityCache {
     private final UpstreamSession upstream;
 
     private final Map<Integer, CachedEntity> entities = Collections.synchronizedMap(new HashMap<Integer, CachedEntity>());
-    
+
     private final List<Integer> playerEntities = Collections.synchronizedList(new ArrayList<Integer>());
-    
-    
+
     public EntityCache(UpstreamSession upstream) {
         this.upstream = upstream;
     }
@@ -42,11 +41,13 @@ public final class EntityCache {
     public CachedEntity get(int eid) {
         return entities.get(eid);
     }
-    
-    public CachedEntity remove(int eid){
+
+    public CachedEntity remove(int eid) {
         CachedEntity e = entities.remove(eid);
-        if(e == null) return null;
-        playerEntities.remove((Integer)eid);
+        if (e == null) {
+            return null;
+        }
+        playerEntities.remove((Integer) eid);
         return e;
     }
 
@@ -61,7 +62,8 @@ public final class EntityCache {
         if (peType == null) {
             return null; //Not supported
         }
-        CachedEntity e = new CachedEntity(packet.getEntityId(), MagicValues.value(Integer.class, packet.getType()), peType.getPeType(), null, false, null);
+
+        CachedEntity e = new CachedEntity(packet.getEntityId(), MagicValues.value(Integer.class, packet.getType()), peType, null, false, null);
         e.x = packet.getX();
         e.y = packet.getY();
         e.z = packet.getZ();
@@ -75,9 +77,9 @@ public final class EntityCache {
         entities.put(e.eid, e);
         return e;
     }
-    
-    public CachedEntity newPlayer(ServerSpawnPlayerPacket packet){
-        CachedEntity e = new CachedEntity(packet.getEntityId(), -1, -1, null, true, packet.getUUID());
+
+    public CachedEntity newPlayer(ServerSpawnPlayerPacket packet) {
+        CachedEntity e = new CachedEntity(packet.getEntityId(), -1, null, null, true, packet.getUUID());
         e.x = packet.getX();
         e.y = packet.getY();
         e.z = packet.getZ();
@@ -89,9 +91,9 @@ public final class EntityCache {
         playerEntities.add(e.eid);
         return e;
     }
-    
-    public CachedEntity newObject(ServerSpawnObjectPacket packet){
-        CachedEntity e = new CachedEntity(packet.getEntityId(), -1, -1, packet.getType(), false, null);
+
+    public CachedEntity newObject(ServerSpawnObjectPacket packet) {
+        CachedEntity e = new CachedEntity(packet.getEntityId(), -1, null, packet.getType(), false, null);
         e.x = packet.getX();
         e.y = packet.getY();
         e.z = packet.getZ();
@@ -101,12 +103,12 @@ public final class EntityCache {
         entities.put(e.eid, e);
         return e;
     }
-    
-    public boolean isPlayerEntity(int eid){
+
+    public boolean isPlayerEntity(int eid) {
         return playerEntities.contains(eid);
     }
-    
-    public void onTick(){
+
+    public void onTick() {
         entities.values().stream().map((e) -> {
             e.x += e.motionX;
             e.y += e.motionY;

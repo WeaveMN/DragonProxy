@@ -95,7 +95,7 @@ public class PlayerListPacket extends PEPacket {
             out.writeLong(eid);
             out.writeString(name);
             out.writeString(skinName);
-            out.write(skin); 
+            out.write(skin);
         }
 
         public static PlayerInfo decode(PEBinaryReader reader) throws IOException {

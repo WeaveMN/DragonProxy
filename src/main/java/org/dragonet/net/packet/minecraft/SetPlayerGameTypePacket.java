@@ -22,11 +22,11 @@ public class SetPlayerGameTypePacket extends PEPacket {
 
     public SetPlayerGameTypePacket() {
     }
-    
+
     public SetPlayerGameTypePacket(int gamemode) {
         this.gamemode = gamemode;
     }
-    
+
     @Override
     public int pid() {
         return PEPacketIDs.SET_PLAYER_GAMETYPE_PACKET;

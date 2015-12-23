@@ -21,28 +21,26 @@ import java.util.Properties;
 import lombok.Getter;
 
 public class ConfigFile {
-    
+
     @Getter
     private final Properties config;
-    
-    public ConfigFile(String defaultResourcePath, String fileName, boolean saveDefault) throws IOException{
+
+    public ConfigFile(String defaultResourcePath, String fileName, boolean saveDefault) throws IOException {
         Properties defaultConfig = new Properties();
         defaultConfig.load(ConfigFile.class.getResourceAsStream(defaultResourcePath));
         config = new Properties(defaultConfig);
         File file = new File(fileName);
-        if(file.exists()){
+        if (file.exists()) {
             config.load(new FileInputStream(fileName));
-        }else{
-            if(saveDefault) {
-                FileOutputStream fos = new FileOutputStream(fileName);
-                InputStream ris = ConfigFile.class.getResourceAsStream(defaultResourcePath);
-                int d = -1;
-                while((d = ris.read()) != -1){
-                    fos.write(d);
-                }
-                fos.close();
-                ris.close();
+        } else if (saveDefault) {
+            FileOutputStream fos = new FileOutputStream(fileName);
+            InputStream ris = ConfigFile.class.getResourceAsStream(defaultResourcePath);
+            int d = -1;
+            while ((d = ris.read()) != -1) {
+                fos.write(d);
             }
+            fos.close();
+            ris.close();
         }
     }
 }

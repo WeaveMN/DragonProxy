@@ -10,7 +10,6 @@
  *
  * @author The Dragonet Team
  */
-
 package org.dragonet.proxy.utilities;
 
 public enum MCColor {
@@ -49,14 +48,14 @@ public enum MCColor {
     public String getPECode() {
         return COLOR_PREFIX_PE + suffix;
     }
-    
-    public String getPCCode(){
+
+    public String getPCCode() {
         return COLOR_PREFIX_PC + suffix;
     }
-    
-    public static String cleanAll(String text){
+
+    public static String cleanAll(String text) {
         String ret = new String(text);
-        for(MCColor c : MCColor.values()){
+        for (MCColor c : MCColor.values()) {
             ret = ret.replace(c.getPECode(), "");
             ret = ret.replace(c.getPCCode(), "");
         }

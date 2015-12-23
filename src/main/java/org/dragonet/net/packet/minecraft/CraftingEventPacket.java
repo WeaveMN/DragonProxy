@@ -25,9 +25,9 @@ public class CraftingEventPacket extends PEPacket {
     public int craftType;
 
     public UUID uuid;
-    
+
     public PEInventorySlot[] input;
-    
+
     public PEInventorySlot[] output;
 
     @Override
@@ -47,19 +47,19 @@ public class CraftingEventPacket extends PEPacket {
             this.windowId = reader.readByte();
             this.craftType = reader.readInt();
             this.uuid = reader.readUUID();
-            
+
             int size = reader.readInt();
             input = new PEInventorySlot[size > 128 ? 128 : size];
-            for(int i = 0; i < size; i++){
+            for (int i = 0; i < size; i++) {
                 input[i] = PEInventorySlot.readSlot(reader);
             }
-            
+
             size = reader.readInt();
             output = new PEInventorySlot[size > 128 ? 128 : size];
-            for(int i = 0; i < size; i++){
+            for (int i = 0; i < size; i++) {
                 output[i] = PEInventorySlot.readSlot(reader);
             }
-            
+
             this.setLength(reader.totallyRead());
         } catch (IOException e) {
         }

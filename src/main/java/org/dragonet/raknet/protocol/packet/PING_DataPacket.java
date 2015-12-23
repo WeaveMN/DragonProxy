@@ -3,10 +3,10 @@ package org.dragonet.raknet.protocol.packet;
 import org.dragonet.raknet.protocol.Packet;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class PING_DataPacket extends Packet {
+
     public static byte ID = (byte) 0x00;
 
     @Override

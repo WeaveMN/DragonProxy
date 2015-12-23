@@ -33,7 +33,7 @@ public class PCEntityEffectPacketTranslator implements PCPacketTranslator<Server
         int effectId = MagicValues.value(Integer.class, packet.getEffect());
 
         MobEffectPacket eff = new MobEffectPacket();
-        eff.eid = packet.getEntityId() == (int)session.getDataCache().get(CacheKey.PLAYER_EID) ? 0 : packet.getEntityId();
+        eff.eid = packet.getEntityId() == (int) session.getDataCache().get(CacheKey.PLAYER_EID) ? 0 : packet.getEntityId();
         eff.effect = PocketPotionEffect.getByID(effectId);
         if (eff.effect == null) {
             return null; //Not supported

@@ -20,28 +20,29 @@ import org.dragonet.proxy.network.UpstreamSession;
 import org.spacehq.mc.protocol.packet.ingame.server.window.ServerOpenWindowPacket;
 
 public final class WindowCache {
+
     @Getter
     private final UpstreamSession upstream;
-    
+
     public Map<Integer, CachedWindow> windows = Collections.synchronizedMap(new HashMap<Integer, CachedWindow>());
 
     public WindowCache(UpstreamSession upstream) {
         this.upstream = upstream;
-        
+
         CachedWindow inv = new CachedWindow(0, -1, 36);
         windows.put(0, inv);
     }
-    
-    public CachedWindow newWindow(ServerOpenWindowPacket packet){
+
+    public CachedWindow newWindow(ServerOpenWindowPacket packet) {
         //TODO
         return null;
     }
-    
-    public CachedWindow get(int id){
+
+    public CachedWindow get(int id) {
         return windows.get(id);
     }
-    
-    public boolean hasWindow(int id){
+
+    public boolean hasWindow(int id) {
         return windows.containsKey(id);
     }
 }

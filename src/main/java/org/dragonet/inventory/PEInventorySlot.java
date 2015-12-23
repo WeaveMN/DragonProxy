@@ -26,7 +26,7 @@ import org.spacehq.opennbt.tag.builtin.CompoundTag;
 public class PEInventorySlot {
 
     public final static PEInventorySlot AIR = new PEInventorySlot();
-    
+
     public short id;
     public byte count;
     public short meta;
@@ -49,18 +49,16 @@ public class PEInventorySlot {
         this.meta = meta;
         this.nbt = nbt;
     }
-    
-    
 
     public static PEInventorySlot readSlot(PEBinaryReader reader) throws IOException {
-        short id = (short)(reader.readShort() & 0xFFFF); //Unsigned
-        if(id <= 0){
-            return new PEInventorySlot((short)0, (byte)0, (short)0);
+        short id = (short) (reader.readShort() & 0xFFFF); //Unsigned
+        if (id <= 0) {
+            return new PEInventorySlot((short) 0, (byte) 0, (short) 0);
         }
         byte count = reader.readByte();
         short meta = reader.readShort();
         short lNbt = reader.readShort();
-        if(lNbt <= 0){
+        if (lNbt <= 0) {
             return new PEInventorySlot(id, count, meta);
         }
         byte[] nbtData = reader.read(lNbt);
@@ -69,32 +67,32 @@ public class PEInventorySlot {
     }
 
     public static void writeSlot(PEBinaryWriter writer, PEInventorySlot slot) throws IOException {
-        if(slot == null || slot.id == 0){
-            writer.writeShort((short)0);
+        if (slot == null || slot.id == 0) {
+            writer.writeShort((short) 0);
             return;
         }
         writer.writeShort(slot.id);
         writer.writeByte(slot.count);
         writer.writeShort(slot.meta);
-        if(slot.nbt == null){
+        if (slot.nbt == null) {
             writer.writeShort((short) 0);
-        }else{
+        } else {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             NBTIO.writeTag(new DataOutputStream(bos), slot.nbt);
             byte[] nbtdata = bos.toByteArray();
-            writer.writeShort((short)(nbtdata.length & 0xFFFF));
+            writer.writeShort((short) (nbtdata.length & 0xFFFF));
             writer.write(nbtdata);
         }
     }
-    
-    public static PEInventorySlot fromItemStack(ItemStack item){
+
+    public static PEInventorySlot fromItemStack(ItemStack item) {
         PEInventorySlot slot = new PEInventorySlot();
-        slot.id = (short)(item.getId() & 0xFFFF);
-        if(slot.id <= 0){
+        slot.id = (short) (item.getId() & 0xFFFF);
+        if (slot.id <= 0) {
             return slot;
         }
-        slot.count = (byte)(item.getAmount() & 0xFF);
-        slot.meta = (short)(item.getData() & 0xFFFF);
+        slot.count = (byte) (item.getAmount() & 0xFF);
+        slot.meta = (short) (item.getData() & 0xFFFF);
         slot.nbt = item.getNBT();
         return slot;
     }

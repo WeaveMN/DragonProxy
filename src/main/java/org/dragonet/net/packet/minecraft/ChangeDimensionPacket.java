@@ -18,9 +18,9 @@ import org.dragonet.net.inf.mcpe.NetworkChannel;
 import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class ChangeDimensionPacket extends PEPacket {
-    
+
     public byte dimension;
-    
+
     @Override
     public int pid() {
         return PEPacketIDs.ANIMATE_PACKET;

@@ -38,7 +38,7 @@ public class BatchPacket extends PEPacket {
     public void encode() {
         try {
             setShouldSendImmidate(true);    //We don't waste our memory
-            
+
             //Combine all packets
             ByteArrayOutputStream packetCombinerData = new ByteArrayOutputStream();
             PEBinaryWriter packetCombiner = new PEBinaryWriter(packetCombinerData);
@@ -83,8 +83,7 @@ public class BatchPacket extends PEPacket {
                 return;
             }
             inf.end();
-            
-            
+
             PEBinaryReader dataReader = new PEBinaryReader(new ByteArrayInputStream(decompressedPayload));
             int offset = 0;
             while (offset < decompressedSize) {

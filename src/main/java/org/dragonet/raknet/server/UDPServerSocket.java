@@ -10,8 +10,7 @@ import java.nio.channels.DatagramChannel;
 import java.util.Arrays;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class UDPServerSocket {
 
@@ -39,7 +38,7 @@ public class UDPServerSocket {
             /*
             this.logger.critical("**** FAILED TO BIND TO " + interfaz + ":" + port + "!");
             this.logger.critical("Perhaps a server is already running on that port?");
-            */
+             */
             System.exit(1);
         }
     }

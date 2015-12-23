@@ -3,8 +3,7 @@ package org.dragonet.raknet.protocol.packet;
 import org.dragonet.raknet.protocol.AcknowledgePacket;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class ACK extends AcknowledgePacket {
 

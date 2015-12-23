@@ -25,16 +25,18 @@ public class PCDestroyEntitiesPacketTranslator implements PCPacketTranslator<Ser
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerDestroyEntitiesPacket packet) {
         PEPacket[] ret = new PEPacket[packet.getEntityIds().length];
-        for(int i = 0; i < ret.length; i++){
+        for (int i = 0; i < ret.length; i++) {
             CachedEntity e = session.getEntityCache().remove(packet.getEntityIds()[i]);
-            if(e == null) continue;
-            if(e.player){
+            if (e == null) {
+                continue;
+            }
+            if (e.player) {
                 ret[i] = new RemovePlayerPacket();
-                ((RemovePlayerPacket)ret[i]).eid = e.eid;
-                ((RemovePlayerPacket)ret[i]).uuid = e.playerUniqueId;
-            }else{
+                ((RemovePlayerPacket) ret[i]).eid = e.eid;
+                ((RemovePlayerPacket) ret[i]).uuid = e.playerUniqueId;
+            } else {
                 ret[i] = new RemoveEntityPacket();
-                ((RemoveEntityPacket)ret[i]).eid = e.eid;
+                ((RemoveEntityPacket) ret[i]).eid = e.eid;
             }
         }
         return ret;
