@@ -42,6 +42,7 @@ public class EntityMetaData {
         public final static int DATA_SILENT = 4;
         public final static int DATA_POTION_COLOR = 7;
         public final static int DATA_POTION_VISIBLE = 8;
+        public final static int DATA_AGE = 14; //Not sure
         public final static int DATA_NO_AI = 15;
 
         public final static int DATA_FLAG_ONFIRE = 0;

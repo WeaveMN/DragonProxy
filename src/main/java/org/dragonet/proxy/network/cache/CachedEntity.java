@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
+import org.dragonet.proxy.entity.EntityType;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
 import org.spacehq.mc.protocol.data.game.values.entity.ObjectType;
 
@@ -26,7 +27,7 @@ public class CachedEntity {
     public final int eid;
     
     public final int pcType;
-    public final int peType;
+    public final EntityType peType;
     
     public final ObjectType objType;
     

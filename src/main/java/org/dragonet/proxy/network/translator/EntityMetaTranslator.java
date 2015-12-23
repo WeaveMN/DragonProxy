@@ -16,14 +16,15 @@ import org.dragonet.entity.metadata.EntityMetaData;
 import org.dragonet.entity.metadata.type.ByteArrayMeta;
 import org.dragonet.entity.metadata.type.ByteMeta;
 import org.dragonet.entity.metadata.type.ShortMeta;
+import org.dragonet.proxy.entity.EntityType;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
 
 public final class EntityMetaTranslator {
-    public EntityMetaData translateToPE(EntityMetadata[] pcMeta){
+    public static EntityMetaData translateToPE(EntityMetadata[] pcMeta, EntityType type){
         /*
          * Following format was fetched from http://wiki.vg/Entities#Entity_Metadata_Format
          */
-        EntityMetaData peMeta = new EntityMetaData();
+        EntityMetaData peMeta = EntityMetaData.createDefault();
         for(EntityMetadata m : pcMeta){
             if(m == null) continue;
             switch(m.getId()){
@@ -61,9 +62,11 @@ public final class EntityMetaTranslator {
                     peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte)m.getValue()));
                     break;
                 case 12://Age
-                    //Not supported on MCPE yet
+                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta((byte)m.getValue()));
                     break;
-                //TODO: More
+                case 16:
+                    //Not supported yet
+                    break;
             }
         }
         return peMeta;

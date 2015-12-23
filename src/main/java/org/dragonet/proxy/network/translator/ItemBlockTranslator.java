@@ -22,7 +22,8 @@ public class ItemBlockTranslator {
     public final static Map<Integer, Integer> PE_TO_PC_OVERRIDE = new HashMap<>();
     
     static{
-        swap(157, 126); //Double Slab <-> Activator Rail
+        swap(125, 157); //Double Slab <-> Activator Rail
+        swap(126, 158); //Slab <-> NULL
         preventPc(158);
         onewayOverride(176, 63); //Sign         =\_
         onewayOverride(177, 68); //Wall sign    =/ We send banner as sign [Banner]
