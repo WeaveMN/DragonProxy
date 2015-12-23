@@ -41,6 +41,7 @@ import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiBlockChange
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiChunkDataPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerNotifyClientPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerSpawnPositionPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.world.ServerUpdateSignPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerUpdateTimePacket;
 import org.spacehq.packetlib.packet.Packet;
 
@@ -68,6 +69,7 @@ public final class TranslatorRegister {
         PC_TO_PE_TRANSLATOR.put(ServerUpdateTimePacket.class, new PCUpdateTimePacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerBlockChangePacket.class, new PCBlockChangePacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerMultiBlockChangePacket.class, new PCMultiBlockChangePacketTranslator());
+        PC_TO_PE_TRANSLATOR.put(ServerUpdateSignPacket.class, new PCUpdateSignPacketTranslator());
 
         // Entity
         PC_TO_PE_TRANSLATOR.put(ServerPlayerPositionRotationPacket.class, new PCPlayerPositionRotationPacketTranslator());
