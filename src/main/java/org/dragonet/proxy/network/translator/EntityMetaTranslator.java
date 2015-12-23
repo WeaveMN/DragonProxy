@@ -49,11 +49,12 @@ public final class EntityMetaTranslator {
                 case 3://Always show name tag
                     peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte) m.getValue()));
                     break;
+                /*
                 case 6://Health
                     //Not supported on MCPE yet
                     break;
                 case 7://Potion color
-                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_COLOR, new ByteMeta((byte) m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_COLOR, new ByteMeta((byte) ((int) m.getValue() & 0xFF)));
                     break;
                 case 8://Potion visible
                     peMeta.map.put(EntityMetaData.Constants.DATA_POTION_VISIBLE, new ByteMeta((byte) m.getValue()));
@@ -61,6 +62,7 @@ public final class EntityMetaTranslator {
                 case 9://Arrows stick into player's body
                     //Not supported on MCPE yet
                     break;
+                 */
                 case 15://Has no AI
                     peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte) m.getValue()));
                     break;

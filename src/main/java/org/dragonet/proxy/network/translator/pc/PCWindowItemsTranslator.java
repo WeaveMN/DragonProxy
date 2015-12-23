@@ -42,12 +42,10 @@ public class PCWindowItemsTranslator implements PCPacketTranslator<ServerWindowI
             //Translate and send
             WindowItemsPacket ret = new WindowItemsPacket();
             ret.windowID = PEWindowConstantID.PLAYER_INVENTORY;
-            ret.slots = new PEInventorySlot[36];
+            ret.slots = new PEInventorySlot[45];
             for (int i = 9; i < 45; i++) {
                 //TODO: Add NBT support
-                if (win.slots[i] == null) {
-                    ret.slots[i - 9] = PEInventorySlot.AIR;
-                } else {
+                if (win.slots[i] != null) {
                     ret.slots[i - 9] = new PEInventorySlot((short) win.slots[i].getId(), (byte) (win.slots[i].getAmount() & 0xFF), (short) win.slots[i].getData());
                 }
             }
