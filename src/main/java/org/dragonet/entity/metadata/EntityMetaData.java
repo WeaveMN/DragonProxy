@@ -42,6 +42,7 @@ public class EntityMetaData {
         public final static int DATA_SILENT = 4;
         public final static int DATA_POTION_COLOR = 7;
         public final static int DATA_POTION_VISIBLE = 8;
+        public final static int DATA_AGE = 14; //Not sure
         public final static int DATA_NO_AI = 15;
 
         public final static int DATA_FLAG_ONFIRE = 0;
@@ -76,15 +77,15 @@ public class EntityMetaData {
         }
         return null;
     }
-    
-    public static EntityMetaData createDefault(){
+
+    public static EntityMetaData createDefault() {
         EntityMetaData data = new EntityMetaData();
-        data.set(EntityMetaData.Constants.DATA_FLAGS, new ByteMeta((byte)0));
+        data.set(EntityMetaData.Constants.DATA_FLAGS, new ByteMeta((byte) 0));
         data.set(EntityMetaData.Constants.DATA_AIR, new ShortMeta((short) 300));
         data.set(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta(""));
         data.set(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte) 0x01));
-        data.set(EntityMetaData.Constants.DATA_SILENT, new ByteMeta((byte)0));
-        data.set(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte)0));
+        data.set(EntityMetaData.Constants.DATA_SILENT, new ByteMeta((byte) 0));
+        data.set(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte) 0));
         return data;
     }
 
@@ -105,5 +106,5 @@ public class EntityMetaData {
         data.set(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta(player.getDisplayName()));
         return data;
     }
-    */
+     */
 }

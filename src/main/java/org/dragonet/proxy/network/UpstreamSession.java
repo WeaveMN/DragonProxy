@@ -63,18 +63,16 @@ public class UpstreamSession {
     /* =======================================================================================================
      * |                                 Caches for Protocol Compatibility                                   |
     /* ======================================================================================================= */
-    
     @Getter
     private final Map<String, Object> dataCache = Collections.synchronizedMap(new HashMap<String, Object>());
 
     @Getter
     private final EntityCache entityCache = new EntityCache(this);
-    
+
     @Getter
     private final WindowCache windowCache = new WindowCache(this);
 
     /* ======================================================================================================= */
-    
     private MinecraftProtocol protocol;
 
     public UpstreamSession(DragonProxy proxy, String raknetID, InetSocketAddress remoteAddress) {

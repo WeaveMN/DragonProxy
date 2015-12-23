@@ -52,35 +52,35 @@ public enum EntityType {
     EXP_ORB(69),
     ARROW(80),
     SNOW_BALL(81);
-    
+
     @Getter
     private final int peType;
 
     private EntityType(int peType) {
         this.peType = peType;
     }
-    
-    
-    
+
     private final static Map<Integer, EntityType> PC_TO_PE = new HashMap<>();
-    
-    static{
-        for(EntityType peType : EntityType.values()){
-            try{
+
+    static {
+        for (EntityType peType : EntityType.values()) {
+            try {
                 MobType pcType = MobType.valueOf(peType.name());
                 int pcTypeId = MagicValues.value(Integer.class, pcType);
                 PC_TO_PE.put(pcTypeId, peType);
-            }catch(Exception e){
+            } catch (Exception e) {
             }
         }
     }
-    
-    public static EntityType convertToPE(MobType pcType){
+
+    public static EntityType convertToPE(MobType pcType) {
         return convertToPE(MagicValues.value(Integer.class, pcType));
     }
-    
-    public static EntityType convertToPE(int pcType){
-        if(!PC_TO_PE.containsKey(pcType)) return null;
+
+    public static EntityType convertToPE(int pcType) {
+        if (!PC_TO_PE.containsKey(pcType)) {
+            return null;
+        }
         return PC_TO_PE.get(pcType);
     }
 }

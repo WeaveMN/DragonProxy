@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class BinaryStream {
 
@@ -266,8 +265,8 @@ public class BinaryStream {
         if (minCapacity < 0) { // overflow
             throw new OutOfMemoryError();
         }
-        return (minCapacity > MAX_ARRAY_SIZE) ?
-                Integer.MAX_VALUE :
-                MAX_ARRAY_SIZE;
+        return (minCapacity > MAX_ARRAY_SIZE)
+                ? Integer.MAX_VALUE
+                : MAX_ARRAY_SIZE;
     }
 }

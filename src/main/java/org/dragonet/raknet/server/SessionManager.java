@@ -42,10 +42,10 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class SessionManager {
+
     protected Map<Byte, Class<? extends Packet>> packetPool = new ConcurrentHashMap<>();
 
     protected RakNetServer server;

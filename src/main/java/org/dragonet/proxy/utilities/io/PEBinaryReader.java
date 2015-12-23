@@ -68,7 +68,7 @@ public class PEBinaryReader implements Closeable {
         addr.port = readShort();
         return addr;
     }
-    
+
     public UUID readUUID() throws IOException {
         long first = readLong();
         long last = readLong();

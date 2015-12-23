@@ -27,7 +27,7 @@ public class PCBlockChangePacketTranslator implements PCPacketTranslator<ServerB
         pk.records[0].block = (byte) (packet.getRecord().getId() & 0xFF);
         pk.records[0].meta = (byte) (packet.getRecord().getData() & 0xFF);
         pk.records[0].x = packet.getRecord().getPosition().getX();
-        pk.records[0].y = (byte)(packet.getRecord().getPosition().getY() & 0xFF);
+        pk.records[0].y = (byte) (packet.getRecord().getPosition().getY() & 0xFF);
         pk.records[0].z = packet.getRecord().getPosition().getZ();
         return new PEPacket[]{pk};
     }

@@ -27,13 +27,13 @@ public class PCWindowItemsTranslator implements PCPacketTranslator<ServerWindowI
 
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerWindowItemsPacket packet) {
-        if(!session.getWindowCache().hasWindow(packet.getWindowId())){
+        if (!session.getWindowCache().hasWindow(packet.getWindowId())) {
             //Almost impossible to get here. 
             return null;
         }
         CachedWindow win = session.getWindowCache().get(packet.getWindowId());
-        if(win.pcType == -1 && packet.getWindowId() == 0){
-            if(packet.getItems().length < 45){
+        if (win.pcType == -1 && packet.getWindowId() == 0) {
+            if (packet.getItems().length < 45) {
                 //Almost impossible to happen either. 
                 return null;
             }
@@ -42,13 +42,11 @@ public class PCWindowItemsTranslator implements PCPacketTranslator<ServerWindowI
             //Translate and send
             WindowItemsPacket ret = new WindowItemsPacket();
             ret.windowID = PEWindowConstantID.PLAYER_INVENTORY;
-            ret.slots = new PEInventorySlot[36];
-            for(int i = 9; i < 45; i++){
+            ret.slots = new PEInventorySlot[45];
+            for (int i = 9; i < 45; i++) {
                 //TODO: Add NBT support
-                if(win.slots[i] == null){
-                    ret.slots[i - 9] = PEInventorySlot.AIR;
-                }else{
-                    ret.slots[i - 9] = new PEInventorySlot((short)win.slots[i].getId(), (byte)(win.slots[i].getAmount() & 0xFF), (short)win.slots[i].getData());
+                if (win.slots[i] != null) {
+                    ret.slots[i - 9] = new PEInventorySlot((short) win.slots[i].getId(), (byte) (win.slots[i].getAmount() & 0xFF), (short) win.slots[i].getData());
                 }
             }
             ret.hotbar = HOTBAR_CONSTANTS;

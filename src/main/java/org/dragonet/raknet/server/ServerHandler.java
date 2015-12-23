@@ -7,8 +7,7 @@ import org.dragonet.proxy.utilities.Binary;
 import java.nio.charset.StandardCharsets;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class ServerHandler {
 

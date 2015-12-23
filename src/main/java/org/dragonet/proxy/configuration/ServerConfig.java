@@ -14,12 +14,12 @@ package org.dragonet.proxy.configuration;
 
 import java.io.IOException;
 
-public class ServerConfig extends ConfigFile{
+public class ServerConfig extends ConfigFile {
 
     public final static String LANG_FILE = "lang";
-    
+
     public ServerConfig() throws IOException {
         super("/resources/config.properties", "config.properties", true);
     }
-    
+
 }

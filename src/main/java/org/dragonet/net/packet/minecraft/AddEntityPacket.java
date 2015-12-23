@@ -47,7 +47,7 @@ public class AddEntityPacket extends PEPacket {
     public float pitch;
     public EntityMetaData meta;
     public EntityLink[] links;
-    
+
     @Override
     public int pid() {
         return PEPacketIDs.ADD_ENTITY_PACKET;

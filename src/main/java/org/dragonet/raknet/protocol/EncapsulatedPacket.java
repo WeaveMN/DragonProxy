@@ -6,8 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class EncapsulatedPacket implements Cloneable {
 

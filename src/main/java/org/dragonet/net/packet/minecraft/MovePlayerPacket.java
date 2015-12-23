@@ -24,7 +24,7 @@ public class MovePlayerPacket extends PEPacket {
     public static final byte MODE_NORMAL = 0;
     public static final byte MODE_RESET = 1;
     public static final byte MODE_ROTATION = 2;
-    
+
     public long eid;
     public float x;
     public float y;

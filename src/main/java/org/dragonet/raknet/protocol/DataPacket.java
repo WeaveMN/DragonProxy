@@ -5,8 +5,7 @@ import org.dragonet.proxy.utilities.Binary;
 import java.util.ArrayList;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public abstract class DataPacket extends Packet {
 

@@ -18,7 +18,7 @@ public enum NetworkChannel {
 
     private byte channel;
 
-    private NetworkChannel(byte channel){
+    private NetworkChannel(byte channel) {
         this.channel = channel;
     }
 
@@ -26,7 +26,7 @@ public enum NetworkChannel {
         this.channel = (byte) channel;
     }
 
-    public byte getAsByte(){
+    public byte getAsByte() {
         return channel;
     }
 }

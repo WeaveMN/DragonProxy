@@ -19,14 +19,14 @@ import org.dragonet.entity.metadata.EntityMetaData;
 import org.dragonet.entity.metadata.EntityMetaDataObject;
 
 public class ByteArrayMeta implements EntityMetaDataObject {
-    
+
     public byte[] data;
 
     public ByteArrayMeta(byte[] data) {
         this.data = data;
     }
-    
-    public ByteArrayMeta(String data){
+
+    public ByteArrayMeta(String data) {
         this(data.getBytes(StandardCharsets.UTF_8));
     }
 

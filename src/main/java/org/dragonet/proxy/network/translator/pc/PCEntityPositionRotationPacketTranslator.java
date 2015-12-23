@@ -19,23 +19,25 @@ import org.dragonet.proxy.network.cache.CachedEntity;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityPositionRotationPacket;
 
-public class PCEntityPositionRotationPacketTranslator implements PCPacketTranslator<ServerEntityPositionRotationPacket>{
+public class PCEntityPositionRotationPacketTranslator implements PCPacketTranslator<ServerEntityPositionRotationPacket> {
 
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerEntityPositionRotationPacket packet) {
         CachedEntity e = session.getEntityCache().get(packet.getEntityId());
-        if(e == null) return null;
-        
+        if (e == null) {
+            return null;
+        }
+
         e.relativeMove(packet.getMovementX(), packet.getMovementY(), packet.getMovementZ(), packet.getYaw(), packet.getPitch());
-        
+
         MoveEntitiesPacket.MoveEntityData data = new MoveEntitiesPacket.MoveEntityData();
         data.eid = e.eid;
         data.yaw = e.yaw;
         data.headYaw = e.yaw;
         data.pitch = e.pitch;
-        data.x = (float)e.x;
-        data.y = (float)e.y;
-        data.z = (float)e.z;
+        data.x = (float) e.x;
+        data.y = (float) e.y;
+        data.z = (float) e.z;
         MoveEntitiesPacket pk = new MoveEntitiesPacket(new MoveEntitiesPacket.MoveEntityData[]{data});
         return new PEPacket[]{pk};
     }

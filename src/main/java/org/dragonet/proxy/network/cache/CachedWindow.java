@@ -18,20 +18,20 @@ import java.util.Map;
 import org.spacehq.mc.protocol.data.game.ItemStack;
 
 public class CachedWindow {
-    
+
     public final int windowId;
-    
+
     /**
-     * The type of this window on remote side, -1 for player inventory. 
+     * The type of this window on remote side, -1 for player inventory.
      */
     public final int pcType;
-    
+
     public final int size;
-    
+
     public String title = "Window";
-    
+
     public final Map<Integer, Integer> properties = Collections.synchronizedMap(new HashMap<Integer, Integer>());
-    
+
     public ItemStack[] slots;
 
     public CachedWindow(int windowId, int pcType, int size) {

@@ -26,10 +26,10 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class Session {
+
     public final static int STATE_UNCONNECTED = 0;
     public final static int STATE_CONNECTING_1 = 1;
     public final static int STATE_CONNECTING_2 = 2;
@@ -262,11 +262,11 @@ public class Session {
             this.needACK.put(packet.identifierACK, new HashMap<Integer, Integer>());
         }
 
-        if (packet.reliability == 2 ||
-                packet.reliability == 3 ||
-                packet.reliability == 4 ||
-                packet.reliability == 6 ||
-                packet.reliability == 7) {
+        if (packet.reliability == 2
+                || packet.reliability == 3
+                || packet.reliability == 4
+                || packet.reliability == 6
+                || packet.reliability == 7) {
             packet.messageIndex = this.messageIndex++;
 
             if (packet.reliability == 3) {
@@ -313,9 +313,11 @@ public class Session {
             if (this.splitPackets.size() >= MAX_SPLIT_COUNT) {
                 return;
             }
-            this.splitPackets.put(packet.splitID, new HashMap<Integer, EncapsulatedPacket>() {{
-                put(packet.splitIndex, packet);
-            }});
+            this.splitPackets.put(packet.splitID, new HashMap<Integer, EncapsulatedPacket>() {
+                {
+                    put(packet.splitIndex, packet);
+                }
+            });
         } else {
             this.splitPackets.get(packet.splitID).put(packet.splitIndex, packet);
         }
@@ -483,30 +485,28 @@ public class Session {
                         this.handleEncapsulatedPacket((EncapsulatedPacket) pk);
                     }
                 }
-            } else {
-                if (packet instanceof ACK) {
-                    packet.decode();
-                    for (int seq : new ArrayList<>(((ACK) packet).packets.values())) {
-                        if (this.recoveryQueue.containsKey(seq)) {
-                            for (Object pk : this.recoveryQueue.get(seq).packets) {
-                                if (pk instanceof EncapsulatedPacket && ((EncapsulatedPacket) pk).needACK && ((EncapsulatedPacket) pk).messageIndex != null) {
-                                    if (this.needACK.containsKey(((EncapsulatedPacket) pk).identifierACK)) {
-                                        this.needACK.get(((EncapsulatedPacket) pk).identifierACK).remove(((EncapsulatedPacket) pk).messageIndex);
-                                    }
+            } else if (packet instanceof ACK) {
+                packet.decode();
+                for (int seq : new ArrayList<>(((ACK) packet).packets.values())) {
+                    if (this.recoveryQueue.containsKey(seq)) {
+                        for (Object pk : this.recoveryQueue.get(seq).packets) {
+                            if (pk instanceof EncapsulatedPacket && ((EncapsulatedPacket) pk).needACK && ((EncapsulatedPacket) pk).messageIndex != null) {
+                                if (this.needACK.containsKey(((EncapsulatedPacket) pk).identifierACK)) {
+                                    this.needACK.get(((EncapsulatedPacket) pk).identifierACK).remove(((EncapsulatedPacket) pk).messageIndex);
                                 }
                             }
-                            this.recoveryQueue.remove(seq);
                         }
+                        this.recoveryQueue.remove(seq);
                     }
-                } else if (packet instanceof NACK) {
-                    packet.decode();
-                    for (int seq : new ArrayList<>(((NACK) packet).packets.values())) {
-                        if (this.recoveryQueue.containsKey(seq)) {
-                            DataPacket pk = this.recoveryQueue.get(seq);
-                            pk.seqNumber = this.sendSeqNumber++;
-                            this.packetToSend.add(pk);
-                            this.recoveryQueue.remove(seq);
-                        }
+                }
+            } else if (packet instanceof NACK) {
+                packet.decode();
+                for (int seq : new ArrayList<>(((NACK) packet).packets.values())) {
+                    if (this.recoveryQueue.containsKey(seq)) {
+                        DataPacket pk = this.recoveryQueue.get(seq);
+                        pk.seqNumber = this.sendSeqNumber++;
+                        this.packetToSend.add(pk);
+                        this.recoveryQueue.remove(seq);
                     }
                 }
             }

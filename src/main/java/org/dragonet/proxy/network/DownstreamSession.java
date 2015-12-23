@@ -38,7 +38,7 @@ public class DownstreamSession {
     private final UpstreamSession upstream;
 
     private Client remoteClient;
-    
+
     private MinecraftProtocol protocol;
 
     public DownstreamSession(DragonProxy proxy, UpstreamSession upstream) {
@@ -70,7 +70,7 @@ public class DownstreamSession {
 
     public void connect(final MinecraftProtocol protocol, final SocketAddress address) {
         this.protocol = protocol;
-        if(this.protocol == null){
+        if (this.protocol == null) {
             upstream.disconnect("ERROR! ");
             return;
         }
@@ -94,7 +94,7 @@ public class DownstreamSession {
                         && !event.getPacket().getClass().getSimpleName().toLowerCase().contains("time")) {
                     System.out.println(event.getPacket().getClass().getSimpleName() + " > " + event.getPacket().toString());
                 }
-                */
+                 */
                 //Handle the packet
                 try {
                     PEPacket[] packets = TranslatorRegister.translateToPE(upstream, event.getPacket());

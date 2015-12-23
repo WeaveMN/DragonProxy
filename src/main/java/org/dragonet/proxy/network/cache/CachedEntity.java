@@ -17,40 +17,41 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
+import org.dragonet.proxy.entity.EntityType;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
 import org.spacehq.mc.protocol.data.game.values.entity.ObjectType;
 
 @Data
 public class CachedEntity {
-    
+
     public final int eid;
-    
+
     public final int pcType;
-    public final int peType;
-    
+    public final EntityType peType;
+
     public final ObjectType objType;
-    
+
     public final boolean player;
     public final UUID playerUniqueId;
-    
+
     public double x;
     public double y;
     public double z;
-    
+
     public double motionX;
     public double motionY;
     public double motionZ;
-    
+
     public float yaw;
     public float pitch;
-    
+
     public EntityMetadata[] pcMeta;
-    
+
     public boolean spawned;
-    
+
     public final Set<Integer> effects = Collections.synchronizedSet(new HashSet<Integer>());
 
-    public CachedEntity relativeMove(double rx, double ry, double rz, float yaw, float pitch){
+    public CachedEntity relativeMove(double rx, double ry, double rz, float yaw, float pitch) {
         x += rx;
         y += ry;
         z += rz;
@@ -58,8 +59,8 @@ public class CachedEntity {
         this.pitch = pitch;
         return this;
     }
-    
-    public CachedEntity relativeMove(double rx, double ry, double rz){
+
+    public CachedEntity relativeMove(double rx, double ry, double rz) {
         x += rx;
         y += ry;
         z += rz;

@@ -19,40 +19,40 @@ import java.util.Map;
 import org.dragonet.proxy.DragonProxy;
 
 public class SessionRegister {
-    
+
     private final DragonProxy proxy;
-    
+
     private final Map<String, UpstreamSession> clients = Collections.synchronizedMap(new HashMap<String, UpstreamSession>());
-    
+
     public SessionRegister(DragonProxy proxy) {
         this.proxy = proxy;
     }
-    
-    public void onTick(){
+
+    public void onTick() {
         Iterator<Map.Entry<String, UpstreamSession>> iterator = clients.entrySet().iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Map.Entry<String, UpstreamSession> ent = iterator.next();
             ent.getValue().onTick();
         }
     }
-    
-    public void newSession(UpstreamSession session){
+
+    public void newSession(UpstreamSession session) {
         clients.put(session.getRaknetID(), session);
     }
-    
-    public void removeSession(UpstreamSession session){
+
+    public void removeSession(UpstreamSession session) {
         clients.remove(session.getRaknetID());
     }
-    
-    public UpstreamSession getSession(String identifier){
+
+    public UpstreamSession getSession(String identifier) {
         return clients.get(identifier);
     }
-    
-    public Map<String, UpstreamSession> getAll(){
+
+    public Map<String, UpstreamSession> getAll() {
         return Collections.unmodifiableMap(clients);
     }
-    
-    public int getOnlineCount(){
+
+    public int getOnlineCount() {
         return clients.size();
     }
 }

@@ -1,6 +1,6 @@
 # DragonProxy
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)  
-A proxy for Minecraft: Pocket Edition connecting to Minecraft PC/Mac servers. 
+A proxy for **Minecraft: Pocket Edition** connecting to **Minecraft PC/Mac** servers. 
 
 ![Screenshot](https://raw.githubusercontent.com/DragonetMC/DragonProxy/master/screenshots/Hypixel.png)
 #### Hypixel on MCPE, yay!! 
@@ -33,5 +33,5 @@ git clone git@github.com:DragonetMC/DragonProxy.git
 * Add "Lombok Plugin" to add first class support for Lombok annotations in **IntelliJ**
 
 ## Credits
-* Glowstone's Netty Networking Library in Java([Link](http://github.com/GlowstonePlusPlus/GlowstonePlusPlus))
-* Glowstone's fork of Bukkit API([Link](http://github.com/GlowstonePlusPlus/Glowkit))
+* Netty Networking Library([Link](http://netty.io))
+* Google Guava([Link](http://code.google.com/p/guava-libraries/))
