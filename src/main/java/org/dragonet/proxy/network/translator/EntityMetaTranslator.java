@@ -49,7 +49,6 @@ public final class EntityMetaTranslator {
                 case 3://Always show name tag
                     peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte) m.getValue()));
                     break;
-                /*
                 case 6://Health
                     //Not supported on MCPE yet
                     break;
@@ -62,7 +61,6 @@ public final class EntityMetaTranslator {
                 case 9://Arrows stick into player's body
                     //Not supported on MCPE yet
                     break;
-                 */
                 case 15://Has no AI
                     peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte) m.getValue()));
                     break;
