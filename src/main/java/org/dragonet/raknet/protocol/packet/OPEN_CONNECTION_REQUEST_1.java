@@ -4,10 +4,10 @@ import org.dragonet.raknet.RakNet;
 import org.dragonet.raknet.protocol.Packet;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class OPEN_CONNECTION_REQUEST_1 extends Packet {
+
     public static byte ID = (byte) 0x05;
 
     @Override

@@ -24,16 +24,16 @@ public class ServerMetrics extends Metrics {
     public ServerMetrics(DragonProxy proxy) throws IOException {
         super("DragonProxy", Versioning.RELEASE_VERSION);
         this.proxy = proxy;
-        
+
         Metrics.Graph g = createGraph("Extra Data");
         g.addPlotter(new Plotter("OnlineMode") {
             @Override
             public int getValue() {
-                return proxy.isOnlineMode()? 1 : 0;
+                return proxy.isOnlineMode() ? 1 : 0;
             }
         });
     }
-    
+
     @Override
     public String getFullServerVersion() {
         return Versioning.RELEASE_VERSION;

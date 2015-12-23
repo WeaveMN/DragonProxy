@@ -6,6 +6,7 @@ import org.dragonet.proxy.nbt.stream.NBTOutputStream;
 import java.io.IOException;
 
 public class FloatTag extends Tag {
+
     public float data;
 
     public FloatTag(String name) {

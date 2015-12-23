@@ -17,13 +17,14 @@ import org.dragonet.proxy.network.UpstreamSession;
 import org.spacehq.packetlib.packet.Packet;
 
 public interface PEPacketTranslator<P extends PEPacket> {
-    
+
     /**
-     * Translate a packet from PE version to PC version. 
+     * Translate a packet from PE version to PC version.
+     *
      * @param session
      * @param packet
-     * @return 
+     * @return
      */
     public Packet[] translate(UpstreamSession session, P packet);
-    
+
 }

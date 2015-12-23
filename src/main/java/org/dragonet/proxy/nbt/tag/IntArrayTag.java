@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class IntArrayTag extends Tag {
+
     public int[] data;
 
     public IntArrayTag(String name) {

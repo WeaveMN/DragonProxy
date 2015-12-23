@@ -31,7 +31,7 @@ public class PCSpawnMobPacketTranslator implements PCPacketTranslator<ServerSpaw
             if (e == null) {
                 return null;
             }
-            
+
             AddEntityPacket pk = new AddEntityPacket();
             pk.eid = e.eid;
             pk.type = e.peType.getPeType();
@@ -43,7 +43,7 @@ public class PCSpawnMobPacketTranslator implements PCPacketTranslator<ServerSpaw
             pk.speedZ = (float) e.motionZ;
             //TODO: Hack for now. ;P 
             pk.meta = EntityMetaTranslator.translateToPE(e.pcMeta, e.peType);
-            
+
             return new PEPacket[]{pk};
         } catch (Exception e) {
             e.printStackTrace();

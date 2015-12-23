@@ -6,6 +6,7 @@ import org.dragonet.proxy.nbt.stream.NBTOutputStream;
 import java.io.IOException;
 
 public class ByteTag extends Tag {
+
     public byte data;
 
     public ByteTag(String name) {

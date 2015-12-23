@@ -6,6 +6,7 @@ import org.dragonet.proxy.nbt.stream.NBTOutputStream;
 import java.io.IOException;
 
 public class StringTag extends Tag {
+
     public String data;
 
     public StringTag(String name) {
@@ -15,7 +16,9 @@ public class StringTag extends Tag {
     public StringTag(String name, String data) {
         super(name);
         this.data = data;
-        if (data == null) throw new IllegalArgumentException("Empty string not allowed");
+        if (data == null) {
+            throw new IllegalArgumentException("Empty string not allowed");
+        }
     }
 
     @Override

@@ -33,7 +33,7 @@ public class PlayerActionPacket extends PEPacket {
     public static final byte ACTION_START_SNEAK = 11;
     public static final byte ACTION_STOP_SNEAK = 12;
     public static final byte ACTION_DIMENSION_CHANGE = 13;
-    
+
     public long eid;
     public int action;
     public int x;

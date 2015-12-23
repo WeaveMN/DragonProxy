@@ -77,15 +77,15 @@ public class EntityMetaData {
         }
         return null;
     }
-    
-    public static EntityMetaData createDefault(){
+
+    public static EntityMetaData createDefault() {
         EntityMetaData data = new EntityMetaData();
-        data.set(EntityMetaData.Constants.DATA_FLAGS, new ByteMeta((byte)0));
+        data.set(EntityMetaData.Constants.DATA_FLAGS, new ByteMeta((byte) 0));
         data.set(EntityMetaData.Constants.DATA_AIR, new ShortMeta((short) 300));
         data.set(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta(""));
         data.set(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte) 0x01));
-        data.set(EntityMetaData.Constants.DATA_SILENT, new ByteMeta((byte)0));
-        data.set(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte)0));
+        data.set(EntityMetaData.Constants.DATA_SILENT, new ByteMeta((byte) 0));
+        data.set(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte) 0));
         return data;
     }
 
@@ -106,5 +106,5 @@ public class EntityMetaData {
         data.set(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta(player.getDisplayName()));
         return data;
     }
-    */
+     */
 }

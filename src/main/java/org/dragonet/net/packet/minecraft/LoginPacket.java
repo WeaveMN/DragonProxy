@@ -55,7 +55,7 @@ public class LoginPacket extends PEPacket {
             this.clientUuid = reader.readUUID();
             this.serverAddress = reader.readString();
             this.clientSecret = reader.readString();
-            
+
             this.skinName = reader.readString();
             int len = reader.readShort();
             this.skin = reader.read(len);

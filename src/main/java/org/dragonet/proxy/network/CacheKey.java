@@ -13,13 +13,14 @@
 package org.dragonet.proxy.network;
 
 public final class CacheKey {
+
     public final static String PACKET_JOIN_GAME_PACKET = "achedJoinGamePacket";
-    
+
     public final static String PLAYER_EID = "player_entity_id";
-    
+
     public final static String AUTHENTICATION_STATE = "auth_state";
-    
+
     public final static String AUTHENTICATION_EMAIL = "auth_mail";
-    
+
     public final static String BLOCK_BREAKING_POSITION = "block_breaking_position";
 }

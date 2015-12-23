@@ -29,14 +29,14 @@ public class BlockEntityDataPacket extends PEPacket {
 
     public BlockEntityDataPacket() {
     }
-    
+
     public BlockEntityDataPacket(int x, int y, int z, CompoundTag peTag) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.peTag = peTag;
     }
-    
+
     @Override
     public int pid() {
         return PEPacketIDs.BLOCK_ENTITY_DATA_PACKET;

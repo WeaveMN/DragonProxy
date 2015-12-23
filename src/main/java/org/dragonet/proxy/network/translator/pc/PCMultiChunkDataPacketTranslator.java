@@ -90,7 +90,7 @@ public class PCMultiChunkDataPacketTranslator implements PCPacketTranslator<Serv
                         dos1.writeByte((byte) 0xB2);
                         dos1.writeByte((byte) 0x4A);
                     }
-                    
+
                     chunkToSend.chunkData = bos1.toByteArray();
                     session.sendPacket(chunkToSend, true);
                 }

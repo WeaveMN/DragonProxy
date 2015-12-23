@@ -36,7 +36,7 @@ public abstract class PEPacket extends BinaryPacket {
     @Getter
     @Setter
     private boolean shouldSendImmidate;
-    
+
     public final void setLength(int length) {
         this.length = length;
     }

@@ -3,10 +3,10 @@ package org.dragonet.raknet.server;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class RakNetServer extends Thread {
+
     protected int port;
     protected String interfaz;
 
@@ -14,7 +14,6 @@ public class RakNetServer extends Thread {
     protected ConcurrentLinkedQueue<byte[]> internalQueue;
 
     protected boolean shutdown;
-
 
     public RakNetServer(int port) {
         this(port, "0.0.0.0");
@@ -49,7 +48,7 @@ public class RakNetServer extends Thread {
     public String getInterface() {
         return interfaz;
     }
-    
+
     public ConcurrentLinkedQueue<byte[]> getExternalQueue() {
         return externalQueue;
     }
@@ -75,11 +74,12 @@ public class RakNetServer extends Thread {
     }
 
     private class ShutdownHandler extends Thread {
+
         public void run() {
             if (!shutdown) {
                 /*
                 logger.emergency("RakNet crashed!");
-                */
+                 */
             }
         }
     }

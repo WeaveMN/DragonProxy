@@ -6,6 +6,7 @@ import org.dragonet.proxy.nbt.stream.NBTOutputStream;
 import java.io.IOException;
 
 public class DoubleTag extends Tag {
+
     public double data;
 
     public DoubleTag(String name) {

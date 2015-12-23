@@ -6,6 +6,7 @@ import org.dragonet.proxy.nbt.stream.NBTOutputStream;
 import java.io.IOException;
 
 public class ShortTag extends Tag {
+
     public int data;
 
     public ShortTag(String name) {

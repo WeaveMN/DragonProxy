@@ -6,10 +6,10 @@ import java.nio.charset.StandardCharsets;
 import org.dragonet.proxy.utilities.Binary;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class NBTOutputStream extends FilterOutputStream implements DataOutput {
+
     private final ByteOrder endianness;
 
     public NBTOutputStream(OutputStream stream) {

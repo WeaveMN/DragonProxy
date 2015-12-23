@@ -54,7 +54,7 @@ public class PEBinaryWriter implements Flushable, Closeable {
     public void close() throws IOException {
         os.close();
     }
-    
+
     public void writeUUID(UUID uuid) throws IOException {
         writeLong(uuid.getMostSignificantBits());
         writeLong(uuid.getLeastSignificantBits());

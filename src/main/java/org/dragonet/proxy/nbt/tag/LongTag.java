@@ -6,6 +6,7 @@ import org.dragonet.proxy.nbt.stream.NBTOutputStream;
 import java.io.IOException;
 
 public class LongTag extends Tag {
+
     public long data;
 
     public LongTag(String name) {

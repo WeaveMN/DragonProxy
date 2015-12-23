@@ -24,12 +24,12 @@ public class FullChunkPacket extends PEPacket {
     public ChunkOrder order;
     public byte[] chunkData;
 
-    public enum ChunkOrder{
-        COLUMNS((byte)0),
-        LAYERS((byte)1);
+    public enum ChunkOrder {
+        COLUMNS((byte) 0),
+        LAYERS((byte) 1);
         private byte type;
-        
-        ChunkOrder(byte t){
+
+        ChunkOrder(byte t) {
             this.type = t;
         }
 
@@ -37,7 +37,7 @@ public class FullChunkPacket extends PEPacket {
             return type;
         }
     }
-    
+
     @Override
     public int pid() {
         return PEPacketIDs.FULL_CHUNK_DATA_PACKET;
@@ -47,14 +47,14 @@ public class FullChunkPacket extends PEPacket {
     public void encode() {
         try {
             setShouldSendImmidate(false);
-            
+
             setChannel(NetworkChannel.CHANNEL_WORLD_CHUNKS);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             PEBinaryWriter writer = new PEBinaryWriter(bos);
             writer.writeByte((byte) (this.pid() & 0xFF));
             writer.writeInt(chunkX);
             writer.writeInt(chunkZ);
-            writer.writeByte(order != null ? order.getType() : (byte)0); //Default to COLUMNS
+            writer.writeByte(order != null ? order.getType() : (byte) 0); //Default to COLUMNS
             writer.writeInt(chunkData.length);
             writer.write(chunkData);
             this.setData(bos.toByteArray());

@@ -6,8 +6,7 @@ import org.dragonet.proxy.utilities.BinaryStream;
 import java.util.TreeMap;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public abstract class AcknowledgePacket extends Packet {
 

@@ -14,10 +14,11 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class PENBT {
+
     /**
      * A Named Binary Tag library for Nukkit Project
      */
-/*
+    /*
     public static CompoundTag putItemHelper(Item item) {
         return putItemHelper(item, null);
     }
@@ -51,13 +52,15 @@ public class PENBT {
 
         return item;
     }
-*/
+     */
     public static CompoundTag read(File file) throws IOException {
         return read(file, ByteOrder.BIG_ENDIAN);
     }
 
     public static CompoundTag read(File file, ByteOrder endianness) throws IOException {
-        if (!file.exists()) return null;
+        if (!file.exists()) {
+            return null;
+        }
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             return read(fileInputStream, endianness);
         }

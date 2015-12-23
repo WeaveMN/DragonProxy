@@ -5,10 +5,10 @@ import org.dragonet.raknet.protocol.Packet;
 import java.net.InetSocketAddress;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class CLIENT_HANDSHAKE_DataPacket extends Packet {
+
     public static byte ID = (byte) 0x13;
 
     @Override

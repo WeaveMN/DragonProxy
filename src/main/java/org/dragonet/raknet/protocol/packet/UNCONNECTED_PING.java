@@ -4,10 +4,10 @@ import org.dragonet.raknet.RakNet;
 import org.dragonet.raknet.protocol.Packet;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class UNCONNECTED_PING extends Packet {
+
     public static byte ID = (byte) 0x01;
 
     @Override

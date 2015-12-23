@@ -20,17 +20,20 @@ import org.dragonet.proxy.entity.EntityType;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
 
 public final class EntityMetaTranslator {
-    public static EntityMetaData translateToPE(EntityMetadata[] pcMeta, EntityType type){
+
+    public static EntityMetaData translateToPE(EntityMetadata[] pcMeta, EntityType type) {
         /*
          * Following format was fetched from http://wiki.vg/Entities#Entity_Metadata_Format
          */
         EntityMetaData peMeta = EntityMetaData.createDefault();
-        for(EntityMetadata m : pcMeta){
-            if(m == null) continue;
-            switch(m.getId()){
+        for (EntityMetadata m : pcMeta) {
+            if (m == null) {
+                continue;
+            }
+            switch (m.getId()) {
                 case 0://Flags
-                    byte pcFlags = ((byte)m.getValue());
-                    byte peFlags= (byte)((pcFlags & 0x01) > 0 ? EntityMetaData.Constants.DATA_FLAG_ONFIRE : 0);
+                    byte pcFlags = ((byte) m.getValue());
+                    byte peFlags = (byte) ((pcFlags & 0x01) > 0 ? EntityMetaData.Constants.DATA_FLAG_ONFIRE : 0);
                     peFlags |= (pcFlags & 0x02) > 0 ? EntityMetaData.Constants.DATA_FLAG_SNEAKING : 0;
                     peFlags |= (pcFlags & 0x08) > 0 ? EntityMetaData.Constants.DATA_FLAG_SPRINTING : 0;
                     peFlags |= (pcFlags & 0x10) > 0 ? EntityMetaData.Constants.DATA_FLAG_ACTION : 0;
@@ -38,31 +41,31 @@ public final class EntityMetaTranslator {
                     peMeta.map.put(EntityMetaData.Constants.DATA_FLAGS, new ByteMeta(peFlags));
                     break;
                 case 1://Air
-                    peMeta.map.put(EntityMetaData.Constants.DATA_AIR, new ShortMeta((short)m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_AIR, new ShortMeta((short) m.getValue()));
                     break;
                 case 2://Name tag
-                    peMeta.map.put(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta((String)m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta((String) m.getValue()));
                     break;
                 case 3://Always show name tag
-                    peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte)m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte) m.getValue()));
                     break;
                 case 6://Health
                     //Not supported on MCPE yet
                     break;
                 case 7://Potion color
-                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_COLOR, new ByteMeta((byte)m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_COLOR, new ByteMeta((byte) m.getValue()));
                     break;
                 case 8://Potion visible
-                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_VISIBLE, new ByteMeta((byte)m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_VISIBLE, new ByteMeta((byte) m.getValue()));
                     break;
                 case 9://Arrows stick into player's body
                     //Not supported on MCPE yet
                     break;
                 case 15://Has no AI
-                    peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte)m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte) m.getValue()));
                     break;
                 case 12://Age
-                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta((byte)m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta((byte) m.getValue()));
                     break;
                 case 16:
                     //Not supported yet

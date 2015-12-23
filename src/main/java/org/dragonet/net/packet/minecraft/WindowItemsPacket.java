@@ -25,7 +25,7 @@ import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 public class WindowItemsPacket extends PEPacket {
 
     public final static WindowItemsPacket CREATIVE_INVENTORY;
-    
+
     public byte windowID;
     public PEInventorySlot[] slots;
     public int[] hotbar;
@@ -83,8 +83,7 @@ public class WindowItemsPacket extends PEPacket {
         }
     }
 
-    
-    static{
+    static {
         CREATIVE_INVENTORY = new WindowItemsPacket();
         CREATIVE_INVENTORY.windowID = PEWindowConstantID.PLAYER_CREATIVE;
         ArrayList<PEInventorySlot> slots = new ArrayList<>();
@@ -94,9 +93,9 @@ public class WindowItemsPacket extends PEPacket {
                 slots.add(new PEInventorySlot((short)mat.getId(), (byte)1, (short)(i & 0xFF)));
             }
         }
-        */
+         */
         //HACK
-        slots.add(new PEInventorySlot((short)1, (byte)1, (short)0));
+        slots.add(new PEInventorySlot((short) 1, (byte) 1, (short) 0));
         CREATIVE_INVENTORY.slots = slots.toArray(new PEInventorySlot[0]);
     }
 }

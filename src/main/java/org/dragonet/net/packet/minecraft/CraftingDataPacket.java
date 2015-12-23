@@ -25,7 +25,7 @@ public class CraftingDataPacket extends PEPacket {
     public ArrayList<Object> recipies;
 
     public boolean cleanRecipies;
-    
+
     private int enchants;
 
     public CraftingDataPacket(boolean cleanRecipies) {
@@ -136,7 +136,7 @@ public class CraftingDataPacket extends PEPacket {
             this.setData(bos.toByteArray());
         } catch (IOException e) {
         }
-        */
+         */
     }
 
     @Override

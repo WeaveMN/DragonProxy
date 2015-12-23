@@ -25,7 +25,7 @@ public class PCChatPacketTranslator implements PCPacketTranslator<ServerChatPack
         ChatPacket ret = new ChatPacket();
         ret.source = "";
         ret.message = packet.getMessage().getFullText();
-        switch(packet.getType()){
+        switch (packet.getType()) {
             case CHAT:
                 ret.type = ChatPacket.TextType.CHAT;
                 break;

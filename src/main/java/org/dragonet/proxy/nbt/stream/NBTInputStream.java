@@ -5,10 +5,10 @@ import java.nio.ByteOrder;
 import org.dragonet.proxy.utilities.Binary;
 
 /**
- * author: MagicDroidX
- * Nukkit Project
+ * author: MagicDroidX Nukkit Project
  */
 public class NBTInputStream extends FilterInputStream implements DataInput {
+
     private final ByteOrder endianness;
 
     public NBTInputStream(InputStream stream) {

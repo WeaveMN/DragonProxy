@@ -27,52 +27,53 @@ import org.dragonet.proxy.commands.CommandRegister;
 import org.mcstats.Metrics;
 
 public class DragonProxy {
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         new DragonProxy().run(args);
     }
     public final static boolean IS_RELEASE = false;
-    
+
     private final Logger logger = Logger.getLogger("DragonProxy");
-    
+
     private final TickerThread ticker = new TickerThread(this);
-    
+
     @Getter
     private ServerConfig config;
-    
+
     @Getter
     private Lang lang;
-    
+
     @Getter
     private SessionRegister sessionRegister;
-    
+
     @Getter
     private RaknetInterface network;
-    
+
     @Getter
     private boolean shuttingDown;
-    
+
     @Getter
     private ScheduledExecutorService generalThreadPool;
-    
+
     @Getter
     private CommandRegister commandRegister;
-    
+
     @Getter
     private InetSocketAddress remoteServerAddress;
-    
+
     @Getter
     private boolean onlineMode;
-    
+
     private ConsoleManager console;
-    
+
     private Metrics metrics;
-    
-    public void run(String[] args){
+
+    public void run(String[] args) {
         //Initialize console
         console = new ConsoleManager(this);
         console.startConsole();
         console.startFile("console.log");
-        
+
         try {
             config = new ServerConfig();
         } catch (IOException ex) {
@@ -94,7 +95,7 @@ public class DragonProxy {
         remoteServerAddress = new InetSocketAddress(config.getConfig().getProperty("remote_ip"), Integer.parseInt(config.getConfig().getProperty("remote_port")));
         sessionRegister = new SessionRegister(this);
         commandRegister = new CommandRegister(this);
-        if(IS_RELEASE){
+        if (IS_RELEASE) {
             try {
                 metrics = new ServerMetrics(this);
                 metrics.start();
@@ -105,23 +106,23 @@ public class DragonProxy {
         //Create thread pool
         logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
         generalThreadPool = Executors.newScheduledThreadPool(Integer.parseInt(config.getConfig().getProperty("thread_pool_size")));
-        
+
         //Bind
         logger.info(lang.get(Lang.INIT_BINDING, config.getConfig().getProperty("udp_bind_ip"), config.getConfig().getProperty("udp_bind_port")));
-        network = new RaknetInterface(this, 
-                config.getConfig().getProperty("udp_bind_ip"),  //IP
+        network = new RaknetInterface(this,
+                config.getConfig().getProperty("udp_bind_ip"), //IP
                 Integer.parseInt(config.getConfig().getProperty("udp_bind_port"))); //Port
         network.setBroadcastName(lang.get(Lang.BROADCAST_TITLE, remoteServerAddress.getHostString(), remoteServerAddress.getPort()));
         ticker.start();
         logger.info(lang.get(Lang.INIT_DONE));
     }
-    
-    public void onTick(){
+
+    public void onTick() {
         network.onTick();
         sessionRegister.onTick();
     }
-    
-    public void shutdown(){
+
+    public void shutdown() {
         logger.info(lang.get(Lang.SHUTTING_DOWN));
         this.shuttingDown = true;
         network.shutdown();
