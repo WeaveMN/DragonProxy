@@ -15,6 +15,7 @@ package org.dragonet.proxy.network.translator.pc;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
 import org.dragonet.proxy.network.UpstreamSession;
+import org.dragonet.proxy.network.translator.ItemBlockTranslator;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiBlockChangePacket;
 
@@ -29,7 +30,7 @@ public class PCMultiBlockChangePacketTranslator implements PCPacketTranslator<Se
             pk.records[i].x = packet.getRecords()[i].getPosition().getX();
             pk.records[i].y = (byte) (packet.getRecords()[i].getPosition().getY() & 0xFF);
             pk.records[i].z = packet.getRecords()[i].getPosition().getZ();
-            pk.records[i].block = (byte) (packet.getRecords()[i].getId() & 0xFF);
+            pk.records[i].block = (byte) (ItemBlockTranslator.translateToPE(packet.getRecords()[i].getId()) & 0xFF);
             pk.records[i].meta = (byte) (packet.getRecords()[i].getData() & 0xFF);
         }
         return new PEPacket[]{pk};

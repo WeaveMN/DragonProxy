@@ -26,9 +26,9 @@ public class PCUpdateHealthPacketTranslator implements PCPacketTranslator<Server
         SetHealthPacket h = new SetHealthPacket((int) packet.getHealth());
         if (packet.getHealth() <= 0.0f) {
             RespawnPacket r = new RespawnPacket();
-            r.x = (float) session.getEntityCache().getPlayer().x;
-            r.y = (float) session.getEntityCache().getPlayer().y;
-            r.z = (float) session.getEntityCache().getPlayer().z;
+            r.x = 0.0f;
+            r.y = 0.0f;
+            r.z = 0.0f;
             return new PEPacket[]{h, r};
         }
         return new PEPacket[]{h};

@@ -38,10 +38,6 @@ public final class EntityCache {
     public EntityCache(UpstreamSession upstream) {
         this.upstream = upstream;
     }
-    
-    public CachedEntity getPlayer(){
-        return get((int)upstream.getDataCache().get(CacheKey.PLAYER_EID));
-    }
 
     public CachedEntity get(int eid) {
         return entities.get(eid);
