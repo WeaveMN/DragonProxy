@@ -33,6 +33,7 @@ import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityPositionR
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityRemoveEffectPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityVelocityPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.player.ServerPlayerPositionRotationPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.entity.player.ServerUpdateHealthPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnMobPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.window.ServerWindowItemsPacket;
@@ -81,6 +82,7 @@ public final class TranslatorRegister {
         PC_TO_PE_TRANSLATOR.put(ServerEntityVelocityPacket.class, new PCEntityVelocityPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerEntityEffectPacket.class, new PCEntityEffectPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerEntityRemoveEffectPacket.class, new PCEntityRemoveEffectPacketTranslator());
+        PC_TO_PE_TRANSLATOR.put(ServerUpdateHealthPacket.class, new PCUpdateHealthPacketTranslator());
 
         //Inventory
         PC_TO_PE_TRANSLATOR.put(ServerWindowItemsPacket.class, new PCWindowItemsTranslator());
