@@ -20,6 +20,7 @@ import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PEPacketIDs;
+import org.dragonet.net.packet.minecraft.PlayerActionPacket;
 import org.dragonet.net.packet.minecraft.PlayerEquipmentPacket;
 import org.spacehq.packetlib.packet.Packet;
 
@@ -64,14 +65,22 @@ public class PEPacketProcessor implements Runnable {
             });
             return;
         }
-        //client.getProxy().getLogger().log(Level.INFO, "Received packet: {0}", packet.getClass().getSimpleName());
+        client.getProxy().getLogger().info("Received packet: " + packet.getClass().getSimpleName());
+        //DEBUG
+        switch (packet.pid()) {
+            case PEPacketIDs.MOB_EQUIPMENT_PACKET:
+                PlayerEquipmentPacket p = (PlayerEquipmentPacket) packet;
+                client.getProxy().getLogger().info("PlayerEquipmentPacket => Slot: " + p.item.toString() + ", Selected: " + p.selectedSlot + ", Slot: " + p.slot);
+                break;
+            case PEPacketIDs.PLAYER_ACTION_PACKET:
+                PlayerActionPacket act = (PlayerActionPacket) packet;
+                client.getProxy().getLogger().info("PlayerActionPacket => Action: " + act.action);
+                break;
+        }
         switch (packet.pid()) {
             case PEPacketIDs.LOGIN_PACKET:
                 client.onLogin((LoginPacket) packet);
                 break;
-            case PEPacketIDs.MOB_EQUIPMENT_PACKET:
-                PlayerEquipmentPacket p = (PlayerEquipmentPacket) packet;
-                client.getProxy().getLogger().info("PlayerEquipmentPacket => Slot: " + p.item.toString() + ", Selected: " + p.selectedSlot + ", Slot: " + p.slot);
             case PEPacketIDs.TEXT_PACKET:  //Login
                 if (client.getDataCache().get(CacheKey.AUTHENTICATION_STATE) != null) {
                     TranslatorRegister.translateToPC(client, packet);

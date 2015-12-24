@@ -88,11 +88,13 @@ public class DownstreamSession {
 
             @Override
             public void packetReceived(PacketReceivedEvent event) {
+                /*
                 if (!event.getPacket().getClass().getSimpleName().toLowerCase().contains("block")
                         && !event.getPacket().getClass().getSimpleName().toLowerCase().contains("entity")
                         && !event.getPacket().getClass().getSimpleName().toLowerCase().contains("time")) {
                     System.out.println(event.getPacket().getClass().getSimpleName() + " > " + event.getPacket().toString());
                 }
+                */
                 //Handle the packet
                 try {
                     PEPacket[] packets = TranslatorRegister.translateToPE(upstream, event.getPacket());

@@ -23,7 +23,7 @@ import org.spacehq.mc.protocol.packet.ingame.server.window.ServerWindowItemsPack
 
 public class PCWindowItemsTranslator implements PCPacketTranslator<ServerWindowItemsPacket> {
 
-    public final static int[] HOTBAR_CONSTANTS = new int[]{27, 28, 29, 30, 31, 32, 33, 34, 35};
+    public final static int[] HOTBAR_CONSTANTS = new int[]{36, 37, 28, 39, 40, 41, 42, 43, 44};
 
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerWindowItemsPacket packet) {
