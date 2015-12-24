@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import org.dragonet.proxy.entity.EntityType;
+import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.spacehq.mc.protocol.data.game.values.MagicValues;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnMobPacket;
@@ -36,6 +37,10 @@ public final class EntityCache {
 
     public EntityCache(UpstreamSession upstream) {
         this.upstream = upstream;
+    }
+    
+    public CachedEntity getPlayer(){
+        return get((int)upstream.getDataCache().get(CacheKey.PLAYER_EID));
     }
 
     public CachedEntity get(int eid) {

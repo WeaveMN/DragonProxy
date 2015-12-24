@@ -13,6 +13,7 @@
 package org.dragonet.proxy.network.translator.pc;
 
 import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.net.packet.minecraft.RespawnPacket;
 import org.dragonet.net.packet.minecraft.SetHealthPacket;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
@@ -23,6 +24,13 @@ public class PCUpdateHealthPacketTranslator implements PCPacketTranslator<Server
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerUpdateHealthPacket packet) {
         SetHealthPacket h = new SetHealthPacket((int) packet.getHealth());
+        if (packet.getHealth() <= 0.0f) {
+            RespawnPacket r = new RespawnPacket();
+            r.x = (float) session.getEntityCache().getPlayer().x;
+            r.y = (float) session.getEntityCache().getPlayer().y;
+            r.z = (float) session.getEntityCache().getPlayer().z;
+            return new PEPacket[]{h, r};
+        }
         return new PEPacket[]{h};
     }
 

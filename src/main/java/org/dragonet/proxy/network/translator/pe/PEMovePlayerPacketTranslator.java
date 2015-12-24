@@ -23,6 +23,9 @@ public class PEMovePlayerPacketTranslator implements PEPacketTranslator<MovePlay
     @Override
     public Packet[] translate(UpstreamSession session, MovePlayerPacket packet) {
         ClientPlayerPositionRotationPacket pk = new ClientPlayerPositionRotationPacket(!packet.teleport, packet.x, packet.y, packet.z, packet.yaw, packet.pitch);
+        session.getEntityCache().getPlayer().x = packet.x;
+        session.getEntityCache().getPlayer().y = packet.y;
+        session.getEntityCache().getPlayer().z = packet.z;
         return new Packet[]{pk};
     }
 
