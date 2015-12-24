@@ -28,6 +28,7 @@ public class WindowClosePacket extends PEPacket {
 
     @Override
     public void encode() {
+        setShouldSendImmidate(true);
         try {
             setChannel(NetworkChannel.CHANNEL_PRIORITY);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
