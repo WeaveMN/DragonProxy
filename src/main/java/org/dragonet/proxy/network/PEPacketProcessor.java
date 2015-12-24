@@ -14,7 +14,6 @@ package org.dragonet.proxy.network;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.logging.Level;
 import lombok.Getter;
 import org.dragonet.net.packet.Protocol;
 import org.dragonet.net.packet.minecraft.BatchPacket;
@@ -65,7 +64,7 @@ public class PEPacketProcessor implements Runnable {
             });
             return;
         }
-        client.getProxy().getLogger().log(Level.INFO, "Received packet: {0}", packet.getClass().getSimpleName());
+        //client.getProxy().getLogger().log(Level.INFO, "Received packet: {0}", packet.getClass().getSimpleName());
         switch (packet.pid()) {
             case PEPacketIDs.LOGIN_PACKET:
                 client.onLogin((LoginPacket) packet);

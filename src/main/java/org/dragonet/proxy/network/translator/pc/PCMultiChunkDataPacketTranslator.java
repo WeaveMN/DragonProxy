@@ -90,6 +90,8 @@ public class PCMultiChunkDataPacketTranslator implements PCPacketTranslator<Serv
                         dos1.writeByte((byte) 0xB2);
                         dos1.writeByte((byte) 0x4A);
                     }
+                    
+                    dos1.writeInt(0);//Should be little-endian but it's 0 so it won't matter
 
                     chunkToSend.chunkData = bos1.toByteArray();
                     session.sendPacket(chunkToSend, true);

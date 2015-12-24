@@ -25,7 +25,7 @@ public class ItemBlockTranslator {
     static {
         swap(125, 157); //Double Slab <-> Activator Rail
         swap(126, 158); //Slab <-> NULL
-        preventPc(158);
+        preventPc(158); //No dispenser on MCPE
         onewayOverride(119, 90); //End portal -> Nether portal
         onewayOverride(176, 63); //Sign         =\_
         onewayOverride(177, 68); //Wall sign    =/ We send banner as sign [Banner]
