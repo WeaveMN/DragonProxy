@@ -31,6 +31,7 @@ public final class CommandRegister {
 
     public void registerDefaults() {
         commandMap.put("stop", new StopCommand());
+        commandMap.put("test", new TestCommand());
     }
 
     public void callCommand(String cmd) {
