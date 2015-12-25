@@ -23,7 +23,7 @@ public class PCUpdateHealthPacketTranslator implements PCPacketTranslator<Server
 
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerUpdateHealthPacket packet) {
-        SetHealthPacket h = new SetHealthPacket((int) packet.getHealth());
+        SetHealthPacket h = new SetHealthPacket((int) (20.0f * packet.getHealth()));
         if (packet.getHealth() <= 0.0f) {
             RespawnPacket r = new RespawnPacket();
             r.x = 0.0f;
