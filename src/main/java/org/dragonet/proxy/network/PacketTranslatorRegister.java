@@ -46,7 +46,7 @@ import org.spacehq.mc.protocol.packet.ingame.server.world.ServerUpdateSignPacket
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerUpdateTimePacket;
 import org.spacehq.packetlib.packet.Packet;
 
-public final class TranslatorRegister {
+public final class PacketTranslatorRegister {
 
     private final static Map<Class<? extends Packet>, PCPacketTranslator> PC_TO_PE_TRANSLATOR = new HashMap<>();
     private final static Map<Class<? extends PEPacket>, PEPacketTranslator> PE_TO_PC_TRANSLATOR = new HashMap<>();

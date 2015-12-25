@@ -22,6 +22,7 @@ import org.dragonet.proxy.entity.EntityType;
 import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.spacehq.mc.protocol.data.game.values.MagicValues;
+import org.spacehq.mc.protocol.data.game.values.entity.ObjectType;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnMobPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnObjectPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
@@ -37,6 +38,12 @@ public final class EntityCache {
 
     public EntityCache(UpstreamSession upstream) {
         this.upstream = upstream;
+        CachedEntity clientEntity = new CachedEntity(0, -1, null, null, true, null);
+        entities.put(0, clientEntity);
+    }
+    
+    public CachedEntity getClientEntity(){
+        return entities.get(0);
     }
 
     public CachedEntity get(int eid) {

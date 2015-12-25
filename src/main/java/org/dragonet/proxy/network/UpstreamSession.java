@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
+import lombok.Setter;
 import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.ChatPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
@@ -33,6 +34,7 @@ import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.spacehq.mc.auth.exception.request.RequestException;
 import org.spacehq.mc.protocol.MinecraftProtocol;
+import org.spacehq.mc.protocol.data.game.Position;
 
 /**
  * Maintaince the connection between the proxy and Minecraft: Pocket Edition

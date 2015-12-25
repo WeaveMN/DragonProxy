@@ -83,7 +83,7 @@ public class PEPacketProcessor implements Runnable {
                 break;
             case PEPacketIDs.TEXT_PACKET:  //Login
                 if (client.getDataCache().get(CacheKey.AUTHENTICATION_STATE) != null) {
-                    TranslatorRegister.translateToPC(client, packet);
+                    PacketTranslatorRegister.translateToPC(client, packet);
                     break;
                 }
             default:
@@ -93,7 +93,7 @@ public class PEPacketProcessor implements Runnable {
                 if (!client.getDownstream().isConnected()) {
                     break;
                 }
-                Packet[] translated = TranslatorRegister.translateToPC(client, packet);
+                Packet[] translated = PacketTranslatorRegister.translateToPC(client, packet);
                 if (translated == null || translated.length == 0) {
                     break;
                 }

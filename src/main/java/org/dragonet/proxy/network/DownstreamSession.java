@@ -97,7 +97,7 @@ public class DownstreamSession {
                 */
                 //Handle the packet
                 try {
-                    PEPacket[] packets = TranslatorRegister.translateToPE(upstream, event.getPacket());
+                    PEPacket[] packets = PacketTranslatorRegister.translateToPE(upstream, event.getPacket());
                     if (packets == null) {
                         return;
                     }

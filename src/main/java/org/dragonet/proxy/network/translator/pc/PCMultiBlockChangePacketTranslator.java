@@ -27,8 +27,8 @@ public class PCMultiBlockChangePacketTranslator implements PCPacketTranslator<Se
         pk.records = new UpdateBlockPacket.UpdateBlockRecord[packet.getRecords().length];
         byte generalFlag = packet.getRecords().length > 64 ? UpdateBlockPacket.FLAG_PRIORITY : UpdateBlockPacket.FLAG_ALL;
         for (int i = 0; i < pk.records.length; i++) {
-            pk.records[i].flags = generalFlag;
             pk.records[i] = new UpdateBlockPacket.UpdateBlockRecord();
+            pk.records[i].flags = generalFlag;
             pk.records[i].x = packet.getRecords()[i].getPosition().getX();
             pk.records[i].y = (byte) (packet.getRecords()[i].getPosition().getY() & 0xFF);
             pk.records[i].z = packet.getRecords()[i].getPosition().getZ();
