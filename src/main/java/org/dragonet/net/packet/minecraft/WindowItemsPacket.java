@@ -48,9 +48,9 @@ public class WindowItemsPacket extends PEPacket {
             for (PEInventorySlot slot : this.slots) {
                 PEInventorySlot.writeSlot(writer, slot);
             }
-            if (windowID == PEWindowConstantID.PLAYER_INVENTORY && this.hotbar.length > 0) {
+            if (hotbar != null && windowID == PEWindowConstantID.PLAYER_INVENTORY && hotbar.length > 0) {
                 writer.writeShort((short) (this.hotbar.length & 0xFFFF));
-                for (int slot : this.hotbar) {
+                for (int slot : hotbar) {
                     writer.writeInt(slot);
                 }
             } else {

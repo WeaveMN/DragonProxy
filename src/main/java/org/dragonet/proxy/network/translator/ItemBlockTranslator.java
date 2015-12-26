@@ -14,6 +14,7 @@ package org.dragonet.proxy.network.translator;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.dragonet.proxy.nbt.tag.CompoundTag;
 
 public class ItemBlockTranslator {
 
@@ -54,5 +55,14 @@ public class ItemBlockTranslator {
             ret = 0;   //Unsupported item becomes air
         }
         return ret;
+    }
+    
+    public static CompoundTag newTileTag(String id, int x, int y, int z){
+        CompoundTag t = new CompoundTag();
+        t.putString("id", id);
+        t.putInt("x", x);
+        t.putInt("y", y);
+        t.putInt("z", z);
+        return t;
     }
 }
