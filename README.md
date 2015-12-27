@@ -1,6 +1,8 @@
+![Logo](http://dragonet.org/assets/img/Dragonet.png)
+
 # DragonProxy
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)  
-A proxy for **Minecraft: Pocket Edition** connecting to **Minecraft PC/Mac** servers. 
+A proxy for **Minecraft: Pocket Edition** connecting to **Minecraft PC/Mac** servers.
 
 ![Screenshot](https://raw.githubusercontent.com/DragonetMC/DragonProxy/master/screenshots/Hypixel.png)
 #### Hypixel on MCPE, yay!! 
