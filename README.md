@@ -18,6 +18,11 @@ Note: Target server must be off-line mode for now, we may add online authenticat
 * Step 5. Edit `config.properties` and change `remote_ip` and `remote_port` to your Minecraft PC/Mac server, such as `127.0.0.1` and `25565`. 
 * Step 6. Do `Step 3` again, and you should be able to connect to a PC/Mac server through your computer/server from a MCPE. 
 
+## Community
+
+### Website: [http://dragonet.org](http://dragonet.org)
+### Forums: [http://forums.dragonet.org](http://forums.dragonet.org)
+
 ## Development
 
 ### Cloning the project
