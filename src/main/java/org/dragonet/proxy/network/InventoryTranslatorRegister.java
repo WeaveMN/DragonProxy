@@ -17,6 +17,7 @@ import org.dragonet.inventory.PEWindowConstantID;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.WindowItemsPacket;
 import org.dragonet.proxy.network.cache.CachedWindow;
+import org.dragonet.proxy.network.translator.ItemBlockTranslator;
 
 public final class InventoryTranslatorRegister {
 
@@ -31,8 +32,11 @@ public final class InventoryTranslatorRegister {
         for (int i = 9; i < 45; i++) {
             //TODO: Add NBT support
             if (win.slots[i] != null) {
-                ret.slots[i - 9] = new PEInventorySlot((short) win.slots[i].getId(), (byte) (win.slots[i].getAmount() & 0xFF), (short) win.slots[i].getData());
+                ret.slots[i - 9] = new PEInventorySlot((short) ItemBlockTranslator.translateToPE(win.slots[i].getId()), (byte) (win.slots[i].getAmount() & 0xFF), (short) win.slots[i].getData(), ItemBlockTranslator.translateNBT(win.slots[i].getNBT()));
             }
+        }
+        for(int i = 36; i < 45; i++){
+            ret.slots[i] = ret.slots[i - 9];    //Duplicate
         }
         ret.hotbar = HOTBAR_CONSTANTS;
         

@@ -14,7 +14,9 @@ package org.dragonet.proxy.network.translator;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.dragonet.inventory.PEInventorySlot;
 import org.dragonet.proxy.nbt.tag.CompoundTag;
+import org.spacehq.mc.protocol.data.game.ItemStack;
 
 public class ItemBlockTranslator {
 
@@ -51,7 +53,7 @@ public class ItemBlockTranslator {
             return pcItemBlockId;
         }
         int ret = PC_TO_PE_OVERRIDE.get(pcItemBlockId);
-        if (pcItemBlockId > 255 && ret == UNSUPPORTED_BLOCK_ID) {
+        if (pcItemBlockId >= 255 && ret == UNSUPPORTED_BLOCK_ID) {
             ret = 0;   //Unsupported item becomes air
         }
         return ret;
@@ -64,5 +66,17 @@ public class ItemBlockTranslator {
         t.putInt("y", y);
         t.putInt("z", z);
         return t;
+    }
+    
+    public static CompoundTag translateNBT(org.spacehq.opennbt.tag.builtin.CompoundTag pcTag){
+        CompoundTag peTag = new CompoundTag();
+        peTag.putCompound("display", new CompoundTag().putString("Name", "Poop Item"));
+        return peTag;
+    }
+    
+    public static PEInventorySlot translateToPE(ItemStack item){
+        if(item == null || item.getId() == 0) return null;
+        PEInventorySlot inv = new PEInventorySlot((short)translateToPE(item.getId()), (byte)(item.getAmount() & 0xFF), (short)(item.getData() & 0xFFFF), translateNBT(item.getNBT()));
+        return inv;
     }
 }

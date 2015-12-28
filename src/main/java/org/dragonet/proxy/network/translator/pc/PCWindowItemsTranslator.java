@@ -17,6 +17,7 @@ import org.dragonet.proxy.network.InventoryTranslatorRegister;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.cache.CachedWindow;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
+import org.spacehq.mc.protocol.packet.ingame.client.window.ClientCloseWindowPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.window.ServerWindowItemsPacket;
 
 public class PCWindowItemsTranslator implements PCPacketTranslator<ServerWindowItemsPacket> {
@@ -24,7 +25,10 @@ public class PCWindowItemsTranslator implements PCPacketTranslator<ServerWindowI
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerWindowItemsPacket packet) {
         if (!session.getWindowCache().hasWindow(packet.getWindowId())) {
-            //Almost impossible to get here. 
+            //Almost impossible to get here if window is valid and supported. 
+            if(session.getDownstream() != null){
+                session.getDownstream().send(new ClientCloseWindowPacket(packet.getWindowId()));    //Close non-supported windows
+            }
             return null;
         }
         CachedWindow win = session.getWindowCache().get(packet.getWindowId());
