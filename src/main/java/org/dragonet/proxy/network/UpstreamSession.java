@@ -219,7 +219,7 @@ public class UpstreamSession {
 
             if (!username.equals(protocol.getProfile().getName())) {
                 username = protocol.getProfile().getName();
-                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME));
+                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME, username));
             }
 
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
