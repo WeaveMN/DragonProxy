@@ -1,6 +1,6 @@
 package org.dragonet.proxy;
 
-import static org.dragonet.proxy.network.UpstreamSession;
+import static org.dragonet.proxy.network.UpstreamSession.*;
 import org.dragonet.net.packet.minecraft.ChatPacket;
 
 public class DragonAPI {
