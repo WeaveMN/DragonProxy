@@ -27,6 +27,7 @@ import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.StartGamePacket;
 import org.dragonet.proxy.DragonProxy;
+import org.dragonet.proxy.DragonAPI;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.cache.EntityCache;
 import org.dragonet.proxy.network.cache.WindowCache;
