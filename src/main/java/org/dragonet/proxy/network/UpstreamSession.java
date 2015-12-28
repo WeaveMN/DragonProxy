@@ -82,7 +82,7 @@ public class UpstreamSession {
         this.raknetID = raknetID;
         this.remoteAddress = remoteAddress;
         packetProcessor = new PEPacketProcessor(this);
-        packetProcessorScheule = proxy.getGeneralThreadPool().scheduleAtFixedRate(packetProcessor, 10, 50, TimeUnit.MILLISECerror;
+        packetProcessorScheule = proxy.getGeneralThreadPool().scheduleAtFixedRate(packetProcessor, 10, 50, TimeUnit.MILLISECOND);
         downstream = new DownstreamSession(proxy, this);
     }
 
