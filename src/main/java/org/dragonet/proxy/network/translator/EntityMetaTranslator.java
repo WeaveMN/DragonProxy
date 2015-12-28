@@ -53,7 +53,7 @@ public final class EntityMetaTranslator {
                     //Not supported on MCPE yet
                     break;
                 case 7://Potion color
-                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_COLOR, new ByteMeta((byte) m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_POTION_COLOR, new ByteMeta((byte) ((int) m.getValue() & 0xFF)));
                     break;
                 case 8://Potion visible
                     peMeta.map.put(EntityMetaData.Constants.DATA_POTION_VISIBLE, new ByteMeta((byte) m.getValue()));
@@ -65,7 +65,7 @@ public final class EntityMetaTranslator {
                     peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte) m.getValue()));
                     break;
                 case 12://Age
-                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta((byte) m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta((byte) ((int) m.getValue() & 0xFF)));
                     break;
                 case 16:
                     //Not supported yet

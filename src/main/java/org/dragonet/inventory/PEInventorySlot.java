@@ -17,11 +17,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteOrder;
+import org.dragonet.proxy.nbt.PENBT;
+import org.dragonet.proxy.nbt.tag.CompoundTag;
+import org.dragonet.proxy.network.translator.ItemBlockTranslator;
 import org.dragonet.proxy.utilities.io.PEBinaryReader;
 import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 import org.spacehq.mc.protocol.data.game.ItemStack;
-import org.spacehq.opennbt.NBTIO;
-import org.spacehq.opennbt.tag.builtin.CompoundTag;
 
 public class PEInventorySlot {
 
@@ -62,7 +64,7 @@ public class PEInventorySlot {
             return new PEInventorySlot(id, count, meta);
         }
         byte[] nbtData = reader.read(lNbt);
-        CompoundTag nbt = (CompoundTag) NBTIO.readTag(new DataInputStream(new ByteArrayInputStream(nbtData)));
+        CompoundTag nbt = PENBT.read(new DataInputStream(new ByteArrayInputStream(nbtData)), ByteOrder.LITTLE_ENDIAN);
         return new PEInventorySlot(id, count, meta, nbt);
     }
 
@@ -78,7 +80,7 @@ public class PEInventorySlot {
             writer.writeShort((short) 0);
         } else {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            NBTIO.writeTag(new DataOutputStream(bos), slot.nbt);
+            PENBT.write(slot.nbt, new DataOutputStream(bos), ByteOrder.LITTLE_ENDIAN);
             byte[] nbtdata = bos.toByteArray();
             writer.writeShort((short) (nbtdata.length & 0xFFFF));
             writer.write(nbtdata);
@@ -86,15 +88,7 @@ public class PEInventorySlot {
     }
 
     public static PEInventorySlot fromItemStack(ItemStack item) {
-        PEInventorySlot slot = new PEInventorySlot();
-        slot.id = (short) (item.getId() & 0xFFFF);
-        if (slot.id <= 0) {
-            return slot;
-        }
-        slot.count = (byte) (item.getAmount() & 0xFF);
-        slot.meta = (short) (item.getData() & 0xFFFF);
-        slot.nbt = item.getNBT();
-        return slot;
+        return ItemBlockTranslator.translateToPE(item);
     }
 
     @Override

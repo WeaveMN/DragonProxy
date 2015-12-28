@@ -31,6 +31,7 @@ public class PCSpawnPositionPacketTranslator implements PCPacketTranslator<Serve
         if (session.getDataCache().get(CacheKey.PACKET_JOIN_GAME_PACKET) == null) {
             if (session.getProxy().isOnlineMode()) {
                 MovePlayerPacket pkMovePlayer = new MovePlayerPacket(0, (float) packet.getPosition().getX(), (float) packet.getPosition().getY(), (float) packet.getPosition().getZ(), 0.0f, 0.0f, 0.0f, true);
+                pkMovePlayer.mode = MovePlayerPacket.MODE_RESET;
                 return new PEPacket[]{pkMovePlayer};
             } else {
                 session.disconnect(session.getProxy().getLang().get(Lang.MESSAGE_REMOTE_ERROR));

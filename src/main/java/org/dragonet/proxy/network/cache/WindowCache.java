@@ -32,6 +32,10 @@ public final class WindowCache {
         CachedWindow inv = new CachedWindow(0, -1, 36);
         windows.put(0, inv);
     }
+    
+    public CachedWindow getPlayerInventory(){
+        return windows.get(0);
+    }
 
     public CachedWindow newWindow(ServerOpenWindowPacket packet) {
         //TODO

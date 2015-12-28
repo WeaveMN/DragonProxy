@@ -92,7 +92,7 @@ public class UpstreamSession {
         proxy.getNetwork().sendPacket(raknetID, packet, immediate);
     }
 
-    public void sendAllPacket(PEPacket[] packets, boolean immediate) {
+    public void sendAllPackets(PEPacket[] packets, boolean immediate) {
         if (packets.length < 5) {
             for (PEPacket packet : packets) {
                 sendPacket(packet);
@@ -183,7 +183,9 @@ public class UpstreamSession {
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         }
     }
-
+    
+    //Kept here in case I missed some code and it gets like 1mil errors
+    //Need remove tho
     public void sendChat(String chat) {
         if (chat.contains("\n")) {
             String[] lines = chat.split("\n");
@@ -217,7 +219,7 @@ public class UpstreamSession {
 
             if (!username.equals(protocol.getProfile().getName())) {
                 username = protocol.getProfile().getName();
-                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME));
+                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME, username));
             }
 
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
