@@ -3,7 +3,7 @@ package org.dragonet.proxy;
 import static org.dragonet.proxy.network.UpstreamSession.*;
 import org.dragonet.net.packet.minecraft.ChatPacket;
 
-public class DragonAPI {
+public final class DragonAPI {
 	
 	private DragonProxy proxy;
 	
