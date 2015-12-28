@@ -82,7 +82,7 @@ public class UpstreamSession {
         this.raknetID = raknetID;
         this.remoteAddress = remoteAddress;
         packetProcessor = new PEPacketProcessor(this);
-        packetProcessorScheule = proxy.getGeneralThreadPool().scheduleAtFixedRate(packetProcessor, 10, 50, TimeUnit.MILLISECONDS);
+        packetProcessorScheule = proxy.getGeneralThreadPool().scheduleAtFixedRate(packetProcessor, 10, 50, TimeUnit.MILLISECerror;
         downstream = new DownstreamSession(proxy, this);
     }
 
@@ -178,14 +178,16 @@ public class UpstreamSession {
 
             dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
 
-            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
-            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
+            DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
+            DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
         } else {
             protocol = new MinecraftProtocol(username);
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         }
     }
-
+    
+    //Kept here in case I missed some code and it gets like 1mil errors
+    //Need remove tho
     public void sendChat(String chat) {
         if (chat.contains("\n")) {
             String[] lines = chat.split("\n");
@@ -207,11 +209,11 @@ public class UpstreamSession {
                 protocol = new MinecraftProtocol((String) dataCache.get(CacheKey.AUTHENTICATION_EMAIL), password, false);
             } catch (RequestException ex) {
                 if (ex.getMessage().toLowerCase().contains("invalid")) {
-                    sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
+                    DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
                     disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
                     return;
                 } else {
-                    sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
+                    DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
                     disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
                     return;
                 }
@@ -219,10 +221,10 @@ public class UpstreamSession {
 
             if (!username.equals(protocol.getProfile().getName())) {
                 username = protocol.getProfile().getName();
-                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME));
+                DragonAPIsendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME));
             }
 
-            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
+            DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
 
             proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE, username, remoteAddress, username));
             downstream.connect(protocol, proxy.getRemoteServerAddress());
