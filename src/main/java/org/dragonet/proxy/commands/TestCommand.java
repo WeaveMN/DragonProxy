@@ -37,6 +37,10 @@ public class TestCommand implements ConsoleCommand {
         tag.putInt("x", x);
         tag.putInt("y", y);
         tag.putInt("z", z);
+        tag.putString("Text1", "TEST 1");
+        tag.putString("Text2", "TEST 2");
+        tag.putString("Text3", "TEST 3");
+        tag.putString("Text4", "TEST 4");
         
         BlockEntityDataPacket bed = new BlockEntityDataPacket(x, y, z, tag);
         cli.sendPacket(bed);

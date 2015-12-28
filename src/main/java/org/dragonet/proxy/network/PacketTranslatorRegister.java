@@ -32,6 +32,7 @@ import org.spacehq.mc.protocol.packet.ingame.server.ServerChatPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerDestroyEntitiesPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityEffectPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityMetadataPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityPositionPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityPositionRotationPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityRemoveEffectPacket;
@@ -39,6 +40,7 @@ import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityVelocityP
 import org.spacehq.mc.protocol.packet.ingame.server.entity.player.ServerPlayerPositionRotationPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.player.ServerUpdateHealthPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnMobPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnObjectPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.window.ServerSetSlotPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.window.ServerWindowItemsPacket;
@@ -81,6 +83,8 @@ public final class PacketTranslatorRegister {
         PC_TO_PE_TRANSLATOR.put(ServerPlayerPositionRotationPacket.class, new PCPlayerPositionRotationPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerSpawnMobPacket.class, new PCSpawnMobPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerSpawnPlayerPacket.class, new PCSpawnPlayerPacketTranslator());
+        PC_TO_PE_TRANSLATOR.put(ServerSpawnObjectPacket.class, new PCSpawnObjectPacketTranslator());
+        PC_TO_PE_TRANSLATOR.put(ServerEntityMetadataPacket.class, new PCEntityMetadataPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerDestroyEntitiesPacket.class, new PCDestroyEntitiesPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerEntityPositionRotationPacket.class, new PCEntityPositionRotationPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerEntityPositionPacket.class, new PCEntityPositionPacketTranslator());

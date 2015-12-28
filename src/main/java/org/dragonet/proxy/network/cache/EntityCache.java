@@ -19,10 +19,8 @@ import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import org.dragonet.proxy.entity.EntityType;
-import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.spacehq.mc.protocol.data.game.values.MagicValues;
-import org.spacehq.mc.protocol.data.game.values.entity.ObjectType;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnMobPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnObjectPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
@@ -105,6 +103,9 @@ public final class EntityCache {
         e.x = packet.getX();
         e.y = packet.getY();
         e.z = packet.getZ();
+        e.motionX = packet.getMotionX();
+        e.motionY = packet.getMotionY();
+        e.motionZ = packet.getMotionZ();
         e.yaw = packet.getYaw();
         e.pitch = packet.getPitch();
         e.spawned = false; //Server will update its data then we can send it. 
@@ -117,11 +118,14 @@ public final class EntityCache {
     }
 
     public void onTick() {
+        //Disabled this for now
+        /*
         entities.values().stream().map((e) -> {
             e.x += e.motionX;
             e.y += e.motionY;
             e.z += e.motionZ;
             return e;
         });
+        */
     }
 }
