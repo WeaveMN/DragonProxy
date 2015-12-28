@@ -92,7 +92,7 @@ public class UpstreamSession {
         proxy.getNetwork().sendPacket(raknetID, packet, immediate);
     }
 
-    public void sendAllPacket(PEPacket[] packets, boolean immediate) {
+    public void sendAllPackets(PEPacket[] packets, boolean immediate) {
         if (packets.length < 5) {
             for (PEPacket packet : packets) {
                 sendPacket(packet);

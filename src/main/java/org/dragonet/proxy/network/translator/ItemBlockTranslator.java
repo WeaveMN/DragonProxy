@@ -59,6 +59,14 @@ public class ItemBlockTranslator {
         return ret;
     }
     
+    public static int translateToPC(int peItemBlockId){
+        if (!PE_TO_PC_OVERRIDE.containsKey(peItemBlockId)) {
+            return peItemBlockId;
+        }
+        int ret = PE_TO_PC_OVERRIDE.get(peItemBlockId);
+        return ret;
+    }
+    
     public static CompoundTag newTileTag(String id, int x, int y, int z){
         CompoundTag t = new CompoundTag();
         t.putString("id", id);
@@ -78,5 +86,10 @@ public class ItemBlockTranslator {
         if(item == null || item.getId() == 0) return null;
         PEInventorySlot inv = new PEInventorySlot((short)translateToPE(item.getId()), (byte)(item.getAmount() & 0xFF), (short)(item.getData() & 0xFFFF), translateNBT(item.getNBT()));
         return inv;
+    }
+    
+    public static ItemStack translateToPC(PEInventorySlot slot){
+        ItemStack item = new ItemStack(translateToPC((int)slot.id), (int)(slot.count & 0xFF), (int)(slot.meta & 0xFFFF));
+        return item;
     }
 }

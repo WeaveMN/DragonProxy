@@ -19,11 +19,15 @@ import org.dragonet.net.packet.minecraft.ChatPacket;
 import org.dragonet.net.packet.minecraft.MovePlayerPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PlayerActionPacket;
+import org.dragonet.net.packet.minecraft.PlayerEquipmentPacket;
+import org.dragonet.net.packet.minecraft.UseItemPacket;
 import org.dragonet.proxy.network.translator.PEPacketTranslator;
 import org.dragonet.proxy.network.translator.pc.*;
 import org.dragonet.proxy.network.translator.pe.PEChatPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEMovePlayerPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEPlayerActionPacketTranslator;
+import org.dragonet.proxy.network.translator.pe.PEPlayerEquipmentPacketTranslator;
+import org.dragonet.proxy.network.translator.pe.PEUseItemPacketTranslator;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerChatPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerDestroyEntitiesPacket;
@@ -98,6 +102,8 @@ public final class PacketTranslatorRegister {
         PE_TO_PC_TRANSLATOR.put(ChatPacket.class, new PEChatPacketTranslator());
 
         // Entity
+        PE_TO_PC_TRANSLATOR.put(UseItemPacket.class, new PEUseItemPacketTranslator());
+        PE_TO_PC_TRANSLATOR.put(PlayerEquipmentPacket.class, new PEPlayerEquipmentPacketTranslator());
         PE_TO_PC_TRANSLATOR.put(MovePlayerPacket.class, new PEMovePlayerPacketTranslator());
         PE_TO_PC_TRANSLATOR.put(PlayerActionPacket.class, new PEPlayerActionPacketTranslator());
     }

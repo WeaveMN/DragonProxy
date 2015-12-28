@@ -107,7 +107,7 @@ public class DownstreamSession {
                     if (packets.length == 1) {
                         upstream.sendPacket(packets[0]);
                     } else {
-                        upstream.sendAllPacket(packets, true);
+                        upstream.sendAllPackets(packets, true);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

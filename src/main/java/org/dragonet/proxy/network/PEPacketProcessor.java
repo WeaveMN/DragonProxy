@@ -22,6 +22,7 @@ import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PEPacketIDs;
 import org.dragonet.net.packet.minecraft.PlayerActionPacket;
 import org.dragonet.net.packet.minecraft.PlayerEquipmentPacket;
+import org.dragonet.net.packet.minecraft.UseItemPacket;
 import org.spacehq.packetlib.packet.Packet;
 
 public class PEPacketProcessor implements Runnable {
@@ -64,18 +65,6 @@ public class PEPacketProcessor implements Runnable {
                 handlePacket(pk);
             });
             return;
-        }
-        client.getProxy().getLogger().info("Received packet: " + packet.getClass().getSimpleName());
-        //DEBUG
-        switch (packet.pid()) {
-            case PEPacketIDs.MOB_EQUIPMENT_PACKET:
-                PlayerEquipmentPacket p = (PlayerEquipmentPacket) packet;
-                client.getProxy().getLogger().info("PlayerEquipmentPacket => Slot: " + p.item.toString() + ", Selected: " + p.selectedSlot + ", Slot: " + p.slot);
-                break;
-            case PEPacketIDs.PLAYER_ACTION_PACKET:
-                PlayerActionPacket act = (PlayerActionPacket) packet;
-                client.getProxy().getLogger().info("PlayerActionPacket => Action: " + act.action);
-                break;
         }
         switch (packet.pid()) {
             case PEPacketIDs.LOGIN_PACKET:
