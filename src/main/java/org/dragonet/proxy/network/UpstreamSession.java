@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
-import lombok.Setter;
 import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.ChatPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
@@ -27,7 +26,6 @@ import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.StartGamePacket;
 import org.dragonet.proxy.DragonProxy;
-import org.dragonet.proxy.DragonAPI;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.cache.EntityCache;
 import org.dragonet.proxy.network.cache.WindowCache;
@@ -35,7 +33,6 @@ import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.spacehq.mc.auth.exception.request.RequestException;
 import org.spacehq.mc.protocol.MinecraftProtocol;
-import org.spacehq.mc.protocol.data.game.Position;
 
 /**
  * Maintaince the connection between the proxy and Minecraft: Pocket Edition
@@ -179,8 +176,8 @@ public class UpstreamSession {
 
             dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
 
-            DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
-            DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
+            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
+            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
         } else {
             protocol = new MinecraftProtocol(username);
             downstream.connect(protocol, proxy.getRemoteServerAddress());
@@ -210,11 +207,11 @@ public class UpstreamSession {
                 protocol = new MinecraftProtocol((String) dataCache.get(CacheKey.AUTHENTICATION_EMAIL), password, false);
             } catch (RequestException ex) {
                 if (ex.getMessage().toLowerCase().contains("invalid")) {
-                    DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
+                    sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
                     disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_FAILD));
                     return;
                 } else {
-                    DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
+                    sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
                     disconnect(proxy.getLang().get(Lang.MESSAGE_ONLINE_ERROR));
                     return;
                 }
@@ -222,10 +219,10 @@ public class UpstreamSession {
 
             if (!username.equals(protocol.getProfile().getName())) {
                 username = protocol.getProfile().getName();
-                DragonAPIsendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME));
+                sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_USERNAME));
             }
 
-            DragonAPI.sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
+            sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
 
             proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE, username, remoteAddress, username));
             downstream.connect(protocol, proxy.getRemoteServerAddress());
