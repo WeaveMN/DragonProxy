@@ -14,7 +14,7 @@ A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to **Min
 ## Usage
 Note: Target server must be off-line mode for now, we may add online authentication later. 
 * Step 1. Install Java 8(or higher), download the JAR file. 
-* Step 2. Set up a normal Minecraft PC/Mac server. You can also use `Bukkit`/`Spigot`/`Glowstone`/`SpongeVanilla`. 
+* Step 2. Set up a normal Minecraft PC/Mac server. You can also use `Bukkit`/`Spigot`/`Glowstone`/`SpongeVanilla`/`BungeeCord`. 
 * Step 3. Run the proxy by running command: `java -Xmx256M -jar dragonproxy-x.x.x.jar` where `256M` indicates memory size and `dragonproxy-x.x.x.jar` is the file name. 
 * Step 4. Close the server by typing `stop` in the console. 
 * Step 5. Edit `config.properties` and change `remote_ip` and `remote_port` to your Minecraft PC/Mac server, such as `127.0.0.1` and `25565`. 
