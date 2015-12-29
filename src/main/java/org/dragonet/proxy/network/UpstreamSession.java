@@ -25,6 +25,7 @@ import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.StartGamePacket;
+import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.cache.EntityCache;
@@ -33,6 +34,7 @@ import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.spacehq.mc.auth.exception.request.RequestException;
 import org.spacehq.mc.protocol.MinecraftProtocol;
+import org.spacehq.mc.protocol.data.game.Position;
 
 /**
  * Maintaince the connection between the proxy and Minecraft: Pocket Edition
@@ -183,7 +185,7 @@ public class UpstreamSession {
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         }
     }
-    
+
     //Kept here in case I missed some code and it gets like 1mil errors
     //Need remove tho
     public void sendChat(String chat) {
@@ -199,6 +201,19 @@ public class UpstreamSession {
         pk.source = "";
         pk.message = chat;
         sendPacket(pk, true);
+    }
+
+    public void sendFakeBlock(int x, int y, int z, int id, int meta) {
+        UpdateBlockPacket pkBlock = new UpdateBlockPacket();
+        UpdateBlockPacket.UpdateBlockRecord rec = new UpdateBlockPacket.UpdateBlockRecord();
+        rec.flags = UpdateBlockPacket.FLAG_ALL;
+        rec.x = x;
+        rec.y = (byte) (y & 0xFF);
+        rec.z = z;
+        rec.block = (byte) (id & 0xFF);
+        rec.meta = (byte) (meta & 0xFF);
+        pkBlock.records = new UpdateBlockPacket.UpdateBlockRecord[]{rec};
+        sendPacket(pkBlock, true);
     }
 
     public void authenticate(String password) {

@@ -29,7 +29,7 @@ public final class WindowCache {
     public WindowCache(UpstreamSession upstream) {
         this.upstream = upstream;
 
-        CachedWindow inv = new CachedWindow(0, -1, 36);
+        CachedWindow inv = new CachedWindow(0, null, 45);
         windows.put(0, inv);
     }
     
@@ -37,9 +37,13 @@ public final class WindowCache {
         return windows.get(0);
     }
 
-    public CachedWindow newWindow(ServerOpenWindowPacket packet) {
-        //TODO
-        return null;
+    // We do not do translations here, do it in InventoryTranslatorRegister
+    public void cacheWindow(CachedWindow win){
+        windows.put(win.windowId, win);
+    }
+    
+    public CachedWindow removeWindow(int id){
+        return windows.remove(id);
     }
 
     public CachedWindow get(int id) {

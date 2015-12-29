@@ -32,7 +32,7 @@ public class PCSetSlotPacketTranslator implements PCPacketTranslator<ServerSetSl
             return null;
         }
         CachedWindow win = session.getWindowCache().get(packet.getWindowId());
-        if (win.pcType == -1 && packet.getWindowId() == 0) {
+        if (win.pcType == null && packet.getWindowId() == 0) {
             if(packet.getSlot() >= win.slots.length) return null;
             win.slots[packet.getSlot()] = packet.getItem();
             return InventoryTranslatorRegister.sendPlayerInventory(session); //Too lazy lol

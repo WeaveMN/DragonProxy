@@ -52,7 +52,6 @@ public final class EntityMetaTranslator {
                 case 6://Health
                     //Not supported on MCPE yet
                     break;
-/*
                 case 7://Potion color
                     peMeta.map.put(EntityMetaData.Constants.DATA_POTION_COLOR, new ByteMeta((byte) ((int) m.getValue() & 0xFF)));
                     break;
@@ -71,7 +70,6 @@ public final class EntityMetaTranslator {
                 case 16:
                     //Not supported yet
                     break;
-*/
             }
         }
         return peMeta;
