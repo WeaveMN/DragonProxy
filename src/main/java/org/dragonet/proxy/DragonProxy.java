@@ -69,18 +69,24 @@ public class DragonProxy {
     private Metrics metrics;
 
     public void run(String[] args) {
-        //Initialize console
-        console = new ConsoleManager(this);
-        console.startConsole();
-        console.startFile("console.log");
-
-        try {
+		//Need to initialize config before console
+		try {
             config = new ServerConfig();
         } catch (IOException ex) {
             logger.severe("Failed to load configuration file! ");
             ex.printStackTrace();
             return;
         }
+		
+        //Initialize console
+        console = new ConsoleManager(this);
+        console.startConsole();
+		
+		if(config.getConfig().getProperty("log_console").toLowerCase().contains("true")){
+			console.startFile("console.log");
+			logger.info("Saving console.log disabled"); //TODO: Translations
+		}
+        
         try {
             lang = new Lang(config.getConfig().getProperty(ServerConfig.LANG_FILE));
         } catch (IOException ex) {
