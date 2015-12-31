@@ -1,10 +1,14 @@
 ![Logo](http://dragonet.org/assets/img/Dragonet.png)
 
-Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.md
-
 # DragonProxy
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)  
+**If on mobile, open to show the whole file**
+
+
 A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to **Minecraft PC/Mac** servers.
+
+
+Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.md
 
 ![Screenshot](https://raw.githubusercontent.com/DragonetMC/DragonProxy/master/screenshots/Hypixel.png)
 #### Hypixel on Pocket/Win 10 Edition! 
