@@ -84,7 +84,9 @@ public class DragonProxy {
 		
 		if(config.getConfig().getProperty("log_console").toLowerCase().contains("true")){
 			console.startFile("console.log");
-			logger.info("Saving console.log disabled"); //TODO: Translations
+			logger.info("Saving console.log enabled"); //TODO: Translations
+		} else {
+			logger.info("Saving console.log disabled");
 		}
         
         try {

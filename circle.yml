@@ -7,4 +7,5 @@ checkout:
         - mvn package
 test:
     post:
+        - 
         - cp target/dragonproxy-*.jar $CIRCLE_ARTIFACTS/
