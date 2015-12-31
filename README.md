@@ -1,5 +1,7 @@
 ![Logo](http://dragonet.org/assets/img/Dragonet.png)
 
+Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.md
+
 # DragonProxy
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)  
 A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to **Minecraft PC/Mac** servers.
