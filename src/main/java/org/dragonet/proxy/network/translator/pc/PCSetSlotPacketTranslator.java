@@ -25,18 +25,18 @@ public class PCSetSlotPacketTranslator implements PCPacketTranslator<ServerSetSl
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerSetSlotPacket packet) {
         if (!session.getWindowCache().hasWindow(packet.getWindowId())) {
-            //Almost impossible to get here if window is valid and supported. 
-            if(session.getDownstream() != null){
-                session.getDownstream().send(new ClientCloseWindowPacket(packet.getWindowId()));    //Close non-supported windows
-            }
+            //Cache this
+            session.getWindowCache().newCachedPacket(packet.getWindowId(), packet);
             return null;
         }
         CachedWindow win = session.getWindowCache().get(packet.getWindowId());
-        if (win.pcType == null && packet.getWindowId() == 0) {
+        if (win.pcType == null && packet.getWindowId() != 0) return null;
+        if (packet.getWindowId() == 0) {
             if(packet.getSlot() >= win.slots.length) return null;
             win.slots[packet.getSlot()] = packet.getItem();
             return InventoryTranslatorRegister.sendPlayerInventory(session); //Too lazy lol
         }
+        InventoryTranslatorRegister.updateSlot(session, packet);
         return null;
     }
 

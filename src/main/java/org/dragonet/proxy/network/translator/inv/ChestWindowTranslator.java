@@ -13,8 +13,8 @@
 package org.dragonet.proxy.network.translator.inv;
 
 import org.dragonet.inventory.InventoryType;
-import org.dragonet.net.packet.minecraft.PEPacket;
-import org.dragonet.net.packet.minecraft.WindowClosePacket;
+import org.dragonet.inventory.PEInventorySlot;
+import org.dragonet.net.packet.minecraft.WindowItemsPacket;
 import org.dragonet.net.packet.minecraft.WindowOpenPacket;
 import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
@@ -27,6 +27,7 @@ public class ChestWindowTranslator implements InventoryTranslator {
     @Override
     public boolean open(UpstreamSession session, CachedWindow window) {
         Position pos = new Position((int)session.getEntityCache().getClientEntity().x, session.getEntityCache().getClientEntity().y > 64.0d ? 0 : 127, (int)session.getEntityCache().getClientEntity().z);
+        session.getDataCache().put(CacheKey.WINDOW_OPENED_ID, window.windowId);
         session.getDataCache().put(CacheKey.WINDOW_BLOCK_POSITION, pos);
         session.sendFakeBlock(pos.getX(), pos.getY(), pos.getZ(), 54, 0);
         WindowOpenPacket pk = new WindowOpenPacket();
@@ -42,11 +43,21 @@ public class ChestWindowTranslator implements InventoryTranslator {
 
     @Override
     public void updateContent(UpstreamSession session, CachedWindow window) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sendContent(session, window);
     }
 
     @Override
-    public void updateSlot(UpstreamSession session, int slotIndex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void updateSlot(UpstreamSession session, CachedWindow window, int slotIndex) {
+        sendContent(session, window);//TOO LAZY LOL
+    }
+    
+    private void sendContent(UpstreamSession session, CachedWindow win){
+        WindowItemsPacket pk = new WindowItemsPacket();
+        pk.windowID = (byte)(win.windowId & 0xFF);
+        pk.slots = new PEInventorySlot[win.slots.length];
+        for(int i = 0; i < pk.slots.length; i++){
+            pk.slots[i] = PEInventorySlot.fromItemStack(win.slots[i]);
+        }
+        session.sendPacket(pk, true);
     }
 }

@@ -12,7 +12,6 @@
  */
 package org.dragonet.proxy.network.translator;
 
-import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.cache.CachedWindow;
 
@@ -33,5 +32,11 @@ public interface InventoryTranslator {
      */
     public void updateContent(UpstreamSession session, CachedWindow window);
     
-    public void updateSlot(UpstreamSession session, int slotIndex);
+    /**
+     * Update a single slot in a window. 
+     * @param session
+     * @param window
+     * @param slotIndex 
+     */
+    public void updateSlot(UpstreamSession session, CachedWindow window, int slotIndex);
 }
