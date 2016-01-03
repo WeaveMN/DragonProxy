@@ -179,7 +179,7 @@ public class UpstreamSession {
             LoginStatusPacket pkStat = new LoginStatusPacket();
             pkStat.status = LoginStatusPacket.PLAYER_SPAWN;
             sendPacket(pkStat, true);
-
+            
             dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
 
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));

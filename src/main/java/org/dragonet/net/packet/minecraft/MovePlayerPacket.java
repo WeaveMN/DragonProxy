@@ -43,7 +43,7 @@ public class MovePlayerPacket extends PEPacket {
         mode = MODE_NORMAL;
     }
 
-    public MovePlayerPacket(int eid, float x, float y, float z, float yaw, float pitch, float bodyYaw, boolean onGround) {
+    public MovePlayerPacket(long eid, float x, float y, float z, float yaw, float pitch, float bodyYaw, boolean onGround) {
         this.eid = eid;
         this.x = x;
         this.y = y;

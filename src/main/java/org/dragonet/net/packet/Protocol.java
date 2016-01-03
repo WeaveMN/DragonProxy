@@ -38,6 +38,7 @@ public final class Protocol {
         registerDecoder(PEPacketIDs.USE_ITEM_PACKET, UseItemPacket.class);
         registerDecoder(PEPacketIDs.WINDOW_SET_SLOT_PACKET, WindowSetSlotPacket.class);
         registerDecoder(PEPacketIDs.INTERACT_PACKET, InteractPacket.class);
+        registerDecoder(PEPacketIDs.ENTITY_EVENT_PACKET, EntityEventPacket.class);
     }
 
     private static void registerDecoder(byte id, Class<? extends PEPacket> clazz) {
