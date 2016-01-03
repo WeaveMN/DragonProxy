@@ -37,7 +37,7 @@ public enum MCColor {
     RESET("r");
 
     public final static String COLOR_PREFIX_PC = new String(new byte[]{(byte) 0xc2, (byte) 0xa7});
-    public final static String COLOR_PREFIX_PE = "§";
+    public final static String COLOR_PREFIX_PE = "\xc2\xa7"; //§
 
     private String suffix;
 

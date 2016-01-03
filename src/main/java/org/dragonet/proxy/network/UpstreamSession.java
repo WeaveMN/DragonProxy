@@ -190,8 +190,6 @@ public class UpstreamSession {
         }
     }
 
-    //Kept here in case I missed some code and it gets like 1mil errors
-    //Need remove tho
     public void sendChat(String chat) {
         if (chat.contains("\n")) {
             String[] lines = chat.split("\n");
@@ -206,6 +204,14 @@ public class UpstreamSession {
         pk.message = chat;
         sendPacket(pk, true);
     }
+	
+	public void sendPopup(String text){
+		ChatPacket pk = new ChatPacket();
+        pk.type = ChatPacket.TextType.POPUP;
+        pk.source = "";
+        pk.message = text;
+        sendPacket(pk, true);
+	}
 
     public void sendFakeBlock(int x, int y, int z, int id, int meta) {
         UpdateBlockPacket pkBlock = new UpdateBlockPacket();
