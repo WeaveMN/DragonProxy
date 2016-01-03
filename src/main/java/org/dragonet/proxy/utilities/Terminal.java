@@ -56,7 +56,7 @@ public abstract class Terminal {
 			Terminal.getWindowsEscapeCodes();
 			return;
 		} else if(System.getProperty("os.name").startsWith("Linux")){
-			   System.out.println("Color codes on Linux not yey supported");
+			   System.out.println("Color codes on Linux not yet supported");
 			   return;
 		}
 	}
