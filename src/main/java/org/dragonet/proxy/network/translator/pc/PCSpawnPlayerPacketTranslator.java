@@ -26,8 +26,13 @@ public class PCSpawnPlayerPacketTranslator implements PCPacketTranslator<ServerS
                     break;
                 }
             }
+            
             if (pkAddPlayer.username == null) {
-                pkAddPlayer.username = "_";
+                if(session.getPlayerInfoCache().containsKey(packet.getUUID())){
+                    pkAddPlayer.username = session.getPlayerInfoCache().get(packet.getUUID()).getProfile().getName();
+                }else{
+                    return null;
+                }
             }
 
             pkAddPlayer.uuid = packet.getUUID();
@@ -44,7 +49,7 @@ public class PCSpawnPlayerPacketTranslator implements PCPacketTranslator<ServerS
             //pkAddPlayer.metadata = EntityMetaData.getMetaDataFromPlayer((GlowPlayer) this.getSession().getPlayer().getWorld().getEntityManager().getEntity(packet.getId()));
             PlayerListPacket lst = new PlayerListPacket(new PlayerListPacket.PlayerInfo(packet.getUUID(), packet.getEntityId(), pkAddPlayer.username, "Default", new byte[0]));
             //TODO: get the default skin to work.
-            return new PEPacket[]{pkAddPlayer, lst};
+            return new PEPacket[]{lst, pkAddPlayer};
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -16,6 +16,7 @@ import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
@@ -34,7 +35,7 @@ import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.spacehq.mc.auth.exception.request.RequestException;
 import org.spacehq.mc.protocol.MinecraftProtocol;
-import org.spacehq.mc.protocol.data.game.Position;
+import org.spacehq.mc.protocol.data.game.values.PlayerListEntry;
 
 /**
  * Maintaince the connection between the proxy and Minecraft: Pocket Edition
@@ -68,6 +69,9 @@ public class UpstreamSession {
     @Getter
     private final Map<String, Object> dataCache = Collections.synchronizedMap(new HashMap<String, Object>());
 
+    @Getter
+    private final Map<UUID, PlayerListEntry> playerInfoCache = Collections.synchronizedMap(new HashMap<UUID, PlayerListEntry>());
+    
     @Getter
     private final EntityCache entityCache = new EntityCache(this);
 
