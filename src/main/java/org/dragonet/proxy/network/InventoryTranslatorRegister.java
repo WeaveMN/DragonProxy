@@ -14,11 +14,9 @@ package org.dragonet.proxy.network;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.dragonet.inventory.InventoryType;
 import org.dragonet.inventory.PEInventorySlot;
 import org.dragonet.inventory.PEWindowConstantID;
 import org.dragonet.net.packet.minecraft.PEPacket;
-import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
 import org.dragonet.net.packet.minecraft.WindowClosePacket;
 import org.dragonet.net.packet.minecraft.WindowItemsPacket;
 import org.dragonet.proxy.network.cache.CachedWindow;
