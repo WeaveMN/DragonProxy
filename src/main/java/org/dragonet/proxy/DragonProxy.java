@@ -31,7 +31,7 @@ public class DragonProxy {
     public static void main(String[] args) {
         new DragonProxy().run(args);
     }
-    public final static boolean IS_RELEASE = true;
+    public final static boolean IS_RELEASE = false;
 
     private final Logger logger = Logger.getLogger("DragonProxy");
 
