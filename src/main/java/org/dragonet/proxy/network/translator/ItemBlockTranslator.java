@@ -29,6 +29,8 @@ public class ItemBlockTranslator {
         swap(125, 157); //Double Slab <-> Activator Rail
         swap(126, 158); //Slab <-> NULL
         preventPc(158); //No dispenser on MCPE
+        preventPc(93);  //No repeater
+        preventPc(94);  //No repeater
         onewayOverride(93, 63);
         onewayOverride(94, 63);
         onewayOverride(119, 90); //End portal -> Nether portal
