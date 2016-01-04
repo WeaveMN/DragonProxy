@@ -134,6 +134,7 @@ public class DragonProxy {
         logger.info(lang.get(Lang.SHUTTING_DOWN));
         this.shuttingDown = true;
         network.shutdown();
+        System.exit(0);
     }
 
     public Logger getLogger() {
