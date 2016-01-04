@@ -134,6 +134,10 @@ public class DragonProxy {
         logger.info(lang.get(Lang.SHUTTING_DOWN));
         this.shuttingDown = true;
         network.shutdown();
+        try{
+            Thread.sleep(2000); //Wait for all clients disconnected
+        } catch (Exception e) {
+        }
         System.exit(0);
     }
 
