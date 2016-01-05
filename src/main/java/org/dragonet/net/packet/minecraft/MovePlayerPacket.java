@@ -62,6 +62,7 @@ public class MovePlayerPacket extends PEPacket {
 
     @Override
     public void encode() {
+        setShouldSendImmidate(true);
         try {
             setChannel(NetworkChannel.CHANNEL_MOVEMENT);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
