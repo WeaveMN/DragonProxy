@@ -32,17 +32,18 @@ public class MovePlayerPacket extends PEPacket {
     public float yaw;
     public float pitch;
     public float bodyYaw;
-    public byte mode = MODE_NORMAL;
-    public boolean teleport;
+    public byte mode;
+    public boolean onGround;
 
     public MovePlayerPacket(byte[] data) {
         this.setData(data);
     }
 
     public MovePlayerPacket() {
+        mode = MODE_NORMAL;
     }
 
-    public MovePlayerPacket(int eid, float x, float y, float z, float yaw, float pitch, float bodyYaw, boolean teleport) {
+    public MovePlayerPacket(long eid, float x, float y, float z, float yaw, float pitch, float bodyYaw, boolean onGround) {
         this.eid = eid;
         this.x = x;
         this.y = y;
@@ -50,7 +51,8 @@ public class MovePlayerPacket extends PEPacket {
         this.yaw = yaw;
         this.pitch = pitch;
         this.bodyYaw = bodyYaw;
-        this.teleport = teleport;
+        this.onGround = onGround;
+        mode = MODE_NORMAL;
     }
 
     @Override
@@ -60,6 +62,7 @@ public class MovePlayerPacket extends PEPacket {
 
     @Override
     public void encode() {
+        setShouldSendImmidate(true);
         try {
             setChannel(NetworkChannel.CHANNEL_MOVEMENT);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -73,7 +76,7 @@ public class MovePlayerPacket extends PEPacket {
             writer.writeFloat(this.bodyYaw);
             writer.writeFloat(this.pitch);
             writer.writeByte(this.mode);
-            writer.writeByte((byte) (this.teleport ? 0x80 : 0x00));
+            writer.writeByte((byte) (this.onGround ? (byte) 1 : (byte) 0));
             this.setData(bos.toByteArray());
         } catch (IOException e) {
         }
@@ -92,7 +95,7 @@ public class MovePlayerPacket extends PEPacket {
             this.bodyYaw = reader.readFloat();
             this.pitch = reader.readFloat();
             this.mode = reader.readByte();
-            this.teleport = reader.readByte() > 0;
+            this.onGround = reader.readByte() > 0;
             this.setLength(reader.totallyRead());
         } catch (IOException e) {
         }

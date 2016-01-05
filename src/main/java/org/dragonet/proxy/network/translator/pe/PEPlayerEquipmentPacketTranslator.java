@@ -19,7 +19,6 @@ import org.dragonet.proxy.network.cache.CachedWindow;
 import org.dragonet.proxy.network.translator.PEPacketTranslator;
 import org.spacehq.mc.protocol.data.game.ItemStack;
 import org.spacehq.mc.protocol.data.game.values.window.ClickItemParam;
-import org.spacehq.mc.protocol.data.game.values.window.MoveToHotbarParam;
 import org.spacehq.mc.protocol.data.game.values.window.WindowAction;
 import org.spacehq.mc.protocol.packet.ingame.client.player.ClientChangeHeldItemPacket;
 import org.spacehq.mc.protocol.packet.ingame.client.window.ClientWindowActionPacket;
@@ -31,6 +30,10 @@ public class PEPlayerEquipmentPacketTranslator implements PEPacketTranslator<Pla
     public Packet[] translate(UpstreamSession session, PlayerEquipmentPacket packet) {
         if (packet.selectedSlot > 8) {
             return null;
+        }
+        if(packet.slot == 0x28 || packet.slot == 0 || packet.slot == 255){
+            //That thing changed to air
+            //TODO
         }
         if (InventoryTranslatorRegister.HOTBAR_CONSTANTS[packet.selectedSlot] == packet.slot) {
             //Just switched selected slot index, no swapping

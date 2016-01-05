@@ -17,9 +17,26 @@ import org.dragonet.proxy.network.cache.CachedWindow;
 
 
 public interface InventoryTranslator {
-    public void open(UpstreamSession session, CachedWindow window);
+    /**
+     * Opens a window on MCPE. 
+     * @param session
+     * @param window
+     * @return Can that window be opened on MCPE?
+     */
+    public boolean open(UpstreamSession session, CachedWindow window);
     
+    /**
+     * Update a window's content. 
+     * @param session
+     * @param window
+     */
     public void updateContent(UpstreamSession session, CachedWindow window);
     
-    public void updateSlot(UpstreamSession session, CachedWindow slotIndex);
+    /**
+     * Update a single slot in a window. 
+     * @param session
+     * @param window
+     * @param slotIndex 
+     */
+    public void updateSlot(UpstreamSession session, CachedWindow window, int slotIndex);
 }

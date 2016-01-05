@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.spacehq.mc.protocol.data.game.ItemStack;
+import org.spacehq.mc.protocol.data.game.values.window.WindowType;
 
 public class CachedWindow {
 
@@ -24,7 +25,7 @@ public class CachedWindow {
     /**
      * The type of this window on remote side, -1 for player inventory.
      */
-    public final int pcType;
+    public final WindowType pcType;
 
     public final int size;
 
@@ -34,7 +35,7 @@ public class CachedWindow {
 
     public ItemStack[] slots;
 
-    public CachedWindow(int windowId, int pcType, int size) {
+    public CachedWindow(int windowId, WindowType pcType, int size) {
         this.windowId = windowId;
         this.pcType = pcType;
         this.size = size;

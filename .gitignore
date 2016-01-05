@@ -3,6 +3,7 @@
 *.iml
 *.ipr
 *.iws
+*.log
 build
 out
 classes

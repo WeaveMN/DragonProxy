@@ -12,10 +12,12 @@
  */
 package org.dragonet.proxy.network;
 
+import java.io.FileOutputStream;
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
@@ -24,7 +26,9 @@ import org.dragonet.net.packet.minecraft.ChatPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.net.packet.minecraft.SetSpawnPositionPacket;
 import org.dragonet.net.packet.minecraft.StartGamePacket;
+import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.cache.EntityCache;
@@ -33,6 +37,7 @@ import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.spacehq.mc.auth.exception.request.RequestException;
 import org.spacehq.mc.protocol.MinecraftProtocol;
+import org.spacehq.mc.protocol.data.game.values.PlayerListEntry;
 
 /**
  * Maintaince the connection between the proxy and Minecraft: Pocket Edition
@@ -66,6 +71,9 @@ public class UpstreamSession {
     @Getter
     private final Map<String, Object> dataCache = Collections.synchronizedMap(new HashMap<String, Object>());
 
+    @Getter
+    private final Map<UUID, PlayerListEntry> playerInfoCache = Collections.synchronizedMap(new HashMap<UUID, PlayerListEntry>());
+    
     @Getter
     private final EntityCache entityCache = new EntityCache(this);
 
@@ -170,10 +178,16 @@ public class UpstreamSession {
             pkStartGame.z = 0.0f;
             sendPacket(pkStartGame, true);
 
+            SetSpawnPositionPacket pkSpawn = new SetSpawnPositionPacket();
+            pkSpawn.x = 0;
+            pkSpawn.y = 72;
+            pkSpawn.z = 0;
+            sendPacket(pkSpawn, true);
+            
             LoginStatusPacket pkStat = new LoginStatusPacket();
             pkStat.status = LoginStatusPacket.PLAYER_SPAWN;
             sendPacket(pkStat, true);
-
+            
             dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
 
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
@@ -183,9 +197,7 @@ public class UpstreamSession {
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         }
     }
-    
-    //Kept here in case I missed some code and it gets like 1mil errors
-    //Need remove tho
+
     public void sendChat(String chat) {
         if (chat.contains("\n")) {
             String[] lines = chat.split("\n");
@@ -199,6 +211,27 @@ public class UpstreamSession {
         pk.source = "";
         pk.message = chat;
         sendPacket(pk, true);
+    }
+	
+	public void sendPopup(String text){
+		ChatPacket pk = new ChatPacket();
+        pk.type = ChatPacket.TextType.POPUP;
+        pk.source = "";
+        pk.message = text;
+        sendPacket(pk, true);
+	}
+
+    public void sendFakeBlock(int x, int y, int z, int id, int meta) {
+        UpdateBlockPacket pkBlock = new UpdateBlockPacket();
+        UpdateBlockPacket.UpdateBlockRecord rec = new UpdateBlockPacket.UpdateBlockRecord();
+        rec.flags = UpdateBlockPacket.FLAG_ALL;
+        rec.x = x;
+        rec.y = (byte) (y & 0xFF);
+        rec.z = z;
+        rec.block = (byte) (id & 0xFF);
+        rec.meta = (byte) (meta & 0xFF);
+        pkBlock.records = new UpdateBlockPacket.UpdateBlockRecord[]{rec};
+        sendPacket(pkBlock, true);
     }
 
     public void authenticate(String password) {

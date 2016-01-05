@@ -21,6 +21,7 @@ import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PlayerActionPacket;
 import org.dragonet.net.packet.minecraft.PlayerEquipmentPacket;
 import org.dragonet.net.packet.minecraft.UseItemPacket;
+import org.dragonet.net.packet.minecraft.WindowClosePacket;
 import org.dragonet.proxy.network.translator.PEPacketTranslator;
 import org.dragonet.proxy.network.translator.pc.*;
 import org.dragonet.proxy.network.translator.pe.PEChatPacketTranslator;
@@ -28,8 +29,10 @@ import org.dragonet.proxy.network.translator.pe.PEMovePlayerPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEPlayerActionPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEPlayerEquipmentPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEUseItemPacketTranslator;
+import org.dragonet.proxy.network.translator.pe.PEWindowClosePacketTranslator;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerChatPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.ServerJoinGamePacket;
+import org.spacehq.mc.protocol.packet.ingame.server.ServerPlayerListEntryPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerDestroyEntitiesPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityEffectPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.ServerEntityMetadataPacket;
@@ -42,6 +45,7 @@ import org.spacehq.mc.protocol.packet.ingame.server.entity.player.ServerUpdateHe
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnMobPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnObjectPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
+import org.spacehq.mc.protocol.packet.ingame.server.window.ServerOpenWindowPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.window.ServerSetSlotPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.window.ServerWindowItemsPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerBlockChangePacket;
@@ -82,6 +86,7 @@ public final class PacketTranslatorRegister {
         // Entity
         PC_TO_PE_TRANSLATOR.put(ServerPlayerPositionRotationPacket.class, new PCPlayerPositionRotationPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerSpawnMobPacket.class, new PCSpawnMobPacketTranslator());
+        PC_TO_PE_TRANSLATOR.put(ServerPlayerListEntryPacket.class, new PCPlayerListItemPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerSpawnPlayerPacket.class, new PCSpawnPlayerPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerSpawnObjectPacket.class, new PCSpawnObjectPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerEntityMetadataPacket.class, new PCEntityMetadataPacketTranslator());
@@ -94,6 +99,7 @@ public final class PacketTranslatorRegister {
         PC_TO_PE_TRANSLATOR.put(ServerUpdateHealthPacket.class, new PCUpdateHealthPacketTranslator());
 
         //Inventory
+        PC_TO_PE_TRANSLATOR.put(ServerOpenWindowPacket.class, new PCOpenWindowPacketTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerWindowItemsPacket.class, new PCWindowItemsTranslator());
         PC_TO_PE_TRANSLATOR.put(ServerSetSlotPacket.class, new PCSetSlotPacketTranslator());
     }
@@ -107,9 +113,12 @@ public final class PacketTranslatorRegister {
 
         // Entity
         PE_TO_PC_TRANSLATOR.put(UseItemPacket.class, new PEUseItemPacketTranslator());
-        PE_TO_PC_TRANSLATOR.put(PlayerEquipmentPacket.class, new PEPlayerEquipmentPacketTranslator());
         PE_TO_PC_TRANSLATOR.put(MovePlayerPacket.class, new PEMovePlayerPacketTranslator());
         PE_TO_PC_TRANSLATOR.put(PlayerActionPacket.class, new PEPlayerActionPacketTranslator());
+        
+        //Inventory
+        PE_TO_PC_TRANSLATOR.put(WindowClosePacket.class, new PEWindowClosePacketTranslator());
+        PE_TO_PC_TRANSLATOR.put(PlayerEquipmentPacket.class, new PEPlayerEquipmentPacketTranslator());
     }
 
     public static PEPacket[] translateToPE(UpstreamSession session, Packet packet) {

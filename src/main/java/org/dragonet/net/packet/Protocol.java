@@ -1,7 +1,14 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * GNU LESSER GENERAL PUBLIC LICENSE
+ *                       Version 3, 29 June 2007
+ *
+ * Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+ *
+ * You can view LICENCE file for details. 
+ *
+ * @author The Dragonet Team
  */
 package org.dragonet.net.packet;
 
@@ -31,6 +38,7 @@ public final class Protocol {
         registerDecoder(PEPacketIDs.USE_ITEM_PACKET, UseItemPacket.class);
         registerDecoder(PEPacketIDs.WINDOW_SET_SLOT_PACKET, WindowSetSlotPacket.class);
         registerDecoder(PEPacketIDs.INTERACT_PACKET, InteractPacket.class);
+        registerDecoder(PEPacketIDs.ENTITY_EVENT_PACKET, EntityEventPacket.class);
     }
 
     private static void registerDecoder(byte id, Class<? extends PEPacket> clazz) {

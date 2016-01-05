@@ -20,10 +20,10 @@ import org.spacehq.mc.protocol.packet.ingame.client.player.ClientPlayerPositionR
 import org.spacehq.packetlib.packet.Packet;
 
 public class PEMovePlayerPacketTranslator implements PEPacketTranslator<MovePlayerPacket> {
-
+    
     @Override
     public Packet[] translate(UpstreamSession session, MovePlayerPacket packet) {
-        ClientPlayerPositionRotationPacket pk = new ClientPlayerPositionRotationPacket(!packet.teleport, packet.x, packet.y, packet.z, packet.yaw, packet.pitch);
+        ClientPlayerPositionRotationPacket pk = new ClientPlayerPositionRotationPacket(!packet.onGround, packet.x, packet.y, packet.z, packet.yaw, packet.pitch);
         CachedEntity cliEntity = session.getEntityCache().getClientEntity();
         cliEntity.x = packet.x;
         cliEntity.y = packet.y;

@@ -49,7 +49,7 @@ public class Lang extends ConfigFile {
     public final static String MESSAGE_ONLINE_USERNAME = "message_online_username";
 
     public final static String MESSAGE_ONLINE_LOGIN_FAILD = "message_online_login_faild";
-
+    
     public final static String MESSAGE_REMOTE_CONNECTED = "message_remote_connected";
 
     public final static String MESSAGE_REMOTE_CONNECT_FAILURE = "message_remote_connect_failure";
