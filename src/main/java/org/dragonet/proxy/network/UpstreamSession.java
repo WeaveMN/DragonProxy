@@ -12,6 +12,7 @@
  */
 package org.dragonet.proxy.network;
 
+import java.io.FileOutputStream;
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,6 +26,7 @@ import org.dragonet.net.packet.minecraft.ChatPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.LoginStatusPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.net.packet.minecraft.SetSpawnPositionPacket;
 import org.dragonet.net.packet.minecraft.StartGamePacket;
 import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
 import org.dragonet.proxy.DragonProxy;
@@ -176,6 +178,12 @@ public class UpstreamSession {
             pkStartGame.z = 0.0f;
             sendPacket(pkStartGame, true);
 
+            SetSpawnPositionPacket pkSpawn = new SetSpawnPositionPacket();
+            pkSpawn.x = 0;
+            pkSpawn.y = 72;
+            pkSpawn.z = 0;
+            sendPacket(pkSpawn, true);
+            
             LoginStatusPacket pkStat = new LoginStatusPacket();
             pkStat.status = LoginStatusPacket.PLAYER_SPAWN;
             sendPacket(pkStat, true);

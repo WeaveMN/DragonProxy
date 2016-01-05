@@ -95,6 +95,7 @@ public class PlayerListPacket extends PEPacket {
             out.writeLong(eid);
             out.writeString(name);
             out.writeString(skinName);
+            out.writeShort((short)(skin.length & 0xFFFF));
             out.write(skin);
         }
 

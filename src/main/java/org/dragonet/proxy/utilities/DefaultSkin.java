@@ -28,15 +28,14 @@ public class DefaultSkin {
 
     private static void loadSkin() {
         try {
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(DefaultSkin.class.getResourceAsStream("/defaults/SKIN.bin")));
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-            String hex = in.readLine();
-            defaultSkin = Binary.hexStringToBytes(hex);
-            out.close();
-            in.close();
-
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            InputStream ins = DefaultSkin.class.getResourceAsStream("/resources/defaults/SKIN.BIN");
+            int d = -1;
+            while((d = ins.read()) != -1){
+                bos.write(d);
+            }
+            ins.close();
+            defaultSkin = bos.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
         }
