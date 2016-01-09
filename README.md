@@ -21,6 +21,7 @@ Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.
 
 #### Supported Remote Server Types
 - `Bukkit`/`Spigot`/`Glowstone`/`SpongeVanilla`/`BungeeCord`
+- Not listed is not mean unsupported, just untested.
 
 ## Usage
 Note: Target server must be off-line mode for now, we may add online authentication later. 
