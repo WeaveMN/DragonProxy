@@ -17,10 +17,12 @@ import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PEPacketTranslator;
 import org.spacehq.mc.protocol.data.game.Position;
+import org.spacehq.mc.protocol.data.game.values.ClientRequest;
 import org.spacehq.mc.protocol.data.game.values.Face;
 import org.spacehq.mc.protocol.data.game.values.MagicValues;
 import org.spacehq.mc.protocol.data.game.values.entity.player.PlayerAction;
 import org.spacehq.mc.protocol.data.game.values.entity.player.PlayerState;
+import org.spacehq.mc.protocol.packet.ingame.client.ClientRequestPacket;
 import org.spacehq.mc.protocol.packet.ingame.client.player.ClientPlayerActionPacket;
 import org.spacehq.mc.protocol.packet.ingame.client.player.ClientPlayerStatePacket;
 import org.spacehq.packetlib.packet.Packet;
@@ -29,6 +31,9 @@ public class PEPlayerActionPacketTranslator implements PEPacketTranslator<Player
 
     @Override
     public Packet[] translate(UpstreamSession session, PlayerActionPacket packet) {
+        if (packet.action == PlayerActionPacket.ACTION_RESPAWN) {
+            return new Packet[]{new ClientRequestPacket(ClientRequest.RESPAWN)};
+        }
         if (packet.action == PlayerActionPacket.ACTION_START_SPRINT) {
             ClientPlayerStatePacket stat = new ClientPlayerStatePacket((int) session.getDataCache().get(CacheKey.PLAYER_EID), PlayerState.START_SPRINTING);
             return new Packet[]{stat};

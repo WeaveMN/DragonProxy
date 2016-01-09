@@ -14,7 +14,6 @@ package org.dragonet.proxy.network.translator.pc;
 
 import org.dragonet.net.packet.minecraft.MoveEntitiesPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
-import org.dragonet.proxy.network.CacheKey;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.cache.CachedEntity;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
@@ -38,6 +37,9 @@ public class PCEntityPositionPacketTranslator implements PCPacketTranslator<Serv
         data.pitch = e.pitch;
         data.x = (float) e.x;
         data.y = (float) e.y;
+        if(e.player){
+            data.y += 1.62f;
+        }
         data.z = (float) e.z;
         MoveEntitiesPacket pk = new MoveEntitiesPacket(new MoveEntitiesPacket.MoveEntityData[]{data});
         return new PEPacket[]{pk};

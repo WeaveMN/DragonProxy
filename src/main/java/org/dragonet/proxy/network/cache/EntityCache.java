@@ -36,6 +36,12 @@ public final class EntityCache {
 
     public EntityCache(UpstreamSession upstream) {
         this.upstream = upstream;
+        CachedEntity clientEntity = new CachedEntity(0, -1, null, null, true, null);
+        entities.put(0, clientEntity);
+    }
+    
+    public CachedEntity getClientEntity(){
+        return entities.get(0);
     }
 
     public CachedEntity get(int eid) {
@@ -97,6 +103,9 @@ public final class EntityCache {
         e.x = packet.getX();
         e.y = packet.getY();
         e.z = packet.getZ();
+        e.motionX = packet.getMotionX();
+        e.motionY = packet.getMotionY();
+        e.motionZ = packet.getMotionZ();
         e.yaw = packet.getYaw();
         e.pitch = packet.getPitch();
         e.spawned = false; //Server will update its data then we can send it. 
@@ -109,11 +118,14 @@ public final class EntityCache {
     }
 
     public void onTick() {
+        //Disabled this for now
+        /*
         entities.values().stream().map((e) -> {
             e.x += e.motionX;
             e.y += e.motionY;
             e.z += e.motionZ;
             return e;
         });
+        */
     }
 }

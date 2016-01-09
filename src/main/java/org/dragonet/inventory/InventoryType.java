@@ -16,16 +16,16 @@ public final class InventoryType {
 
     public final static class PEInventory {
 
-        public final static byte CHEST = (byte) 0x0;
-        public final static byte DOUBLE_CHEST = (byte) 0x1;
-        public final static byte PLAYER = (byte) 0x2;
-        public final static byte FURNACE = (byte) 0x3;
-        public final static byte CRAFTING = (byte) 0x4;
-        public final static byte WORKBENCH = (byte) 0x5;
-        public final static byte STONECUTTER = (byte) 0x6;
-        public final static byte BREWING_STAND = (byte) 0x7;
-        public final static byte ANVIL = (byte) 0x8;
-        public final static byte ENCHANT_TABLE = (byte) 0x9;
+        public final static byte CHEST = (byte) 0;
+        public final static byte DOUBLE_CHEST = (byte) 0;
+        public final static byte PLAYER = (byte) 0;
+        public final static byte FURNACE = (byte) 2;
+        public final static byte CRAFTING = (byte) 1;
+        public final static byte WORKBENCH = (byte) 1;
+        public final static byte STONECUTTER = (byte) 1;
+        public final static byte BREWING_STAND = (byte) 5;
+        public final static byte ANVIL = (byte) 6;
+        public final static byte ENCHANT_TABLE = (byte) 4;
 
         public final static byte toPEInventory(byte bytePC, int slots) {
             switch (bytePC) {

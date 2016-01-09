@@ -38,7 +38,7 @@ public class ConsoleManager {
 
         logger.addHandler(new FancyConsoleHandler());
 
-        // reader must be initialized before standard streams are changed
+        //Reader must be initialized before standard streams are changed
         try {
             reader = new ConsoleReader();
         } catch (IOException ex) {

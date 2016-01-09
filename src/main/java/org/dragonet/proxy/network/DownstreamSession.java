@@ -90,14 +90,14 @@ public class DownstreamSession {
             public void packetReceived(PacketReceivedEvent event) {
                 /*
                 if (!event.getPacket().getClass().getSimpleName().toLowerCase().contains("block")
-                        && !event.getPacket().getClass().getSimpleName().toLowerCase().contains("position")
+                        && !event.getPacket().getClass().getSimpleName().toLowerCase().contains("entity")
                         && !event.getPacket().getClass().getSimpleName().toLowerCase().contains("time")) {
                     System.out.println(event.getPacket().getClass().getSimpleName() + " > " + event.getPacket().toString());
                 }
-                 */
+                */
                 //Handle the packet
                 try {
-                    PEPacket[] packets = TranslatorRegister.translateToPE(upstream, event.getPacket());
+                    PEPacket[] packets = PacketTranslatorRegister.translateToPE(upstream, event.getPacket());
                     if (packets == null) {
                         return;
                     }
@@ -107,7 +107,7 @@ public class DownstreamSession {
                     if (packets.length == 1) {
                         upstream.sendPacket(packets[0]);
                     } else {
-                        upstream.sendAllPacket(packets, true);
+                        upstream.sendAllPackets(packets, true);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

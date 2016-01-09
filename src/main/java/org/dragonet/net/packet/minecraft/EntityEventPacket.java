@@ -12,39 +12,45 @@
  */
 package org.dragonet.net.packet.minecraft;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import org.dragonet.net.inf.mcpe.NetworkChannel;
+import org.dragonet.proxy.utilities.io.PEBinaryReader;
 import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
-public class WindowOpenPacket extends PEPacket {
+public class EntityEventPacket extends PEPacket {
 
-    public byte windowID;
-    public byte type;
-    public short slots;
-    public int x;
-    public int y;
-    public int z;
+    public long eid;
+    public byte event;
 
+    public EntityEventPacket() {
+    }
+
+    public EntityEventPacket(long eid, byte event) {
+        this.eid = eid;
+        this.event = event;
+    }
+    
+    public EntityEventPacket(byte[] data) {
+        setData(data);
+    }
+    
     @Override
     public int pid() {
-        return PEPacketIDs.WINDOW_OPEN_PACKET;
+        return PEPacketIDs.ENTITY_EVENT_PACKET;
     }
 
     @Override
     public void encode() {
         setShouldSendImmidate(true);
         try {
-            setChannel(NetworkChannel.CHANNEL_PRIORITY);
+            setChannel(NetworkChannel.CHANNEL_WORLD_EVENTS);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             PEBinaryWriter writer = new PEBinaryWriter(bos);
             writer.writeByte((byte) (this.pid() & 0xFF));
-            writer.writeByte(this.windowID);
-            writer.writeByte(this.type);
-            writer.writeShort(this.slots);
-            writer.writeInt(this.x);
-            writer.writeInt(this.y);
-            writer.writeInt(this.z);
+            writer.writeLong(eid);
+            writer.writeByte(event);
             this.setData(bos.toByteArray());
         } catch (IOException e) {
         }
@@ -52,6 +58,15 @@ public class WindowOpenPacket extends PEPacket {
 
     @Override
     public void decode() {
+        try {
+            setChannel(NetworkChannel.CHANNEL_ENTITY_SPAWNING);
+            PEBinaryReader reader = new PEBinaryReader(new ByteArrayInputStream(this.getData()));
+            reader.readByte(); //PID
+            eid = reader.readLong();
+            event = reader.readByte();
+            this.setLength(reader.totallyRead());
+        } catch (IOException e) {
+        }
     }
 
 }

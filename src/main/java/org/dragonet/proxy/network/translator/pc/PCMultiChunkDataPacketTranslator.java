@@ -14,11 +14,16 @@ package org.dragonet.proxy.network.translator.pc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.nio.ByteOrder;
 import org.dragonet.net.packet.minecraft.FullChunkPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
+import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
+import org.dragonet.proxy.nbt.PENBT;
+import org.dragonet.proxy.nbt.tag.CompoundTag;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.ItemBlockTranslator;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
+import org.dragonet.proxy.utilities.Binary;
 import org.spacehq.mc.protocol.data.game.Chunk;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiChunkDataPacket;
 
@@ -33,10 +38,14 @@ public class PCMultiChunkDataPacketTranslator implements PCPacketTranslator<Serv
 
             ByteArrayOutputStream bos2 = new ByteArrayOutputStream();
             DataOutputStream dos2 = new DataOutputStream(bos2);
+
+            ByteArrayOutputStream bosTiles = new ByteArrayOutputStream();
+
             try {
                 for (int col = 0; col < packet.getColumns(); col++) {
                     bos1.reset();
                     bos2.reset();
+                    bosTiles.reset();
 
                     FullChunkPacket chunkToSend = new FullChunkPacket();
                     chunkToSend.chunkX = packet.getX(col);
@@ -50,7 +59,20 @@ public class PCMultiChunkDataPacketTranslator implements PCPacketTranslator<Serv
                                     dos1.writeByte((byte) 0);
                                 } else {
                                     int pcBlock = pcChunks[y >> 4].getBlocks().getBlock(x, y % 16, z);
-                                    dos1.writeByte((byte) (ItemBlockTranslator.translateToPE(pcBlock) & 0xFF));
+                                    int peBlock = ItemBlockTranslator.translateToPE(pcBlock);
+                                    dos1.writeByte((byte) (peBlock & 0xFF));
+
+                                    if (peBlock == 63 || peBlock == 68) {
+                                        PENBT.write(ItemBlockTranslator.newTileTag("Sign", (chunkToSend.chunkX << 4) | x, y, (chunkToSend.chunkZ << 4) | z), bosTiles, ByteOrder.LITTLE_ENDIAN);
+                                    } else if (peBlock == 54 || peBlock == 146) {
+                                        //TODO: Chest paring
+                                        /**
+                                         * META & 0b111 => [0] z- = x-,x+ [1]
+                                         * z-. [2] z-. [3] z+ = x-,x+. [4] x- =
+                                         * z-,z+. [5] x+ = z-,z+.
+                                         */
+                                        PENBT.write(ItemBlockTranslator.newTileTag("Chest", (chunkToSend.chunkX << 4) | x, y, (chunkToSend.chunkZ << 4) | z), bosTiles, ByteOrder.LITTLE_ENDIAN);
+                                    }
                                 }
                             }
                         }
@@ -91,11 +113,16 @@ public class PCMultiChunkDataPacketTranslator implements PCPacketTranslator<Serv
                         dos1.writeByte((byte) 0x4A);
                     }
 
+                    bos2.reset();
+
+                    dos1.writeInt(0);//Extra data, should be little-endian but it's 0 here for now so it's okay. 
+
+                    dos1.write(bosTiles.toByteArray());
+
                     chunkToSend.chunkData = bos1.toByteArray();
                     session.sendPacket(chunkToSend, true);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         );

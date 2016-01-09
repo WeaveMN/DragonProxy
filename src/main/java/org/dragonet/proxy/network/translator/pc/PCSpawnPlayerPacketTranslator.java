@@ -5,7 +5,9 @@ import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PlayerListPacket;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.cache.CachedEntity;
+import org.dragonet.proxy.network.translator.EntityMetaTranslator;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
+import org.dragonet.proxy.utilities.DefaultSkin;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
 import org.spacehq.mc.protocol.packet.ingame.server.entity.spawn.ServerSpawnPlayerPacket;
 
@@ -26,14 +28,19 @@ public class PCSpawnPlayerPacketTranslator implements PCPacketTranslator<ServerS
                     break;
                 }
             }
+            
             if (pkAddPlayer.username == null) {
-                pkAddPlayer.username = "_";
+                if(session.getPlayerInfoCache().containsKey(packet.getUUID())){
+                    pkAddPlayer.username = session.getPlayerInfoCache().get(packet.getUUID()).getProfile().getName();
+                }else{
+                    return null;
+                }
             }
 
             pkAddPlayer.uuid = packet.getUUID();
 
             pkAddPlayer.x = (float) packet.getX() / 32;
-            pkAddPlayer.y = (float) packet.getY() / 32;
+            pkAddPlayer.y = (float) packet.getY() / 32 + 1.62f;
             pkAddPlayer.z = (float) packet.getZ() / 32;
             pkAddPlayer.speedX = 0.0f;
             pkAddPlayer.speedY = 0.0f;
@@ -41,10 +48,11 @@ public class PCSpawnPlayerPacketTranslator implements PCPacketTranslator<ServerS
             pkAddPlayer.yaw = (packet.getYaw() / 256) * 360;
             pkAddPlayer.pitch = (packet.getPitch() / 256) * 360;
 
-            //pkAddPlayer.metadata = EntityMetaData.getMetaDataFromPlayer((GlowPlayer) this.getSession().getPlayer().getWorld().getEntityManager().getEntity(packet.getId()));
-            PlayerListPacket lst = new PlayerListPacket(new PlayerListPacket.PlayerInfo(packet.getUUID(), packet.getEntityId(), pkAddPlayer.username, "Default", new byte[0]));
+            pkAddPlayer.metadata = EntityMetaTranslator.translateToPE(packet.getMetadata(), null);
+            
+            PlayerListPacket lst = new PlayerListPacket(new PlayerListPacket.PlayerInfo(packet.getUUID(), packet.getEntityId(), pkAddPlayer.username, "Standard_Alex", DefaultSkin.getDefaultSkin()));
             //TODO: get the default skin to work.
-            return new PEPacket[]{pkAddPlayer, lst};
+            return new PEPacket[]{lst, pkAddPlayer};
         } catch (Exception e) {
             e.printStackTrace();
             return null;
