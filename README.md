@@ -2,10 +2,10 @@
 
 # DragonProxy
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master)  
-**If on mobile, open to show the whole file**
 
 **IRC:** http://webchat.esper.net/?nick=&channels=dragonet
 
+## Project is NOT dead, I am currently VERY busy so I can't maintain this project myself. But the repo will be checked usually so PRs are welcomed. 
 
 A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to **Minecraft PC/Mac** servers.
 
