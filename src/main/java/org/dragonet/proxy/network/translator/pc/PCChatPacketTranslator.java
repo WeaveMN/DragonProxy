@@ -153,7 +153,7 @@ public class PCChatPacketTranslator implements PCPacketTranslator<ServerChatPack
                         chatMessage = chatMessage + "§n";
                     }
                 }
-                if (key.equals("underlined")) {
+                if (key.equals("strikethrough")) {
                     String bold = jObject.getString(key);
                     if (bold.equals("true")) {
                         chatMessage = chatMessage + "§m";
