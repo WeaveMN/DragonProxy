@@ -45,12 +45,12 @@ public class RaknetInterface implements ServerInstance {
         sessions = this.proxy.getSessionRegister();
     }
 
-    public void setBroadcastName(String serverName) {
+    public void setBroadcastName(String serverName, int players, int maxPlayers) {
         String name = "MCPE;";
         name += serverName + ";";
         name += Versioning.MINECRAFT_PE_PROTOCOL + ";";
         name += Versioning.MINECRAFT_PE_VERSION + ";";
-        name += "-1;-1";
+        name += players + ";" + maxPlayers;
         if (handler != null) {
             handler.sendOption("name", name);
         }
