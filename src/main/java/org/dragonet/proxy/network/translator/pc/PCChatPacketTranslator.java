@@ -43,7 +43,12 @@ public class PCChatPacketTranslator implements PCPacketTranslator<ServerChatPack
              * Do not ask me why, but json strings has colors.
              * Changing this allows colors in plain texts! yay!
              */
-            JSONObject jObject = new JSONObject(packet.getMessage().toJsonString());
+            JSONObject jObject = null;
+            if (packet.getMessage().getFullText().startsWith("{") && packet.getMessage().getFullText().endsWith("}")) {
+                jObject = new JSONObject(packet.getMessage().getFullText());
+            } else {
+                jObject = new JSONObject(packet.getMessage().toJsonString());
+            }
             /*
              * Let's iterate!
              */
@@ -148,7 +153,7 @@ public class PCChatPacketTranslator implements PCPacketTranslator<ServerChatPack
                         chatMessage = chatMessage + "§n";
                     }
                 }
-                if (key.equals("underlined")) {
+                if (key.equals("strikethrough")) {
                     String bold = jObject.getString(key);
                     if (bold.equals("true")) {
                         chatMessage = chatMessage + "§m";
