@@ -33,6 +33,8 @@ public class ItemBlockTranslator {
         preventPc(94);  //No repeater
         onewayOverride(93, 63);
         onewayOverride(94, 63);
+        onewayOverride(95, 20); // Stained Glass = Glass
+        onewayOverride(160, 102); // Stained Glass Pane = Glass Pane
         onewayOverride(119, 90); //End portal -> Nether portal
         onewayOverride(176, 63); //Sign         =\_
         onewayOverride(177, 68); //Wall sign    =/ We send banner as sign [Banner]
