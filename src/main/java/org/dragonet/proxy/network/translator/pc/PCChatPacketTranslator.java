@@ -37,6 +37,11 @@ public class PCChatPacketTranslator implements PCPacketTranslator<ServerChatPack
         ret.message = packet.getMessage().getFullText();
         switch (packet.getType()) {
             case CHAT:
+            	/*
+            	 * Do not ask me why, but json strings has colors.
+            	 * Changing this allows colors in plain texts! yay!
+            	 */
+            	ret.message = packet.getMessage().toJsonString();
                 ret.type = ChatPacket.TextType.CHAT;
                 /*
                  * It is a JSON message?
