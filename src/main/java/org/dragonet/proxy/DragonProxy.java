@@ -189,7 +189,7 @@ public class DragonProxy {
 		MinecraftProtocol protocol = new MinecraftProtocol(SubProtocol.STATUS);
 		Client client = new Client(remoteServerAddress.getHostString(), remoteServerAddress.getPort(), protocol, new TcpSessionFactory(Proxy.NO_PROXY));
 		client.getSession().setFlag(MinecraftConstants.AUTH_PROXY_KEY, Proxy.NO_PROXY);
-		client.getSession().setConnectTimeout(5000);
+		client.getSession().setConnectTimeout(10000);
 		client.getSession().setFlag(MinecraftConstants.SERVER_INFO_HANDLER_KEY, new ServerInfoHandler() {
 			@Override
 			public void handle(Session session, ServerStatusInfo info) {
