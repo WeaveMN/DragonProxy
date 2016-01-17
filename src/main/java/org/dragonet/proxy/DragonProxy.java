@@ -44,7 +44,7 @@ public class DragonProxy {
     public static void main(String[] args) {
         new DragonProxy().run(args);
     }
-    public final static boolean IS_RELEASE = false;
+    public final static boolean IS_RELEASE = false; //DO NOT CHANGE, ONLY ON A RELEASE
 
     private final Logger logger = Logger.getLogger("DragonProxy");
 
@@ -95,18 +95,18 @@ public class DragonProxy {
             ex.printStackTrace();
             return;
         }
-		
-		checkArguments(args);
 
         //Initialize console
         console = new ConsoleManager(this);
         console.startConsole();
+		
+		checkArguments(args);
 
         if(config.getConfig().getProperty("log_console").toLowerCase().contains("true")){
             console.startFile("console.log");
-            logger.info("Saving console.log enabled"); //TODO: Translations
+            logger.info("Saving console output enabled"); //TODO: Translations
         } else {
-            logger.info("Saving console.log disabled");
+            logger.info("Saving console output disabled");
         }
 
         try {
@@ -129,10 +129,10 @@ public class DragonProxy {
                 metrics.start();
             } catch (IOException ex) { }
         } else {
-			logger.info("-----------------------------");
+			logger.info("\n-----------------------------");
 			logger.info(" This is a DEVELOPMENT build ");
 			logger.info("     It may contain bugs     ");
-			logger.info("-----------------------------");
+			logger.info("-----------------------------\n");
 		}
 
         //Create thread pool
@@ -170,9 +170,9 @@ public class DragonProxy {
 	
 	public void checkArguments(String[] args){
 		for(String arg : args){
-			if(arg.contains("--debug") || arg.contains("-debug")){
+			if(arg.toLowerCase().contains("--debug")){
 				isDebug = true;
-				logger.info("Debug mode enabled");
+				logger.info("--- DEBUG MODE ENABLED ---");
 			}
 		}
 	}
