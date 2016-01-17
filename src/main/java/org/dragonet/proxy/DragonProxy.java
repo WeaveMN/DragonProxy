@@ -45,7 +45,7 @@ public class DragonProxy {
     public static void main(String[] args) {
         new DragonProxy().run(args);
     }
-    public final static boolean IS_RELEASE = true;
+    public final static boolean IS_RELEASE = false;
 
     private final Logger logger = Logger.getLogger("DragonProxy");
 
@@ -83,6 +83,8 @@ public class DragonProxy {
     private Metrics metrics;
 
     private String motd;
+	
+	private boolean isDebug = false;
 
     public void run(String[] args) {
 		//Initialize jansi
@@ -96,6 +98,8 @@ public class DragonProxy {
             ex.printStackTrace();
             return;
         }
+		
+		checkArguments(args);
 
         //Initialize console
         console = new ConsoleManager(this);
@@ -128,11 +132,11 @@ public class DragonProxy {
                 metrics.start();
             } catch (IOException ex) { }
         } else {
-		logger.info("-----------------------------");
-		logger.info(" This is a DEVELOPMENT build ");
-		logger.info("     It may contain bugs     ");
-		logger.info("-----------------------------");
-	}
+			logger.info("-----------------------------");
+			logger.info(" This is a DEVELOPMENT build ");
+			logger.info("     It may contain bugs     ");
+			logger.info("-----------------------------");
+		}
 
         //Create thread pool
         logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
@@ -157,11 +161,24 @@ public class DragonProxy {
 	//Ping the PC server to show the players online
         pingPCServer();
     }
+	
+	public boolean isDebug(){
+		return isDebug;
+	}
 
     public void onTick() {
         network.onTick();
         sessionRegister.onTick();
     }
+	
+	public void checkArguments(String[] args){
+		for(String args : arg){
+			if(arg.contains("--debug") || arg.contains("-debug")){
+				isDebug = true;
+				logger.info("Debug mode enabled");
+			}
+		}
+	}
 
     public void shutdown() {
         logger.info(lang.get(Lang.SHUTTING_DOWN));
@@ -169,6 +186,7 @@ public class DragonProxy {
 	//Shutdown jansi after shutdown message
 	AnsiConsole.systemUninstall();
 		
+		isDebug = false;
         this.shuttingDown = true;
         network.shutdown();
         try{
