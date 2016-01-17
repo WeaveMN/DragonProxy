@@ -169,7 +169,7 @@ public class DragonProxy {
     }
 	
 	public void checkArguments(String[] args){
-		for(String args : arg){
+		for(String arg : args){
 			if(arg.contains("--debug") || arg.contains("-debug")){
 				isDebug = true;
 				logger.info("Debug mode enabled");
