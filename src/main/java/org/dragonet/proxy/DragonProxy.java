@@ -41,7 +41,7 @@ public class DragonProxy {
     public static void main(String[] args) {
         new DragonProxy().run(args);
     }
-    public final static boolean IS_RELEASE = false;
+    public final static boolean IS_RELEASE = true;
 
     private final Logger logger = Logger.getLogger("DragonProxy");
 
@@ -85,7 +85,7 @@ public class DragonProxy {
         try {
             config = new ServerConfig();
         } catch (IOException ex) {
-            logger.severe("Failed to load configuration file! ");
+            logger.severe("Failed to load configuration file!");
             ex.printStackTrace();
             return;
         }
@@ -104,7 +104,7 @@ public class DragonProxy {
         try {
             lang = new Lang(config.getConfig().getProperty(ServerConfig.LANG_FILE));
         } catch (IOException ex) {
-            logger.severe("Failed to load language file! ");
+            logger.severe("Failed to load language file!");
             ex.printStackTrace();
             return;
         }
@@ -122,6 +122,10 @@ public class DragonProxy {
             } catch (IOException ex) {
             }
         }
+		logger.info("-----------------------------");
+		logger.info(" This is a DEVELOPMENT build ");
+		logger.info("     It may contain bugs     ");
+		logger.info("-----------------------------");
 
         //Create thread pool
         logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
@@ -143,10 +147,8 @@ public class DragonProxy {
         ticker.start();
         logger.info(lang.get(Lang.INIT_DONE));
 
-        if (config.getConfig().getProperty("query_pc_server").equalsIgnoreCase("true")) {
-            // Start pinging the PC Server
-            pingPCServer();
-        }
+		//Ping the PC server to show the players online
+        pingPCServer();
     }
 
     public void onTick() {

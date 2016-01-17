@@ -4,11 +4,6 @@
 IP: `hypixel.dragonet.org`<br>
 PORT: `19132`
 
-### Official Demo Server(In China)
-- Mode: `Offline Mode`
-- For Minecraft PC/Mac: `nide8.com`
-- For MCPE: `nide8.com` with port `19132`
-
 ### TheArchon
 IP: `hypixel.dragonet.org`<br>
 PORT: `19133`

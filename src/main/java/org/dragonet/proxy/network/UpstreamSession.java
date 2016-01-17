@@ -148,7 +148,7 @@ public class UpstreamSession {
 
     public void onLogin(LoginPacket packet) {
         if (username != null) {
-            disconnect("Error! ");
+            disconnect("An error has occured\nPlease add a username");
             return;
         }
 
