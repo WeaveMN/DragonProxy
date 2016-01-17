@@ -38,7 +38,6 @@ import org.spacehq.packetlib.tcp.TcpSessionFactory;
 
 import org.mcstats.Metrics;
 import lombok.Getter;
-import org.fusesource.jansi.AnsiConsole;
 
 public class DragonProxy {
 
@@ -87,8 +86,6 @@ public class DragonProxy {
 	private boolean isDebug = false;
 
     public void run(String[] args) {
-		//Initialize jansi
-		AnsiConsole.systemInstall();
 		
         //Need to initialize config before console
         try {
@@ -182,9 +179,6 @@ public class DragonProxy {
 
     public void shutdown() {
         logger.info(lang.get(Lang.SHUTTING_DOWN));
-		
-	//Shutdown jansi after shutdown message
-	AnsiConsole.systemUninstall();
 		
 		isDebug = false;
         this.shuttingDown = true;

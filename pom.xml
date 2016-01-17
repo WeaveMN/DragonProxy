@@ -55,11 +55,6 @@
             <version>2.11</version>
             <type>jar</type>
         </dependency>
-		<dependency>
-			<groupId>org.fusesource.jansi</groupId>
-			<artifactId>jansi-project</artifactId>
-			<version>1.11</version>
-		</dependency>
 
     </dependencies>
     
