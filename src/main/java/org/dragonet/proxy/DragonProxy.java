@@ -128,11 +128,11 @@ public class DragonProxy {
                 metrics.start();
             } catch (IOException ex) { }
         } else {
-			logger.info("-----------------------------");
-			logger.info(" This is a DEVELOPMENT build ");
-			logger.info("     It may contain bugs     ");
-			logger.info("-----------------------------");
-		}
+		logger.info("-----------------------------");
+		logger.info(" This is a DEVELOPMENT build ");
+		logger.info("     It may contain bugs     ");
+		logger.info("-----------------------------");
+	}
 
         //Create thread pool
         logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
@@ -154,7 +154,7 @@ public class DragonProxy {
         ticker.start();
         logger.info(lang.get(Lang.INIT_DONE));
 
-		//Ping the PC server to show the players online
+	//Ping the PC server to show the players online
         pingPCServer();
     }
 
@@ -166,8 +166,8 @@ public class DragonProxy {
     public void shutdown() {
         logger.info(lang.get(Lang.SHUTTING_DOWN));
 		
-		//Shutdown jansi after shutdown message
-		AnsiConsole.systemUninstall();
+	//Shutdown jansi after shutdown message
+	AnsiConsole.systemUninstall();
 		
         this.shuttingDown = true;
         network.shutdown();
