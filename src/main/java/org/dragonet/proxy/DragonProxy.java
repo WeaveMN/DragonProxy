@@ -12,20 +12,20 @@
  */
 package org.dragonet.proxy;
 
-import org.dragonet.proxy.network.SessionRegister;
-import org.dragonet.proxy.network.RaknetInterface;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import lombok.Getter;
+import java.util.logging.Logger;
+
+import org.dragonet.proxy.network.SessionRegister;
+import org.dragonet.proxy.network.RaknetInterface;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.configuration.ServerConfig;
 import org.dragonet.proxy.utilities.Versioning;
-import java.util.logging.Logger;
 import org.dragonet.proxy.commands.CommandRegister;
-import org.mcstats.Metrics;
+
 import org.spacehq.mc.protocol.MinecraftConstants;
 import org.spacehq.mc.protocol.MinecraftProtocol;
 import org.spacehq.mc.protocol.data.SubProtocol;
@@ -35,6 +35,10 @@ import org.spacehq.mc.protocol.data.status.handler.ServerPingTimeHandler;
 import org.spacehq.packetlib.Client;
 import org.spacehq.packetlib.Session;
 import org.spacehq.packetlib.tcp.TcpSessionFactory;
+
+import org.mcstats.Metrics;
+import lombok.Getter;
+import org.fusesource.jansi.AnsiConsole;
 
 public class DragonProxy {
 
@@ -81,6 +85,9 @@ public class DragonProxy {
     private String motd;
 
     public void run(String[] args) {
+		//Initialize jansi
+		AnsiConsole.systemInstall();
+		
         //Need to initialize config before console
         try {
             config = new ServerConfig();
@@ -119,13 +126,13 @@ public class DragonProxy {
             try {
                 metrics = new ServerMetrics(this);
                 metrics.start();
-            } catch (IOException ex) {
-            }
-        }
-		logger.info("-----------------------------");
-		logger.info(" This is a DEVELOPMENT build ");
-		logger.info("     It may contain bugs     ");
-		logger.info("-----------------------------");
+            } catch (IOException ex) { }
+        } else {
+			logger.info("-----------------------------");
+			logger.info(" This is a DEVELOPMENT build ");
+			logger.info("     It may contain bugs     ");
+			logger.info("-----------------------------");
+		}
 
         //Create thread pool
         logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
@@ -158,6 +165,10 @@ public class DragonProxy {
 
     public void shutdown() {
         logger.info(lang.get(Lang.SHUTTING_DOWN));
+		
+		//Shutdown jansi after shutdown message
+		AnsiConsole.systemUninstall();
+		
         this.shuttingDown = true;
         network.shutdown();
         try{
