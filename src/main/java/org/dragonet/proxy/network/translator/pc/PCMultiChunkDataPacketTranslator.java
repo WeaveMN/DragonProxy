@@ -17,13 +17,10 @@ import java.io.DataOutputStream;
 import java.nio.ByteOrder;
 import org.dragonet.net.packet.minecraft.FullChunkPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
-import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
 import org.dragonet.proxy.nbt.PENBT;
-import org.dragonet.proxy.nbt.tag.CompoundTag;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.ItemBlockTranslator;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
-import org.dragonet.proxy.utilities.Binary;
 import org.spacehq.mc.protocol.data.game.Chunk;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiChunkDataPacket;
 

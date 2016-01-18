@@ -47,7 +47,7 @@ public final class EntityMetaTranslator {
                     peMeta.map.put(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta((String) m.getValue()));
                     break;
                 case 3://Always show name tag
-                    peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte) m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte)(((int) m.getValue()) & 1)));
                     break;
                 case 6://Health
                     //Not supported on MCPE yet
