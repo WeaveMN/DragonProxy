@@ -45,6 +45,8 @@ public class Lang extends ConfigFile {
     public final static String MESSAGE_ONLINE_LOGIN_SUCCESS = "message_online_login_success";
 
     public final static String MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE = "message_online_login_success_console";
+    
+    public final static String MESSAGE_TELEPORT_TO_SPAWN = "message_teleport_to_spawn";
 
     public final static String MESSAGE_ONLINE_USERNAME = "message_online_username";
 
