@@ -236,7 +236,10 @@ public class DragonProxy {
             }
         }
         if (!connected) {
-            logger.warning("Couldn't connect to " + remoteServerAddress.getHostString() + ":" + remoteServerAddress.getPort() + "!");
+        	String error = lang.get(Lang.QUERY_FAILED);
+        	error = error.replace("%ip%", remoteServerAddress.getHostString());
+        	error = error.replace("%port%", remoteServerAddress.getPort() + "");
+            logger.warning(error);
         }
     }
 }
