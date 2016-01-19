@@ -76,17 +76,17 @@ public class DragonProxy {
 
     @Getter
     private boolean onlineMode;
-    
+
     private ConsoleManager console;
 
     private Metrics metrics;
 
     private String motd;
-	
-	private boolean isDebug = false;
+
+    private boolean isDebug = false;
 
     public void run(String[] args) {
-		
+
         //Need to initialize config before console
         try {
             config = new ServerConfig();
@@ -99,8 +99,8 @@ public class DragonProxy {
         //Initialize console
         console = new ConsoleManager(this);
         console.startConsole();
-		
-		checkArguments(args);
+
+        checkArguments(args);
 
         if(config.getConfig().getProperty("log_console").toLowerCase().contains("true")){
             console.startFile("console.log");
@@ -129,11 +129,11 @@ public class DragonProxy {
                 metrics.start();
             } catch (IOException ex) { }
         } else {
-			logger.info("\n-----------------------------");
-			logger.info(" This is a DEVELOPMENT build ");
-			logger.info("     It may contain bugs     ");
-			logger.info("-----------------------------\n");
-		}
+            logger.info("\n-----------------------------");
+            logger.info(" This is a DEVELOPMENT build ");
+            logger.info("     It may contain bugs     ");
+            logger.info("-----------------------------\n");
+        }
 
         //Create thread pool
         logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
@@ -155,32 +155,32 @@ public class DragonProxy {
         ticker.start();
         logger.info(lang.get(Lang.INIT_DONE));
 
-	//Ping the PC server to show the players online
+        //Ping the PC server to show the players online
         pingPCServer();
     }
-	
-	public boolean isDebug(){
-		return isDebug;
-	}
+
+    public boolean isDebug(){
+        return isDebug;
+    }
 
     public void onTick() {
         network.onTick();
         sessionRegister.onTick();
     }
-	
-	public void checkArguments(String[] args){
-		for(String arg : args){
-			if(arg.toLowerCase().contains("--debug")){
-				isDebug = true;
-				logger.info("--- DEBUG MODE ENABLED ---");
-			}
-		}
-	}
+
+    public void checkArguments(String[] args){
+        for(String arg : args){
+            if(arg.toLowerCase().contains("--debug")){
+                isDebug = true;
+                logger.info("--- DEBUG MODE ENABLED ---");
+            }
+        }
+    }
 
     public void shutdown() {
         logger.info(lang.get(Lang.SHUTTING_DOWN));
-		
-		isDebug = false;
+
+        isDebug = false;
         this.shuttingDown = true;
         network.shutdown();
         try{
@@ -227,11 +227,19 @@ public class DragonProxy {
             }
         });
         client.getSession().connect();
+        boolean connected = false;
         while(client.getSession().isConnected()) {
             try {
+                connected = true;
                 Thread.sleep(5);
             } catch(InterruptedException e) {
             }
+        }
+        if (!connected) {
+        	String error = lang.get(Lang.QUERY_FAILED);
+        	error = error.replace("%ip%", remoteServerAddress.getHostString());
+        	error = error.replace("%port%", remoteServerAddress.getPort() + "");
+            logger.warning(error);
         }
     }
 }
