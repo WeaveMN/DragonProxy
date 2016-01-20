@@ -44,7 +44,7 @@ public class DragonProxy {
     public static void main(String[] args) {
         new DragonProxy().run(args);
     }
-    public final static boolean IS_RELEASE = true; //DO NOT CHANGE, ONLY ON A RELEASE
+    public final static boolean IS_RELEASE = false; //DO NOT CHANGE, ONLY ON A RELEASE
 
     private final Logger logger = Logger.getLogger("DragonProxy");
 
