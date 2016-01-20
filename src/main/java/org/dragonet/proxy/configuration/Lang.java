@@ -31,6 +31,15 @@ public class Lang extends ConfigFile {
     public final static String BROADCAST_TITLE = "broadcast_title";
 
     public final static String MESSAGE_CLIENT_CONNECTED = "message_client_connected";
+    
+    public final static String MESSAGE_CLS_NOTICE = "message_cls_notice";
+    
+    public final static String MESSAGE_SERVER_ERROR = "message_server_error";
+    
+    public final static String ERROR_CLS_UNREACHABLE = "error_cls_unreachable";
+    
+    public final static String ERROR_CLS_ERROR = "error_cls_error";
+    public final static String ERROR_CLS_LOGIN = "error_cls_login";
 
     public final static String MESSAGE_ONLINE_NOTICE = "message_online_notice";
 

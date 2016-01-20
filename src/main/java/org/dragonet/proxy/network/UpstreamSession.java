@@ -12,7 +12,9 @@
  */
 package org.dragonet.proxy.network;
 
-import java.io.FileOutputStream;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +22,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lombok.Getter;
 import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.ChatPacket;
@@ -33,9 +37,11 @@ import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
 import org.dragonet.proxy.network.cache.EntityCache;
 import org.dragonet.proxy.network.cache.WindowCache;
+import org.dragonet.proxy.utilities.HTTP;
 import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
 import org.spacehq.mc.auth.exception.request.RequestException;
+import org.spacehq.mc.auth.service.AuthenticationService;
 import org.spacehq.mc.protocol.MinecraftProtocol;
 import org.spacehq.mc.protocol.data.game.values.PlayerListEntry;
 
@@ -73,7 +79,7 @@ public class UpstreamSession {
 
     @Getter
     private final Map<UUID, PlayerListEntry> playerInfoCache = Collections.synchronizedMap(new HashMap<UUID, PlayerListEntry>());
-    
+
     @Getter
     private final EntityCache entityCache = new EntityCache(this);
 
@@ -164,7 +170,7 @@ public class UpstreamSession {
 
         this.username = packet.username;
         proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_CLIENT_CONNECTED, username, remoteAddress));
-        if (proxy.isOnlineMode()) {
+        if (proxy.equals("online")) {
             StartGamePacket pkStartGame = new StartGamePacket();
             pkStartGame.eid = 0; //Use EID 0 for eaisier management
             pkStartGame.dimension = (byte) 0;
@@ -183,19 +189,74 @@ public class UpstreamSession {
             pkSpawn.y = 72;
             pkSpawn.z = 0;
             sendPacket(pkSpawn, true);
-            
+
             LoginStatusPacket pkStat = new LoginStatusPacket();
             pkStat.status = LoginStatusPacket.PLAYER_SPAWN;
             sendPacket(pkStat, true);
-            
+
             dataCache.put(CacheKey.AUTHENTICATION_STATE, "email");
 
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_NOTICE, username));
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_EMAIL));
+        } else if (proxy.getAuthMode().equals("cls")) {
+            //CLS LOGIN! 
+            if ((username.length() < 6 + 1 + 1) || (!username.contains("_"))) {
+                sendStartGameAndDisconnect(proxy.getLang().get(Lang.MESSAGE_CLS_NOTICE));
+                return;
+            }
+            String name = username.substring(0, username.length() - 7);
+            String keyCode = username.substring(username.length() - 6);
+            String resp = HTTP.performGetRequest("http://api.dragonet.org/cls/query_token.php?" + String.format("username=%s&keycode=%s", name, keyCode));
+            if (resp == null) {
+                sendStartGameAndDisconnect(proxy.getLang().get(Lang.MESSAGE_SERVER_ERROR, proxy.getLang().get(Lang.ERROR_CLS_UNREACHABLE)));
+                proxy.getLogger().severe(proxy.getLang().get(Lang.MESSAGE_SERVER_ERROR, proxy.getLang().get(Lang.ERROR_CLS_UNREACHABLE)).replace("§c", "").replace("§0", ""));
+                return;
+            }
+            JsonElement json = null;
+            try{
+                JsonParser jsonParser = new JsonParser();
+                json = jsonParser.parse(resp);
+            }catch(Exception e){
+                sendStartGameAndDisconnect(proxy.getLang().get(Lang.MESSAGE_SERVER_ERROR, proxy.getLang().get(Lang.ERROR_CLS_ERROR)));
+                proxy.getLogger().severe(proxy.getLang().get(Lang.MESSAGE_SERVER_ERROR, proxy.getLang().get(Lang.ERROR_CLS_ERROR)).replace("§c", "").replace("§0", ""));
+                //Json parse error! 
+                return;
+            }
+            JsonObject obj = json.getAsJsonObject();
+            if(!obj.get("status").getAsString().equals("success")){
+                sendStartGameAndDisconnect(proxy.getLang().get(Lang.MESSAGE_CLS_NOTICE));
+                return;
+            }
+            AuthenticationService authSvc = new AuthenticationService(obj.get("client").getAsString());
+            authSvc.setAccessToken(obj.get("token").getAsString());
+            try {
+                authSvc.login();
+            } catch (RequestException ex) {
+                ex.printStackTrace();
+                sendStartGameAndDisconnect(proxy.getLang().get(Lang.MESSAGE_SERVER_ERROR, proxy.getLang().get(Lang.ERROR_CLS_ERROR)));
+                return;
+            }
+            protocol = new MinecraftProtocol(authSvc.getSelectedProfile(), authSvc.getAccessToken());
+            downstream.connect(protocol, proxy.getRemoteServerAddress());
         } else {
             protocol = new MinecraftProtocol(username);
             downstream.connect(protocol, proxy.getRemoteServerAddress());
         }
+    }
+
+    public void sendStartGameAndDisconnect(String reason) {
+        StartGamePacket pkStartGame = new StartGamePacket();
+        pkStartGame.dimension = (byte) 1; //Login error so player in nether(Red screen)
+        pkStartGame.generator = 1;
+        pkStartGame.y = 72.0f;
+        sendPacket(pkStartGame, true);
+
+        LoginStatusPacket pkStat = new LoginStatusPacket();
+        pkStat.status = LoginStatusPacket.PLAYER_SPAWN;
+        sendPacket(pkStat, true);
+
+        sendChat(reason);
+        disconnect(reason);
     }
 
     public void sendChat(String chat) {
@@ -212,14 +273,14 @@ public class UpstreamSession {
         pk.message = chat;
         sendPacket(pk, true);
     }
-	
-	public void sendPopup(String text){
-		ChatPacket pk = new ChatPacket();
+
+    public void sendPopup(String text) {
+        ChatPacket pk = new ChatPacket();
         pk.type = ChatPacket.TextType.POPUP;
         pk.source = "";
         pk.message = text;
         sendPacket(pk, true);
-	}
+    }
 
     public void sendFakeBlock(int x, int y, int z, int id, int meta) {
         UpdateBlockPacket pkBlock = new UpdateBlockPacket();
