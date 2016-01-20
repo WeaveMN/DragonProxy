@@ -17,6 +17,7 @@ import org.dragonet.net.packet.minecraft.LevelEventPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.network.UpstreamSession;
 import org.dragonet.proxy.network.translator.PCPacketTranslator;
+import org.spacehq.mc.protocol.data.game.values.world.CustomSound;
 import org.spacehq.mc.protocol.data.game.values.world.GenericSound;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerPlaySoundPacket;
 
@@ -25,12 +26,17 @@ public class PCPlaySoundPacketTranslator implements PCPacketTranslator<ServerPla
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerPlaySoundPacket packet) {
         try {
-            GenericSound sound = (GenericSound) packet.getSound();
             String soundName = null;
-            for (Field f : GenericSound.class.getDeclaredFields()) {
-                if (f.get(null).equals(sound)) {
-                    soundName = f.getName();
+
+            if (GenericSound.class.isAssignableFrom(packet.getSound().getClass())) {
+                GenericSound sound = (GenericSound) packet.getSound();
+                for (Field f : GenericSound.class.getDeclaredFields()) {
+                    if (f.get(null).equals(sound)) {
+                        soundName = f.getName();
+                    }
                 }
+            } else {
+                soundName = ((CustomSound) packet.getSound()).getName();
             }
             if (soundName == null) {
                 return null;
