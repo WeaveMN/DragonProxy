@@ -45,6 +45,7 @@ public class MoveEntitiesPacket extends PEPacket {
                 writer.writeFloat(d.y);
                 writer.writeFloat(d.z);
                 writer.writeFloat(d.yaw);
+                writer.writeFloat(d.headYaw);
                 writer.writeFloat(d.pitch);
             }
             this.setData(bos.toByteArray());
