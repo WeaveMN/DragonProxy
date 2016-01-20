@@ -73,11 +73,11 @@ public class LevelEventPacket extends PEPacket {
     public final static byte AMBIENT_SOUND = (byte) 16;
     public final static byte RESPAWN = (byte) 17;
 
-    private short eventID;
-    private float x;
-    private float y;
-    private float z;
-    private int data;
+    public short eventID;
+    public float x;
+    public float y;
+    public float z;
+    public int data;
 
     @Override
     public int pid() {
