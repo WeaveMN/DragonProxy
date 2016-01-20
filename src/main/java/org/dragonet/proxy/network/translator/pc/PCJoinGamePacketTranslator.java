@@ -27,7 +27,7 @@ public class PCJoinGamePacketTranslator implements PCPacketTranslator<ServerJoin
         //This packet is not fully useable, we cache it for now. 
         session.getDataCache().put(CacheKey.PLAYER_EID, packet.getEntityId());  //Stores the real entity ID
 
-        if (session.getProxy().isOnlineMode()) {
+        if (session.getProxy().getAuthMode().equals("online")) {
             //Online mode already sent packets
             SetPlayerGameTypePacket pkSetGameMode = new SetPlayerGameTypePacket(packet.getGameMode() == GameMode.CREATIVE ? 1 : 0);
             return new PEPacket[]{pkSetGameMode};

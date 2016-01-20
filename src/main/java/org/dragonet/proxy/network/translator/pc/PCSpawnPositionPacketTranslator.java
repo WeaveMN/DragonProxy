@@ -29,7 +29,7 @@ public class PCSpawnPositionPacketTranslator implements PCPacketTranslator<Serve
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerSpawnPositionPacket packet) {
         if (session.getDataCache().get(CacheKey.PACKET_JOIN_GAME_PACKET) == null) {
-            if (session.getProxy().isOnlineMode()) {
+            if (session.getProxy().getAuthMode().equals("online")) {
                 session.sendChat(session.getProxy().getLang().get(Lang.MESSAGE_TELEPORT_TO_SPAWN));
                 MovePlayerPacket pkMovePlayer = new MovePlayerPacket(0, (float) packet.getPosition().getX(), (float) packet.getPosition().getY(), (float) packet.getPosition().getZ(), 0.0f, 0.0f, 0.0f, false);
                 pkMovePlayer.mode = MovePlayerPacket.MODE_RESET;
