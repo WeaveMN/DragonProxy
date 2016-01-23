@@ -74,7 +74,7 @@ public final class EntityMetaTranslator {
                     peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte) m.getValue()));
                     break;
                 case 12://Age
-                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta((byte) m.getValue()));
+                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta(((int) m.getValue() <= 0 ? (byte)0x1 : (byte)0x0)));
                     break;
                 case 16:
                     //Not supported yet
