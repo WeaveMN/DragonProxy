@@ -228,6 +228,7 @@ public class UpstreamSession {
                 return;
             }
             AuthenticationService authSvc = new AuthenticationService(obj.get("client").getAsString());
+            authSvc.setUsername(obj.get("ign").getAsString());
             authSvc.setAccessToken(obj.get("token").getAsString());
             try {
                 authSvc.login();
