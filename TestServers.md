@@ -1,9 +1,9 @@
 ## These are test servers setup by the community.
 
 ### Hypixel (PC)
-IP: `demo.dragonet.org`<br>
-PORT: `19132`
+IP: `hypixel.dragonet.org`<br>
+PORT: `19132` default
 
 ### TheArchon
-IP: `demo.dragonet.org`<br>
-PORT: `19133`
+IP: `thearchon.dragonet.org`<br>
+PORT: `19132` default
