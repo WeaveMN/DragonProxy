@@ -52,7 +52,7 @@ public class BlockEntityDataPacket extends PEPacket {
             writer.writeInt(x);
             writer.writeInt(y);
             writer.writeInt(z);
-            PENBT.write(peTag, bos, ByteOrder.BIG_ENDIAN);
+            PENBT.write(peTag, bos, ByteOrder.LITTLE_ENDIAN);
             this.setData(bos.toByteArray());
         } catch (IOException e) {
         }

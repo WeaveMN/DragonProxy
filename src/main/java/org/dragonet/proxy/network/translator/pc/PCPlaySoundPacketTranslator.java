@@ -31,9 +31,12 @@ public class PCPlaySoundPacketTranslator implements PCPacketTranslator<ServerPla
             if (GenericSound.class.isAssignableFrom(packet.getSound().getClass())) {
                 GenericSound sound = (GenericSound) packet.getSound();
                 for (Field f : GenericSound.class.getDeclaredFields()) {
+                    boolean saved = f.isAccessible();
+                    f.setAccessible(true);
                     if (f.get(null).equals(sound)) {
                         soundName = f.getName();
                     }
+                    f.setAccessible(saved);
                 }
             } else {
                 soundName = ((CustomSound) packet.getSound()).getName();
