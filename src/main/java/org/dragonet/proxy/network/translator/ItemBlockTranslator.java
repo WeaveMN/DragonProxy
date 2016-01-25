@@ -88,7 +88,7 @@ public class ItemBlockTranslator {
     
     public static CompoundTag translateNBT(int id, org.spacehq.opennbt.tag.builtin.CompoundTag pcTag){
         CompoundTag peTag = new CompoundTag();
-        if(pcTag.contains("display") && ((org.spacehq.opennbt.tag.builtin.CompoundTag)pcTag.get("display").getValue()).contains("Name")){
+        if(pcTag != null && pcTag.contains("display") && ((org.spacehq.opennbt.tag.builtin.CompoundTag)pcTag.get("display").getValue()).contains("Name")){
             peTag.putCompound("display", new CompoundTag().putString("Name", ((org.spacehq.opennbt.tag.builtin.CompoundTag)pcTag.get("display").getValue()).get("Name").getValue().toString()));
         }else{
             if(NAME_OVERRIDES.containsKey(id)){
