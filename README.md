@@ -12,9 +12,9 @@ A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to **Min
 
 Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.md
 
-![Screenshot](https://raw.githubusercontent.com/DragonetMC/DragonProxy/master/screenshots/Hypixel.png)
-#### Hypixel on Pocket/Win 10 Edition! 
-#### Join on Pocket/Win 10 Edition here `hypixel.dragonet.org`, port `19132`(default). 
+![Screenshot](https://raw.githubusercontent.com/DragonetMC/DragonProxy/master/screenshots/TheArchon.png)
+#### That photo shows joining TheArchon server on a MCPE Emulator.
+#### Join on Pocket/Win 10 Edition here `thearchon.dragonet.org`, port `19132`(default). 
 
 ## Installation
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master) [Download from CircleCI](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master) - You must be logged in to download a build.
@@ -50,6 +50,6 @@ git clone git@github.com:DragonetMC/DragonProxy.git
 * Just "open" the project in **IntelliJ**, it should work and compile seamlessly
 * Add "Lombok Plugin" to add first class support for Lombok annotations in **IntelliJ**
 
-## Credits
+## Libraries Used
 * Netty Networking Library([Link](http://netty.io))
 * Google Guava([Link](http://code.google.com/p/guava-libraries/))
