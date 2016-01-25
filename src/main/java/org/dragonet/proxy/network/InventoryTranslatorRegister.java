@@ -44,7 +44,7 @@ public final class InventoryTranslatorRegister {
         for (int i = 9; i < win.slots.length; i++) {
             //TODO: Add NBT support
             if (win.slots[i] != null) {
-                ret.slots[i - 9] = new PEInventorySlot((short) ItemBlockTranslator.translateToPE(win.slots[i].getId()), (byte) (win.slots[i].getAmount() & 0xFF), (short) win.slots[i].getData(), ItemBlockTranslator.translateNBT(win.slots[i].getNBT()));
+                ret.slots[i - 9] = PEInventorySlot.fromItemStack(win.slots[i]);
             }
         }
         for (int i = 36; i < 45; i++) {
