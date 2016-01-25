@@ -16,6 +16,7 @@ import org.dragonet.proxy.network.translator.PCPacketTranslator;
 import java.util.HashMap;
 import java.util.Map;
 import org.dragonet.net.packet.minecraft.ChatPacket;
+import org.dragonet.net.packet.minecraft.InteractPacket;
 import org.dragonet.net.packet.minecraft.MovePlayerPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PlayerActionPacket;
@@ -25,6 +26,7 @@ import org.dragonet.net.packet.minecraft.WindowClosePacket;
 import org.dragonet.proxy.network.translator.PEPacketTranslator;
 import org.dragonet.proxy.network.translator.pc.*;
 import org.dragonet.proxy.network.translator.pe.PEChatPacketTranslator;
+import org.dragonet.proxy.network.translator.pe.PEInteractPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEMovePlayerPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEPlayerActionPacketTranslator;
 import org.dragonet.proxy.network.translator.pe.PEPlayerEquipmentPacketTranslator;
@@ -52,7 +54,6 @@ import org.spacehq.mc.protocol.packet.ingame.server.world.ServerBlockChangePacke
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiBlockChangePacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerMultiChunkDataPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerNotifyClientPacket;
-import org.spacehq.mc.protocol.packet.ingame.server.world.ServerPlaySoundPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerSpawnPositionPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerUpdateSignPacket;
 import org.spacehq.mc.protocol.packet.ingame.server.world.ServerUpdateTimePacket;
@@ -117,6 +118,7 @@ public final class PacketTranslatorRegister {
         PE_TO_PC_TRANSLATOR.put(UseItemPacket.class, new PEUseItemPacketTranslator());
         PE_TO_PC_TRANSLATOR.put(MovePlayerPacket.class, new PEMovePlayerPacketTranslator());
         PE_TO_PC_TRANSLATOR.put(PlayerActionPacket.class, new PEPlayerActionPacketTranslator());
+        PE_TO_PC_TRANSLATOR.put(InteractPacket.class, new PEInteractPacketTranslator());
         
         //Inventory
         PE_TO_PC_TRANSLATOR.put(WindowClosePacket.class, new PEWindowClosePacketTranslator());
