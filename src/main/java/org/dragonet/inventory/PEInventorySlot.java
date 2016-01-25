@@ -59,6 +59,9 @@ public class PEInventorySlot {
         }
         byte count = reader.readByte();
         short meta = reader.readShort();
+        if(meta == -1){
+            meta = 0;
+        }
         short lNbt = reader.readShort();
         if (lNbt <= 0) {
             return new PEInventorySlot(id, count, meta);

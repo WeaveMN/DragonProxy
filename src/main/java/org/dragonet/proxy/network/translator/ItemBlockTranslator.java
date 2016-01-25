@@ -30,7 +30,7 @@ public class ItemBlockTranslator {
     
     static {
         swap(125, 157); //Double Slab <-> Activator Rail
-        swap(126, 158); //Slab <-> NULL
+        onewayOverride(126, 158); //Slab <-> NULL
         onewayOverride(158, 245, "Dispenser"); //Dispenser
         onewayOverride(93, 44, "Redstone Repeater");  //-\
         onewayOverride(94, 44, "Redstone Repeater");  // Repeater
@@ -100,7 +100,7 @@ public class ItemBlockTranslator {
     
     public static PEInventorySlot translateToPE(ItemStack item){
         if(item == null || item.getId() == 0) return null;
-        PEInventorySlot inv = new PEInventorySlot((short)translateToPE(item.getId()), (byte)(item.getAmount() & 0xFF), (short)(item.getData() & 0xFFFF), translateNBT(item.getId(), item.getNBT()));
+        PEInventorySlot inv = new PEInventorySlot((short)translateToPE(item.getId()), (byte)(item.getAmount() & 0xFF), (short)item.getData(), translateNBT(item.getId(), item.getNBT()));
         CompoundTag d = new CompoundTag();
         d.putShort("id", item.getId());
         d.putShort("amount", item.getAmount());
@@ -117,7 +117,7 @@ public class ItemBlockTranslator {
                     slot.nbt.getCompound(DRAGONET_COMPOUND).getShort("amount"), 
                     slot.nbt.getCompound(DRAGONET_COMPOUND).getShort("data"));
         }else{
-            item = new ItemStack(translateToPC((int)slot.id), (int)(slot.count & 0xFF), (int)(slot.meta & 0xFFFF));
+            item = new ItemStack(translateToPC((int)slot.id), (int)(slot.count & 0xFF), (int)slot.meta);
         }
         return item;
     }
