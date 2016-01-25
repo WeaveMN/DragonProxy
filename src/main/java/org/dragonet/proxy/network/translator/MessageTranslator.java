@@ -39,8 +39,7 @@ public final class MessageTranslator {
             /*
              * Let's iterate!
              */
-            String chatMessage = handleKeyObject(jObject);
-            ret = chatMessage;
+            ret = handleKeyObject(jObject);
         } catch (JSONException e) {
             /*
              * If any exceptions happens, then:
