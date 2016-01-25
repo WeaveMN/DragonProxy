@@ -22,7 +22,6 @@ import org.dragonet.net.packet.minecraft.WindowItemsPacket;
 import org.dragonet.proxy.network.cache.CachedWindow;
 import org.dragonet.proxy.network.translator.inv.ChestWindowTranslator;
 import org.dragonet.proxy.network.translator.InventoryTranslator;
-import org.dragonet.proxy.network.translator.ItemBlockTranslator;
 import org.spacehq.mc.protocol.data.game.Position;
 import org.spacehq.mc.protocol.data.game.values.window.WindowType;
 import org.spacehq.mc.protocol.packet.ingame.client.window.ClientCloseWindowPacket;
