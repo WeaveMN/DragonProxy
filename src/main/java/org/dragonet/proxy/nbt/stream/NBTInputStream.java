@@ -2,13 +2,13 @@ package org.dragonet.proxy.nbt.stream;
 
 import java.io.*;
 import java.nio.ByteOrder;
-import org.dragonet.proxy.utilities.Binary;
+import java.nio.charset.StandardCharsets;
 
 /**
- * author: MagicDroidX Nukkit Project
+ * author: MagicDroidX
+ * Nukkit Project
  */
 public class NBTInputStream extends FilterInputStream implements DataInput {
-
     private final ByteOrder endianness;
 
     public NBTInputStream(InputStream stream) {
@@ -71,7 +71,7 @@ public class NBTInputStream extends FilterInputStream implements DataInput {
     public int readUnsignedShort() throws IOException {
         int s = this.getStream().readUnsignedShort();
         if (endianness == ByteOrder.LITTLE_ENDIAN) {
-            s = Binary.readLShort(Binary.writeShort(s));
+            s = Integer.reverseBytes(s) >> 16;
         }
         return s;
     }
@@ -121,6 +121,14 @@ public class NBTInputStream extends FilterInputStream implements DataInput {
 
     @Override
     public String readUTF() throws IOException {
-        return DataInputStream.readUTF(this);
+        int length = this.readUnsignedShort();
+        byte[] bytes = new byte[length];
+        this.read(bytes);
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.getStream().close();
     }
 }

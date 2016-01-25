@@ -6,11 +6,12 @@ import org.dragonet.proxy.nbt.stream.NBTOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ListTag<T extends Tag> extends Tag {
 
-    public List<T> list = new ArrayList<>();
+    private List<T> list = new ArrayList<>();
 
     public byte type;
 
@@ -24,17 +25,12 @@ public class ListTag<T extends Tag> extends Tag {
 
     @Override
     void write(NBTOutputStream dos) throws IOException {
-        if (list.size() > 0) {
-            type = list.get(0).getId();
-        } else {
-            type = 1;
-        }
+        if (list.size() > 0) type = list.get(0).getId();
+        else type = 1;
 
         dos.writeByte(type);
         dos.writeInt(list.size());
-        for (T aList : list) {
-            aList.write(dos);
-        }
+        for (T aList : list) aList.write(dos);
     }
 
     @Override
@@ -67,9 +63,7 @@ public class ListTag<T extends Tag> extends Tag {
         out.println(prefix + "{");
         String orgPrefix = prefix;
         prefix += "   ";
-        for (T aList : list) {
-            aList.print(prefix, out);
-        }
+        for (T aList : list) aList.print(prefix, out);
         out.println(orgPrefix + "}");
     }
 
@@ -87,6 +81,26 @@ public class ListTag<T extends Tag> extends Tag {
 
     public T get(int index) {
         return list.get(index);
+    }
+
+    public List<T> getAll() {
+        return new ArrayList<>(list);
+    }
+
+    public void setAll(List<T> tags) {
+        this.list = new ArrayList<>(tags);
+    }
+
+    public void remove(T tag) {
+        list.remove(tag);
+    }
+
+    public void remove(int index) {
+        list.remove(index);
+    }
+
+    public void removeAll(Collection<T> tags) {
+        list.remove(tags);
     }
 
     public int size() {

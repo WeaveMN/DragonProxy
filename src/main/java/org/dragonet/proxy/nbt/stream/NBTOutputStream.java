@@ -3,13 +3,12 @@ package org.dragonet.proxy.nbt.stream;
 import java.io.*;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import org.dragonet.proxy.utilities.Binary;
 
 /**
- * author: MagicDroidX Nukkit Project
+ * author: MagicDroidX
+ * Nukkit Project
  */
 public class NBTOutputStream extends FilterOutputStream implements DataOutput {
-
     private final ByteOrder endianness;
 
     public NBTOutputStream(OutputStream stream) {
@@ -42,7 +41,7 @@ public class NBTOutputStream extends FilterOutputStream implements DataOutput {
     @Override
     public void writeShort(int v) throws IOException {
         if (endianness == ByteOrder.LITTLE_ENDIAN) {
-            v = Binary.readLShort(Binary.writeShort(v));
+            v = Integer.reverseBytes(v) >> 16;
         }
         this.getStream().writeShort(v);
     }
@@ -96,5 +95,10 @@ public class NBTOutputStream extends FilterOutputStream implements DataOutput {
         byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
         this.writeShort(bytes.length);
         this.getStream().write(bytes);
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.getStream().close();
     }
 }
