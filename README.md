@@ -13,7 +13,6 @@ A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to **Min
 Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.md
 
 ![Screenshot](https://raw.githubusercontent.com/DragonetMC/DragonProxy/master/screenshots/TheArchon.png)
-#### That photo shows joining TheArchon server on a MCPE Emulator.
 #### Join on Pocket/Win 10 Edition here `thearchon.dragonet.org`, port `19132`(default). 
 
 ## Installation
