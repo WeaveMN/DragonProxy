@@ -13,11 +13,13 @@
 package org.dragonet.proxy.network;
 
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 import lombok.Getter;
 import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.utilities.Binary;
 import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.raknet.RakNet;
 import org.dragonet.raknet.protocol.EncapsulatedPacket;
@@ -82,6 +84,7 @@ public class RaknetInterface implements ServerInstance {
         if (session == null) {
             return;
         }
+        packet.buffer = Arrays.copyOfRange(packet.buffer, 1, packet.buffer.length);
         session.handlePacketBinary(packet);
     }
 
@@ -119,7 +122,7 @@ public class RaknetInterface implements ServerInstance {
         }
 
         EncapsulatedPacket encapsulated = new EncapsulatedPacket();
-        encapsulated.buffer = packet.getData();
+        encapsulated.buffer = Binary.appendBytes((byte)0x8e, packet.getData());
         encapsulated.needACK = true;
         encapsulated.reliability = (byte) 2;
         encapsulated.messageIndex = 0;
