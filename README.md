@@ -28,7 +28,7 @@ Note: Target server must be off-line mode for now, we may add online authenticat
 * Step 2. Run the proxy by running command: `java -Xmx256M -jar dragonproxy-x.x.x.jar` where `256M` indicates memory size and `dragonproxy-x.x.x.jar` is the file name. 
 * Step 3. Close the server by typing `stop` in the console. 
 * Step 4. Edit `config.properties` and change `remote_ip` and `remote_port` to your Minecraft PC/Mac server, such as `127.0.0.1` and `25565`. 
-* Step 5. Do `Step 3` again, and you should be able to connect to a PC/Mac server through your computer/server from Pocket/Win 10 Edition. 
+* Step 5. Do `Step 2` again, and you should be able to connect to a PC/Mac server through your computer/server from Pocket/Win 10 Edition. 
 
 ## Community
 
