@@ -22,7 +22,7 @@ public class TestCommand implements ConsoleCommand {
     @Override
     public void execute(DragonProxy proxy, String[] args) {
         UpstreamSession cli = proxy.getSessionRegister().getAll().values().toArray(new UpstreamSession[0])[0];
-        cli.sendPacket(new ChangeDimensionPacket(0f, 64f, 0f, (byte)0));
+        cli.sendPacket(new ChangeDimensionPacket(0f, 64f, 0f, (byte)1));
         LoginStatusPacket stat = new LoginStatusPacket();
         stat.status = LoginStatusPacket.PLAYER_SPAWN;
         cli.sendPacket(stat);
