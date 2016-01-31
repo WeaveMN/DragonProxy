@@ -31,9 +31,6 @@ public class ItemBlockTranslator {
     static {
         swap(125, 157); //Double Slab <-> Activator Rail
         onewayOverride(126, 158); //Slab <-> NULL
-        onewayOverride(158, 245, "Dispenser"); //Dispenser
-        onewayOverride(93, 44, "Redstone Repeater");  //-\
-        onewayOverride(94, 44, "Redstone Repeater");  // Repeater
         onewayOverride(95, 20, "Stained Glass"); // Stained Glass = Glass
         onewayOverride(160, 102, "Stained Glass Pane"); // Stained Glass Pane = Glass Pane
         onewayOverride(119, 90); //End portal -> Nether portal
