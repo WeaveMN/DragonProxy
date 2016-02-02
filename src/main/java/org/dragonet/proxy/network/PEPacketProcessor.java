@@ -20,9 +20,6 @@ import org.dragonet.net.packet.minecraft.BatchPacket;
 import org.dragonet.net.packet.minecraft.LoginPacket;
 import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.PEPacketIDs;
-import org.dragonet.net.packet.minecraft.PlayerActionPacket;
-import org.dragonet.net.packet.minecraft.PlayerEquipmentPacket;
-import org.dragonet.net.packet.minecraft.UseItemPacket;
 import org.spacehq.packetlib.packet.Packet;
 
 public class PEPacketProcessor implements Runnable {

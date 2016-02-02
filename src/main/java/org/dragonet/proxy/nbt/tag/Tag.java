@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 public abstract class Tag {
-
     public static final byte TAG_End = 0;
     public static final byte TAG_Byte = 1;
     public static final byte TAG_Short = 2;
@@ -74,17 +73,13 @@ public abstract class Tag {
     }
 
     public String getName() {
-        if (name == null) {
-            return "";
-        }
+        if (name == null) return "";
         return name;
     }
 
     public static Tag readNamedTag(NBTInputStream dis) throws IOException {
         byte type = dis.readByte();
-        if (type == 0) {
-            return new EndTag();
-        }
+        if (type == 0) return new EndTag();
 
         String name = dis.readUTF();
 
@@ -96,9 +91,7 @@ public abstract class Tag {
 
     public static void writeNamedTag(Tag tag, NBTOutputStream dos) throws IOException {
         dos.writeByte(tag.getId());
-        if (tag.getId() == Tag.TAG_End) {
-            return;
-        }
+        if (tag.getId() == Tag.TAG_End) return;
         dos.writeUTF(tag.getName());
 
         tag.write(dos);

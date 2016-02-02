@@ -24,7 +24,11 @@ public class LevelEventPacket extends PEPacket {
         public final static short EVENT_SOUND_CLICK = (short) 1000;
         public final static short EVENT_SOUND_CLICK_FAIL = (short) 1001;
         public final static short EVENT_SOUND_SHOOT = (short) 1002;
+        
         public final static short EVENT_SOUND_DOOR = (short) 1003;
+        public final static short EVENT_SOUND_DOOR_OPEN = EVENT_SOUND_DOOR;
+        public final static short EVENT_SOUND_DOOR_CLOSE = EVENT_SOUND_DOOR;
+        
         public final static short EVENT_SOUND_FIZZ = (short) 1004;
 
         public final static short EVENT_SOUND_GHAST = (short) 1007;
@@ -32,7 +36,9 @@ public class LevelEventPacket extends PEPacket {
         public final static short EVENT_SOUND_BLAZE_SHOOT = (short) 1009;
 
         public final static short EVENT_SOUND_DOOR_BUMP = (short) 1010;
-        public final static short EVENT_SOUND_DOOR_CRASH = (short) 1012;
+        public final static short EVENT_SOUND_POUND_WOODEN_DOOR = EVENT_SOUND_DOOR_BUMP;
+        public final static short EVENT_SOUND_POUND_METAL_DOOR = EVENT_SOUND_DOOR_BUMP;
+        public final static short EVENT_SOUND_BREAK_WOODEN_DOOR = (short) 1012;
 
         public final static short EVENT_SOUND_BAT_FLY = (short) 1015;
         public final static short EVENT_SOUND_ZOMBIE_INFECT = (short) 1016;
@@ -40,7 +46,7 @@ public class LevelEventPacket extends PEPacket {
 
         public final static short EVENT_SOUND_ANVIL_BREAK = (short) 1020;
         public final static short EVENT_SOUND_ANVIL_USE = (short) 1021;
-        public final static short EVENT_SOUND_ANVIL_FALL = (short) 1022;
+        public final static short EVENT_SOUND_ANVIL_LAND = (short) 1022;
 
         public final static short EVENT_PARTICLE_SHOOT = (short) 2000;
         public final static short EVENT_PARTICLE_DESTROY = (short) 2001;
@@ -73,11 +79,11 @@ public class LevelEventPacket extends PEPacket {
     public final static byte AMBIENT_SOUND = (byte) 16;
     public final static byte RESPAWN = (byte) 17;
 
-    private short eventID;
-    private float x;
-    private float y;
-    private float z;
-    private int data;
+    public short eventID;
+    public float x;
+    public float y;
+    public float z;
+    public int data;
 
     @Override
     public int pid() {

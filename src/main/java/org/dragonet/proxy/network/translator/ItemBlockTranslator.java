@@ -19,36 +19,39 @@ import org.dragonet.proxy.nbt.tag.CompoundTag;
 import org.spacehq.mc.protocol.data.game.ItemStack;
 
 public class ItemBlockTranslator {
-
+    
     public final static int UNSUPPORTED_BLOCK_ID = 165;
 
+    public final static String DRAGONET_COMPOUND = "DragonetNBT";
+    
     public final static Map<Integer, Integer> PC_TO_PE_OVERRIDE = new HashMap<>();
     public final static Map<Integer, Integer> PE_TO_PC_OVERRIDE = new HashMap<>();
-
+    public final static Map<Integer, String> NAME_OVERRIDES = new HashMap<>();
+    
     static {
         swap(125, 157); //Double Slab <-> Activator Rail
-        swap(126, 158); //Slab <-> NULL
-        preventPc(158); //No dispenser on MCPE
-        preventPc(93);  //No repeater
-        preventPc(94);  //No repeater
-        onewayOverride(93, 63);
-        onewayOverride(94, 63);
+        onewayOverride(126, 158); //Slab <-> NULL
+        onewayOverride(95, 20, "Stained Glass"); // Stained Glass = Glass
+        onewayOverride(160, 102, "Stained Glass Pane"); // Stained Glass Pane = Glass Pane
         onewayOverride(119, 90); //End portal -> Nether portal
-        onewayOverride(176, 63); //Sign         =\_
-        onewayOverride(177, 68); //Wall sign    =/ We send banner as sign [Banner]
+        onewayOverride(176, 63, "Banner"); //Sign         =\_
+        onewayOverride(177, 68, "Banner"); //Wall sign    =/ We send banner as sign [Banner]
     }
 
     private static void swap(int pcId, int peId) {
         PC_TO_PE_OVERRIDE.put(pcId, peId);
         PE_TO_PC_OVERRIDE.put(peId, pcId);
     }
+    
+    private static void onewayOverride(int fromPc, int toPe, String nameOverride){
+        onewayOverride(fromPc, toPe);
+        if(nameOverride != null){
+            NAME_OVERRIDES.put(fromPc, nameOverride);
+        }
+    }
 
     private static void onewayOverride(int fromPc, int toPe) {
         PC_TO_PE_OVERRIDE.put(fromPc, toPe);
-    }
-
-    private static void preventPc(int pc) {
-        PC_TO_PE_OVERRIDE.put(pc, UNSUPPORTED_BLOCK_ID); // Block 165 isn't exist in PE so it will be come update block
     }
 
     // Query handler
@@ -80,20 +83,39 @@ public class ItemBlockTranslator {
         return t;
     }
     
-    public static CompoundTag translateNBT(org.spacehq.opennbt.tag.builtin.CompoundTag pcTag){
+    public static CompoundTag translateNBT(int id, org.spacehq.opennbt.tag.builtin.CompoundTag pcTag){
         CompoundTag peTag = new CompoundTag();
-        peTag.putCompound("display", new CompoundTag().putString("Name", "Poop Item"));
+        if(pcTag != null && pcTag.contains("display") && ((org.spacehq.opennbt.tag.builtin.CompoundTag)pcTag.get("display").getValue()).contains("Name")){
+            peTag.putCompound("display", new CompoundTag().putString("Name", ((org.spacehq.opennbt.tag.builtin.CompoundTag)pcTag.get("display").getValue()).get("Name").getValue().toString()));
+        }else{
+            if(NAME_OVERRIDES.containsKey(id)){
+                peTag.putCompound("display", new CompoundTag().putString("Name", NAME_OVERRIDES.get(id)));
+            }
+        }
         return peTag;
     }
     
     public static PEInventorySlot translateToPE(ItemStack item){
         if(item == null || item.getId() == 0) return null;
-        PEInventorySlot inv = new PEInventorySlot((short)translateToPE(item.getId()), (byte)(item.getAmount() & 0xFF), (short)(item.getData() & 0xFFFF), translateNBT(item.getNBT()));
+        PEInventorySlot inv = new PEInventorySlot((short)translateToPE(item.getId()), (byte)(item.getAmount() & 0xFF), (short)item.getData(), translateNBT(item.getId(), item.getNBT()));
+        CompoundTag d = new CompoundTag();
+        d.putShort("id", item.getId());
+        d.putShort("amount", item.getAmount());
+        d.putShort("data", item.getData());
+        inv.nbt.putCompound(DRAGONET_COMPOUND, d);
         return inv;
     }
     
     public static ItemStack translateToPC(PEInventorySlot slot){
-        ItemStack item = new ItemStack(translateToPC((int)slot.id), (int)(slot.count & 0xFF), (int)(slot.meta & 0xFFFF));
+        ItemStack item = null;
+        if(slot.nbt.contains(DRAGONET_COMPOUND)){
+            item = new ItemStack(
+                    slot.nbt.getCompound(DRAGONET_COMPOUND).getShort("id"), 
+                    slot.nbt.getCompound(DRAGONET_COMPOUND).getShort("amount"), 
+                    slot.nbt.getCompound(DRAGONET_COMPOUND).getShort("data"));
+        }else{
+            item = new ItemStack(translateToPC((int)slot.id), (int)(slot.count & 0xFF), (int)slot.meta);
+        }
         return item;
     }
 }

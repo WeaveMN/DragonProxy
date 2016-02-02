@@ -19,11 +19,21 @@ import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 
 public class ChangeDimensionPacket extends PEPacket {
 
+    public float x;
+    public float y;
+    public float z;
     public byte dimension;
 
+    public ChangeDimensionPacket(float x, float y, float z, byte dimension) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.dimension = dimension;
+    }
+    
     @Override
     public int pid() {
-        return PEPacketIDs.ANIMATE_PACKET;
+        return PEPacketIDs.CHANGE_DIMENSION_PACKET;
     }
 
     @Override
@@ -33,8 +43,10 @@ public class ChangeDimensionPacket extends PEPacket {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             PEBinaryWriter writer = new PEBinaryWriter(bos);
             writer.writeByte((byte) (this.pid() & 0xFF));
-//            writer.writeByte(action);
-//            writer.writeLong(eid);
+            writer.writeFloat(x);
+            writer.writeFloat(y);
+            writer.writeFloat(z);
+            writer.writeByte(dimension);
             this.setData(bos.toByteArray());
         } catch (IOException e) {
         }

@@ -22,7 +22,6 @@ import org.dragonet.net.packet.minecraft.WindowItemsPacket;
 import org.dragonet.proxy.network.cache.CachedWindow;
 import org.dragonet.proxy.network.translator.inv.ChestWindowTranslator;
 import org.dragonet.proxy.network.translator.InventoryTranslator;
-import org.dragonet.proxy.network.translator.ItemBlockTranslator;
 import org.spacehq.mc.protocol.data.game.Position;
 import org.spacehq.mc.protocol.data.game.values.window.WindowType;
 import org.spacehq.mc.protocol.packet.ingame.client.window.ClientCloseWindowPacket;
@@ -44,7 +43,7 @@ public final class InventoryTranslatorRegister {
         for (int i = 9; i < win.slots.length; i++) {
             //TODO: Add NBT support
             if (win.slots[i] != null) {
-                ret.slots[i - 9] = new PEInventorySlot((short) ItemBlockTranslator.translateToPE(win.slots[i].getId()), (byte) (win.slots[i].getAmount() & 0xFF), (short) win.slots[i].getData(), ItemBlockTranslator.translateNBT(win.slots[i].getNBT()));
+                ret.slots[i - 9] = PEInventorySlot.fromItemStack(win.slots[i]);
             }
         }
         for (int i = 36; i < 45; i++) {

@@ -31,6 +31,15 @@ public class Lang extends ConfigFile {
     public final static String BROADCAST_TITLE = "broadcast_title";
 
     public final static String MESSAGE_CLIENT_CONNECTED = "message_client_connected";
+    
+    public final static String MESSAGE_CLS_NOTICE = "message_cls_notice";
+    
+    public final static String MESSAGE_SERVER_ERROR = "message_server_error";
+    
+    public final static String ERROR_CLS_UNREACHABLE = "error_cls_unreachable";
+    
+    public final static String ERROR_CLS_ERROR = "error_cls_error";
+    public final static String ERROR_CLS_LOGIN = "error_cls_login";
 
     public final static String MESSAGE_ONLINE_NOTICE = "message_online_notice";
 
@@ -45,6 +54,8 @@ public class Lang extends ConfigFile {
     public final static String MESSAGE_ONLINE_LOGIN_SUCCESS = "message_online_login_success";
 
     public final static String MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE = "message_online_login_success_console";
+    
+    public final static String MESSAGE_TELEPORT_TO_SPAWN = "message_teleport_to_spawn";
 
     public final static String MESSAGE_ONLINE_USERNAME = "message_online_username";
 
@@ -74,6 +85,8 @@ public class Lang extends ConfigFile {
 
     public final static String MESSAGE_UNSUPPORTED_CLIENT = "message_unsupported_client";
 
+    public final static String QUERY_FAILED = "query_failed";
+    
     public Lang(String langFileName) throws IOException {
         super("/resources/en_US.properties", langFileName, false);
     }

@@ -8,7 +8,6 @@ import java.util.Arrays;
 import org.dragonet.proxy.utilities.Binary;
 
 public class ByteArrayTag extends Tag {
-
     public byte[] data;
 
     public ByteArrayTag(String name) {

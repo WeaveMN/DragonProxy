@@ -73,7 +73,7 @@ public final class PEPacketIDs {
     //public final static byte PLAYER_INPUT_PACKET = (byte) 0xbe;
     public final static byte FULL_CHUNK_DATA_PACKET = (byte) 0xbf;
     public final static byte SET_DIFFICULTY_PACKET = (byte) 0xc0;
-    //public final static byte CHANGE_DIMENSION_PACKET = (byte) 0xc1;
+    public final static byte CHANGE_DIMENSION_PACKET = (byte) 0xc1;
     public final static byte SET_PLAYER_GAMETYPE_PACKET = (byte) 0xc2;
     public final static byte PLAYER_LIST_PACKET = (byte) 0xc3;
     //public final static byte TELEMETRY_EVENT_PACKET = (byte) 0xc4;

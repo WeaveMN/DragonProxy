@@ -18,6 +18,7 @@ import org.dragonet.entity.metadata.type.ByteMeta;
 import org.dragonet.entity.metadata.type.ShortMeta;
 import org.dragonet.proxy.entity.EntityType;
 import org.spacehq.mc.protocol.data.game.EntityMetadata;
+import org.spacehq.mc.protocol.data.game.values.entity.MetadataType;
 
 public final class EntityMetaTranslator {
 
@@ -47,7 +48,15 @@ public final class EntityMetaTranslator {
                     peMeta.map.put(EntityMetaData.Constants.DATA_NAMETAG, new ByteArrayMeta((String) m.getValue()));
                     break;
                 case 3://Always show name tag
-                    peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta((byte) m.getValue()));
+                    byte data;
+                    if(m.getType() == MetadataType.BYTE){
+                        data = (byte) m.getValue();
+                    }else if(m.getType() == MetadataType.INT){
+                        data = (byte)(((int)m.getValue()) & 0xFF);
+                    }else{
+                        data = 1;
+                    }
+                    peMeta.map.put(EntityMetaData.Constants.DATA_SHOW_NAMETAG, new ByteMeta(data));
                     break;
                 case 6://Health
                     //Not supported on MCPE yet
@@ -65,7 +74,15 @@ public final class EntityMetaTranslator {
                     peMeta.map.put(EntityMetaData.Constants.DATA_NO_AI, new ByteMeta((byte) m.getValue()));
                     break;
                 case 12://Age
-                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta((byte) m.getValue()));
+                    byte age;
+                    if(m.getType() == MetadataType.BYTE){
+                        age = (byte) m.getValue();
+                    }else if(m.getType() == MetadataType.INT){
+                        age = (byte)(((int)m.getValue()) & 0xFF);
+                    }else{
+                        age = 0;
+                    }
+                    peMeta.map.put(EntityMetaData.Constants.DATA_AGE, new ByteMeta((age <= 0 ? (byte)0x1 : (byte)0x0)));
                     break;
                 case 16:
                     //Not supported yet
