@@ -7,8 +7,8 @@
 
 ## Project is NOT dead, I am currently VERY busy so I can't maintain this project myself. But the repo will be checked usually so PRs are welcomed. 
 
-A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to **Minecraft PC/Mac** servers.
-
+A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to multiple **Minecraft PC/Mac or Pocket Edition** servers.
+It works like BungeeCord but much more powerful than that. ;) 
 
 Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.md
 
@@ -19,8 +19,9 @@ Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.
 [![Build status indicator](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master.svg?style=badge)](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master) [Download from CircleCI](https://circleci.com/gh/DragonetMC/DragonProxy/tree/master) - You must be logged in to download a build.
 
 #### Supported Remote Server Types
-- `Bukkit`/`Spigot`/`Glowstone`/`SpongeVanilla`/`BungeeCord`
-- Not listed is not mean unsupported, just untested.
+- For PC/Mac Servers: `Bukkit`/`Spigot`/`Glowstone`/`SpongeVanilla`/`BungeeCord`
+- For Pocket Edition Servers: `[PocketMine-MP](http://pocketmine.net)`, `[Nukkit](http://nukkit.cn)`
+- Not listed is **NOT** mean unsupported, just **untested**.
 
 ## Usage
 Note: Target server must be off-line mode for now, we may add online authentication later. 
