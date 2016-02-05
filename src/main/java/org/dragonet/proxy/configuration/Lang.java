@@ -14,7 +14,7 @@ package org.dragonet.proxy.configuration;
 
 import java.io.IOException;
 
-public class Lang extends ConfigFile {
+public class Lang extends PropertiesConfig {
 
     public final static String INIT_LOADING = "init_loading";
 

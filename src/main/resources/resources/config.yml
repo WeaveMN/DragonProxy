@@ -9,7 +9,11 @@ lang: default
 # What IP and port to bind on your own computer/server. 
 # IP 0.0.0.0 means bind to all IP addresses available on your own computer/server. 
 udp_bind_ip: '0.0.0.0'
-udp_bind_port: '19132'
+udp_bind_port: 19132
+
+# The MOTD (Message of the Day) that will be shown on the MCPE Server List
+motd: '&aAnother DragonProxy instance'
+
 
 # What server should we connect to by default
 default_server: 'my_pc_server'
@@ -48,6 +52,3 @@ log_console: true
 # Recommanded at least 8 threads. 
 # If you using this software at home, you can set to lower value like 8 or 12.  
 thread_pool_size: 32
-
-# The MOTD (Message of the Day) that will be shown on the MCPE Server List
-motd: '&aAnother DragonProxy instance'
