@@ -20,7 +20,7 @@ Test servers: https://github.com/DragonetMC/DragonProxy/blob/master/TestServers.
 
 #### Supported Remote Server Types
 - For PC/Mac Servers: `Bukkit`/`Spigot`/`Glowstone`/`SpongeVanilla`/`BungeeCord`
-- For Pocket Edition Servers: `[PocketMine-MP](http://pocketmine.net)`, `[Nukkit](http://nukkit.cn)`
+- For Pocket Edition Servers: `PocketMine-MP`, `Nukkit`
 - Not listed is **NOT** mean unsupported, just **untested**.
 
 ## Usage
