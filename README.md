@@ -50,5 +50,5 @@ git clone git@github.com:DragonetMC/DragonProxy.git
 * Add "Lombok Plugin" to add first class support for Lombok annotations in **IntelliJ**
 
 ## Libraries Used
-* Netty Networking Library([Link](http://netty.io))
-* Google Guava([Link](http://code.google.com/p/guava-libraries/))
+* RakLib Port by the Nukkit project @ [Site](http://nukkit.cn)
+* @Steveice10 's MCProtocolLib @ [Link](https://github.com/Steveice10/MCProtocolLib)
