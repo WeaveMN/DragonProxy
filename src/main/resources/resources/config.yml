@@ -3,10 +3,6 @@
 #|    Sponsered by BytePowered     |
 # =================================
 
-# ---------------------------------
-#        Basic Configurations
-# ---------------------------------
-
 # Language file
 lang: default
 
@@ -55,23 +51,3 @@ thread_pool_size: 32
 
 # The MOTD (Message of the Day) that will be shown on the MCPE Server List
 motd: '&aAnother DragonProxy instance'
-
-
-# ---------------------------------
-#      Security Configurations
-# ---------------------------------
-
-# Permissions which player will have if they have no group assigned
-default_permission: 
-  - 'server'
-
-# Group definitions with their permissions. 
-groups:
-  - admin:
-      - 'server'
-      - 'stop'
-
-# Users
-# WARNING: You must change some_random_guy to your username if you are using offline mode! 
-users:
-  some_random_guy: 'admin'
