@@ -12,7 +12,9 @@
  */
 package org.dragonet.proxy.network.translator;
 
+import java.util.LinkedHashMap;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Map;
 import org.dragonet.inventory.PEInventorySlot;
 import org.dragonet.proxy.nbt.tag.CompoundTag;
@@ -85,8 +87,23 @@ public class ItemBlockTranslator {
     
     public static CompoundTag translateNBT(int id, org.spacehq.opennbt.tag.builtin.CompoundTag pcTag){
         CompoundTag peTag = new CompoundTag();
-        if(pcTag != null && pcTag.contains("display") && ((org.spacehq.opennbt.tag.builtin.CompoundTag)pcTag.get("display").getValue()).contains("Name")){
-            peTag.putCompound("display", new CompoundTag().putString("Name", ((org.spacehq.opennbt.tag.builtin.CompoundTag)pcTag.get("display").getValue()).get("Name").getValue().toString()));
+        if(pcTag != null && pcTag.contains("display")) {
+	  Object o = pcTag.get("display").getValue();
+	  if (o instanceof org.spacehq.opennbt.tag.builtin.CompoundTag) {
+		  org.spacehq.opennbt.tag.builtin.CompoundTag t = (org.spacehq.opennbt.tag.builtin.CompoundTag) o;
+		  if (t.contains("Name")){
+		    peTag.putCompound("display", new CompoundTag().putString("Name", ((org.spacehq.opennbt.tag.builtin.CompoundTag)pcTag.get("display").getValue()).get("Name").getValue().toString()));
+		  }
+	  } else {
+		if (o instanceof LinkedHashMap) {
+			LinkedHashMap map = (LinkedHashMap) o;
+			Set<String> t = map.keySet();
+			  if (t.contains("Name")){
+			    org.spacehq.opennbt.tag.builtin.StringTag tag = (org.spacehq.opennbt.tag.builtin.StringTag ) map.get("Name");
+			    peTag.putCompound("display", new CompoundTag().putString("Name", tag.getValue().toString()));
+			  }
+		}
+	  }
         }else{
             if(NAME_OVERRIDES.containsKey(id)){
                 peTag.putCompound("display", new CompoundTag().putString("Name", NAME_OVERRIDES.get(id)));
