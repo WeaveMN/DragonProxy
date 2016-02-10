@@ -22,7 +22,7 @@ public class PCUpdateTimePacketTranslator implements PCPacketTranslator<ServerUp
 
     @Override
     public PEPacket[] translate(UpstreamSession session, ServerUpdateTimePacket packet) {
-        SetTimePacket pk = new SetTimePacket((int) (packet.getTime() & 0xFFFF), false);
+        SetTimePacket pk = new SetTimePacket((int) (packet.getTime()), true);
         return new PEPacket[]{pk};
     }
 
