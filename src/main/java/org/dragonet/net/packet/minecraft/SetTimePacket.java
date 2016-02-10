@@ -19,14 +19,14 @@ import org.dragonet.proxy.utilities.io.PEBinaryWriter;
 public class SetTimePacket extends PEPacket {
 
     public int time;
-    public boolean isTimeFreezed;
+    public boolean started;
 
     public SetTimePacket() {
     }
 
-    public SetTimePacket(int time, boolean isTimeFreezed) {
+    public SetTimePacket(int time, boolean started) {
         this.time = time;
-        this.isTimeFreezed = isTimeFreezed;
+        this.started = started;
     }
 
     @Override
@@ -39,11 +39,9 @@ public class SetTimePacket extends PEPacket {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             PEBinaryWriter writer = new PEBinaryWriter(bos);
-            writer.writeByte((byte) (this.pid() & 0xFF));
-            //writer.writeInt((int)(((this.time / GlowWorld.DAY_LENGTH) * 19200) & 0xFFFFFFFF));
-            //We hack for now :P
-            writer.writeInt(20 * 60);
-            if (this.isTimeFreezed) {
+            writer.writeByte((byte) (this.pid()));
+            writer.writeInt(this.time);
+            if (!this.started) {
                 writer.writeByte((byte) 0);
             } else {
                 writer.writeByte((byte) 1);
