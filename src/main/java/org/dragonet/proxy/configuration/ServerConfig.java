@@ -16,6 +16,8 @@ import java.util.Map;
 import lombok.Getter;
 
 public class ServerConfig extends PropertiesConfig {
+	
+	public static String LANG_FILE = "Placeholder";
 
     @Getter
     private String lang = "default";

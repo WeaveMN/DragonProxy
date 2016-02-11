@@ -133,7 +133,7 @@ public class DragonProxy {
                 metrics.start();
             } catch (IOException ex) { }
         } else {
-            logger.notice("This is a development build. It may contain bugs. Do not use on production");
+            logger.info("This is a development build. It may contain bugs. Do not use on production");
         }
 
         //Create thread pool
