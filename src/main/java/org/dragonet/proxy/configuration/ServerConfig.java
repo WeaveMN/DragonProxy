@@ -15,7 +15,7 @@ package org.dragonet.proxy.configuration;
 import java.util.Map;
 import lombok.Getter;
 
-public class ServerConfig {
+public class ServerConfig extends PropertiesConfig {
 
     @Getter
     private String lang = "default";
@@ -49,5 +49,7 @@ public class ServerConfig {
     
     @Getter
     private int thread_pool_size;
+	
+	
 
 }

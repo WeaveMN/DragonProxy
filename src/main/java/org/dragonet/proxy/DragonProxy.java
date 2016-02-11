@@ -112,7 +112,7 @@ public class DragonProxy {
         try {
             lang = new Lang(config.getConfig().getProperty(ServerConfig.LANG_FILE));
         } catch (IOException ex) {
-            logger.severe("Failed to load language file!");
+            logger.severe("Failed to load language file: " + ServerConfig.LANG_FILE + "!");
             ex.printStackTrace();
             return;
         }
@@ -133,10 +133,7 @@ public class DragonProxy {
                 metrics.start();
             } catch (IOException ex) { }
         } else {
-            logger.info("\n-----------------------------");
-            logger.info(" This is a DEVELOPMENT build ");
-            logger.info("     It may contain bugs     ");
-            logger.info("-----------------------------\n");
+            logger.notice("This is a development build. It may contain bugs. Do not use on production");
         }
 
         //Create thread pool
@@ -149,7 +146,7 @@ public class DragonProxy {
                 config.getConfig().getProperty("udp_bind_ip"), //IP
                 Integer.parseInt(config.getConfig().getProperty("udp_bind_port"))); //Port
 
-        // MOTD
+        //MOTD
         motd = config.getConfig().getProperty("motd");
         motd = motd.replace("&", "§");
         motd = motd.replace("%ip%", remoteServerAddress.getHostString());

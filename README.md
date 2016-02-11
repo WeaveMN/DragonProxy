@@ -5,7 +5,8 @@
 
 **IRC:** http://webchat.esper.net/?nick=&channels=dragonet
 
-## Project is NOT dead, I am currently VERY busy so I can't maintain this project myself. But the repo will be checked usually so PRs are welcomed. 
+Supports all 0.14 versions!
+
 
 A proxy for **Minecraft: Pocket Edition/Windows 10 Edition** connecting to multiple **Minecraft PC/Mac or Pocket Edition** servers.
 It works like BungeeCord but much more powerful than that. ;) 
