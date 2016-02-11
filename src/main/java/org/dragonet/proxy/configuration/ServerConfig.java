@@ -13,7 +13,7 @@
 package org.dragonet.proxy.configuration;
 
 import java.util.Map;
-import java.util.IOException;
+import java.io.IOException;
 import lombok.Getter;
 
 public class ServerConfig extends PropertiesConfig {
