@@ -18,6 +18,10 @@ import lombok.Getter;
 public class ServerConfig extends PropertiesConfig {
 	
 	public static String LANG_FILE = "Placeholder";
+	
+	public ServerConfig(){
+		
+	}
 
     @Getter
     private String lang = "default";
