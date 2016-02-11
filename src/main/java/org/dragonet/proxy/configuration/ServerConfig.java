@@ -19,9 +19,10 @@ public class ServerConfig extends PropertiesConfig {
 	
 	public static String LANG_FILE = "Placeholder";
 	
-	public ServerConfig(){
-		
-	}
+	//Temporary - trying to get it to build
+	public ServerConfig() throws IOException {
+	    super("/resources/config.properties", "config.properties", true);
+   }
 
     @Getter
     private String lang = "default";
