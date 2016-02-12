@@ -12,15 +12,35 @@
  */
 package org.dragonet.proxy.configuration;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import lombok.Getter;
+import org.dragonet.configuration.serialization.ConfigurationSerializable;
 
-public class RemoteServer {
+public abstract class RemoteServer implements ConfigurationSerializable {
     @Getter
-    private boolean is_mcpe;
+    private String remoteAddr;
     
     @Getter
-    private String remote_addr;
+    private int remotePort;
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("remote_addr", remoteAddr);
+        map.put("remote_port", remotePort);
+        return map;
+    }
     
-    @Getter
-    private int remote_port;
+    /**
+     * Required for deserailization. 
+     * @param server 
+     * @param map
+     * @return 
+     */
+    public static RemoteServer delicatedDeserialize(RemoteServer server, Map<String, Object> map) {
+        server.remoteAddr = (String) map.get("remote_addr");
+        server.remotePort = ((Number) map.get("remote_port")).intValue();
+        return server;
+    }
 }

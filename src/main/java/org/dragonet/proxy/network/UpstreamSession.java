@@ -33,8 +33,10 @@ import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.SetSpawnPositionPacket;
 import org.dragonet.net.packet.minecraft.StartGamePacket;
 import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
+import org.dragonet.proxy.DesktopServer;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.configuration.RemoteServer;
 import org.dragonet.proxy.network.cache.EntityCache;
 import org.dragonet.proxy.network.cache.WindowCache;
 import org.dragonet.proxy.utilities.HTTP;
@@ -69,7 +71,7 @@ public class UpstreamSession {
     private String username;
 
     @Getter
-    private final DownstreamSession downstream;
+    private DownstreamSession downstream;
 
     /* =======================================================================================================
      * |                                 Caches for Protocol Compatibility                                   |
@@ -95,7 +97,6 @@ public class UpstreamSession {
         this.remoteAddress = remoteAddress;
         packetProcessor = new PEPacketProcessor(this);
         packetProcessorScheule = proxy.getGeneralThreadPool().scheduleAtFixedRate(packetProcessor, 10, 50, TimeUnit.MILLISECONDS);
-        downstream = new DownstreamSession(proxy, this);
     }
 
     public void sendPacket(PEPacket packet) {
@@ -243,6 +244,21 @@ public class UpstreamSession {
         } else {
             protocol = new MinecraftProtocol(username);
             downstream.connect(protocol, proxy.getRemoteServerAddress());
+        }
+    }
+    
+    public void connectToServer(RemoteServer server){
+        if(downstream != null && downstream.isConnected()){
+            //TODO: We have to disconnnect
+            return;
+        }
+        if(server == null) return;
+        if(server.getClass().isAssignableFrom(DesktopServer.class)){
+            downstream = new PCDownstreamSession(proxy, this);
+            ((PCDownstreamSession)downstream).setProtocol(protocol);
+            ((PCDownstreamSession)downstream).connect(server.getRemoteAddr(), server.getRemotePort());
+        }else{
+            
         }
     }
 
