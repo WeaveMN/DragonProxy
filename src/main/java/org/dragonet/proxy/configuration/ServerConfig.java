@@ -13,17 +13,9 @@
 package org.dragonet.proxy.configuration;
 
 import java.util.Map;
-import java.io.IOException;
 import lombok.Getter;
 
-public class ServerConfig extends PropertiesConfig {
-	
-	public static String LANG_FILE = "Placeholder";
-	
-	//Temporary - trying to get it to build
-	public ServerConfig() throws IOException {
-	    super("/resources/config.properties", "config.properties", true);
-   }
+public class ServerConfig {
 
     @Getter
     private String lang = "default";
