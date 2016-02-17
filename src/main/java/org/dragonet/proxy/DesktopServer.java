@@ -10,19 +10,14 @@
  *
  * @author The Dragonet Team
  */
-package org.dragonet.proxy.network;
+package org.dragonet.proxy;
 
-public interface DownstreamSession<PACKET> {
+import java.util.Map;
+import org.dragonet.proxy.configuration.RemoteServer;
 
-    public void connect(String addr, int port);
+public class DesktopServer extends RemoteServer {
 
-    public boolean isConnected();
-
-    public void send(PACKET packet);
-
-    public void send(PACKET... packets);
-    
-    public void sendChat(String chat);
-    
-    public void disconnect();
+    public static DesktopServer deserialize(Map<String, Object> map) {
+        return (DesktopServer) delicatedDeserialize(new DesktopServer(), map);
+    }
 }

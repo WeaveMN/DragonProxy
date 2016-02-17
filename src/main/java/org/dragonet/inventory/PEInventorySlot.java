@@ -62,7 +62,9 @@ public class PEInventorySlot {
         if(meta == -1){
             meta = 0;
         }
+        reader.switchEndianness();
         short lNbt = reader.readShort();
+        reader.switchEndianness();
         if (lNbt <= 0) {
             return new PEInventorySlot(id, count, meta);
         }
@@ -85,7 +87,9 @@ public class PEInventorySlot {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             PENBT.write(slot.nbt, new DataOutputStream(bos), ByteOrder.LITTLE_ENDIAN);
             byte[] nbtdata = bos.toByteArray();
+            writer.switchEndianness();
             writer.writeShort((short) (nbtdata.length & 0xFFFF));
+            writer.switchEndianness();
             writer.write(nbtdata);
         }
     }

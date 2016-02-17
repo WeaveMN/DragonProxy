@@ -12,14 +12,44 @@
  */
 package org.dragonet.proxy.configuration;
 
-import java.io.IOException;
+import java.util.Map;
+import lombok.Getter;
 
-public class ServerConfig extends ConfigFile {
+public class ServerConfig {
 
-    public final static String LANG_FILE = "lang";
+    @Getter
+    private String lang = "default";
+    
+    @Getter
+    private String udp_bind_ip = "0.0.0.0";
 
-    public ServerConfig() throws IOException {
-        super("/resources/config.properties", "config.properties", true);
-    }
+    @Getter
+    private int udp_bind_port = 19132;
+    
+    @Getter
+    private String motd;
+    
+    @Getter
+    private String default_server = "NONE";
+    
+    @Getter
+    private Map<String, RemoteServer> remote_servers;
+    
+    @Getter
+    private String mode = "cls";
+    
+    @Getter
+    private String command_prefix = "/";
+    
+    @Getter
+    private int max_players = -1;
+    
+    @Getter
+    private boolean log_console = true;
+    
+    @Getter
+    private int thread_pool_size;
+	
+	
 
 }

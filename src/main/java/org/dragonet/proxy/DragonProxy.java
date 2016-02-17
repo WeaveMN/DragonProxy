@@ -12,9 +12,8 @@
  */
 package org.dragonet.proxy;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
@@ -26,18 +25,9 @@ import org.dragonet.proxy.configuration.ServerConfig;
 import org.dragonet.proxy.utilities.Versioning;
 import org.dragonet.proxy.commands.CommandRegister;
 
-import org.spacehq.mc.protocol.MinecraftConstants;
-import org.spacehq.mc.protocol.MinecraftProtocol;
-import org.spacehq.mc.protocol.data.SubProtocol;
-import org.spacehq.mc.protocol.data.status.ServerStatusInfo;
-import org.spacehq.mc.protocol.data.status.handler.ServerInfoHandler;
-import org.spacehq.mc.protocol.data.status.handler.ServerPingTimeHandler;
-import org.spacehq.packetlib.Client;
-import org.spacehq.packetlib.Session;
-import org.spacehq.packetlib.tcp.TcpSessionFactory;
-
 import org.mcstats.Metrics;
 import lombok.Getter;
+import org.yaml.snakeyaml.Yaml;
 
 public class DragonProxy {
 
@@ -72,9 +62,6 @@ public class DragonProxy {
     private CommandRegister commandRegister;
 
     @Getter
-    private InetSocketAddress remoteServerAddress;
-
-    @Getter
     private String authMode;
 
     private ConsoleManager console;
@@ -89,7 +76,7 @@ public class DragonProxy {
 
         //Need to initialize config before console
         try {
-            config = new ServerConfig();
+            config = new Yaml().loadAs(new FileInputStream("config.yml"), ServerConfig.class);
         } catch (IOException ex) {
             logger.severe("Failed to load configuration file!");
             ex.printStackTrace();
@@ -102,7 +89,7 @@ public class DragonProxy {
 
         checkArguments(args);
 
-        if(config.getConfig().getProperty("log_console").toLowerCase().contains("true")){
+        if(config.isLog_console()){
             console.startFile("console.log");
             logger.info("Saving console output enabled"); //TODO: Translations
         } else {
@@ -110,21 +97,20 @@ public class DragonProxy {
         }
 
         try {
-            lang = new Lang(config.getConfig().getProperty(ServerConfig.LANG_FILE));
+            lang = new Lang(config.getLang());
         } catch (IOException ex) {
-            logger.severe("Failed to load language file!");
+            logger.severe("Failed to load language file: " + config.getLang() + "!");
             ex.printStackTrace();
             return;
         }
         logger.info(lang.get(Lang.INIT_LOADING, Versioning.RELEASE_VERSION));
         logger.info(lang.get(Lang.INIT_MC_PC_SUPPORT, Versioning.MINECRAFT_PC_VERSION));
         logger.info(lang.get(Lang.INIT_MC_PE_SUPPORT, Versioning.MINECRAFT_PE_VERSION));
-        authMode = config.getConfig().getProperty("mode").toLowerCase();
+        authMode = config.getMode().toLowerCase();
         if(!authMode.equals("cls") && !authMode.equals("online") && !authMode.equals("offline")){
             logger.severe("Invalid 'mode' option detected, must be cls/online/offline, you set it to '" + authMode + "'! ");
             return;
         }
-        remoteServerAddress = new InetSocketAddress(config.getConfig().getProperty("remote_ip"), Integer.parseInt(config.getConfig().getProperty("remote_port")));
         sessionRegister = new SessionRegister(this);
         commandRegister = new CommandRegister(this);
         if (IS_RELEASE) {
@@ -133,34 +119,26 @@ public class DragonProxy {
                 metrics.start();
             } catch (IOException ex) { }
         } else {
-            logger.info("\n-----------------------------");
-            logger.info(" This is a DEVELOPMENT build ");
-            logger.info("     It may contain bugs     ");
-            logger.info("-----------------------------\n");
+            logger.info("This is a development build. It may contain bugs. Do not use on production");
         }
 
         //Create thread pool
-        logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, Integer.parseInt(config.getConfig().getProperty("thread_pool_size"))));
-        generalThreadPool = Executors.newScheduledThreadPool(Integer.parseInt(config.getConfig().getProperty("thread_pool_size")));
+        logger.info(lang.get(Lang.INIT_CREATING_THREAD_POOL, config.getThread_pool_size()));
+        generalThreadPool = Executors.newScheduledThreadPool(config.getThread_pool_size());
 
         //Bind
-        logger.info(lang.get(Lang.INIT_BINDING, config.getConfig().getProperty("udp_bind_ip"), config.getConfig().getProperty("udp_bind_port")));
+        logger.info(lang.get(Lang.INIT_BINDING, config.getUdp_bind_ip(), config.getUdp_bind_port()));
         network = new RaknetInterface(this,
-                config.getConfig().getProperty("udp_bind_ip"), //IP
-                Integer.parseInt(config.getConfig().getProperty("udp_bind_port"))); //Port
+                config.getUdp_bind_ip(), //IP
+                config.getUdp_bind_port()); //Port
 
-        // MOTD
-        motd = config.getConfig().getProperty("motd");
+        //MOTD
+        motd = config.getMotd();
         motd = motd.replace("&", "§");
-        motd = motd.replace("%ip%", remoteServerAddress.getHostString());
-        motd = motd.replace("%port%", remoteServerAddress.getPort() + "");
 
         network.setBroadcastName(motd, -1, -1);
         ticker.start();
         logger.info(lang.get(Lang.INIT_DONE));
-
-        //Ping the PC server to show the players online
-        pingPCServer();
     }
 
     public boolean isDebug(){
@@ -193,57 +171,8 @@ public class DragonProxy {
         }
         System.exit(0);
     }
-
-    public void pingPCServer() {
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                if (shuttingDown) {
-                    return;
-                }
-                try {
-                    status();
-                    Thread.sleep(5000);
-                    pingPCServer();
-                } catch (InterruptedException e) {
-                }
-            }
-        });
-        t.start();
-    }
+    
     public Logger getLogger() {
         return logger;
-    }
-
-    private void status() {
-        MinecraftProtocol protocol = new MinecraftProtocol(SubProtocol.STATUS);
-        Client client = new Client(remoteServerAddress.getHostString(), remoteServerAddress.getPort(), protocol, new TcpSessionFactory(Proxy.NO_PROXY));
-        client.getSession().setFlag(MinecraftConstants.AUTH_PROXY_KEY, Proxy.NO_PROXY);
-        client.getSession().setConnectTimeout(10000);
-        client.getSession().setFlag(MinecraftConstants.SERVER_INFO_HANDLER_KEY, new ServerInfoHandler() {
-            @Override
-            public void handle(Session session, ServerStatusInfo info) {
-                network.setBroadcastName(motd, info.getPlayerInfo().getOnlinePlayers(), info.getPlayerInfo().getMaxPlayers());
-                return;
-            }
-        });
-        client.getSession().setFlag(MinecraftConstants.SERVER_PING_TIME_HANDLER_KEY, new ServerPingTimeHandler() {
-            public void handle(Session session, long pingTime) {
-            }
-        });
-        client.getSession().connect();
-        boolean connected = false;
-        while(client.getSession().isConnected()) {
-            try {
-                connected = true;
-                Thread.sleep(5);
-            } catch(InterruptedException e) {
-            }
-        }
-        if (!connected) {
-        	String error = lang.get(Lang.QUERY_FAILED);
-        	error = error.replace("%ip%", remoteServerAddress.getHostString());
-        	error = error.replace("%port%", remoteServerAddress.getPort() + "");
-            logger.warning(error);
-        }
     }
 }

@@ -33,8 +33,10 @@ import org.dragonet.net.packet.minecraft.PEPacket;
 import org.dragonet.net.packet.minecraft.SetSpawnPositionPacket;
 import org.dragonet.net.packet.minecraft.StartGamePacket;
 import org.dragonet.net.packet.minecraft.UpdateBlockPacket;
+import org.dragonet.proxy.DesktopServer;
 import org.dragonet.proxy.DragonProxy;
 import org.dragonet.proxy.configuration.Lang;
+import org.dragonet.proxy.configuration.RemoteServer;
 import org.dragonet.proxy.network.cache.EntityCache;
 import org.dragonet.proxy.network.cache.WindowCache;
 import org.dragonet.proxy.utilities.HTTP;
@@ -69,7 +71,7 @@ public class UpstreamSession {
     private String username;
 
     @Getter
-    private final DownstreamSession downstream;
+    private DownstreamSession downstream;
 
     /* =======================================================================================================
      * |                                 Caches for Protocol Compatibility                                   |
@@ -95,7 +97,6 @@ public class UpstreamSession {
         this.remoteAddress = remoteAddress;
         packetProcessor = new PEPacketProcessor(this);
         packetProcessorScheule = proxy.getGeneralThreadPool().scheduleAtFixedRate(packetProcessor, 10, 50, TimeUnit.MILLISECONDS);
-        downstream = new DownstreamSession(proxy, this);
     }
 
     public void sendPacket(PEPacket packet) {
@@ -239,10 +240,25 @@ public class UpstreamSession {
             }
             HTTP.performGetRequest("http://api.dragonet.org/cls/update_token.php?" + String.format("username=%s&oldtoken=%s&newtoken=%s", name, obj.get("token").getAsString(), authSvc.getAccessToken()));
             protocol = new MinecraftProtocol(authSvc.getSelectedProfile(), authSvc.getAccessToken());
-            downstream.connect(protocol, proxy.getRemoteServerAddress());
+            connectToServer(proxy.getConfig().getRemote_servers().get(proxy.getConfig().getDefault_server()));
         } else {
             protocol = new MinecraftProtocol(username);
-            downstream.connect(protocol, proxy.getRemoteServerAddress());
+            connectToServer(proxy.getConfig().getRemote_servers().get(proxy.getConfig().getDefault_server()));
+        }
+    }
+    
+    public void connectToServer(RemoteServer server){
+        if(downstream != null && downstream.isConnected()){
+            //TODO: We have to disconnnect
+            return;
+        }
+        if(server == null) return;
+        if(server.getClass().isAssignableFrom(DesktopServer.class)){
+            downstream = new PCDownstreamSession(proxy, this);
+            ((PCDownstreamSession)downstream).setProtocol(protocol);
+            ((PCDownstreamSession)downstream).connect(server.getRemoteAddr(), server.getRemotePort());
+        }else{
+            //TODO
         }
     }
 
@@ -321,7 +337,7 @@ public class UpstreamSession {
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
 
             proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE, username, remoteAddress, username));
-            downstream.connect(protocol, proxy.getRemoteServerAddress());
+            connectToServer(proxy.getConfig().getRemote_servers().get(proxy.getConfig().getDefault_server()));
         });
     }
 }
