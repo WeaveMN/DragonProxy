@@ -240,10 +240,10 @@ public class UpstreamSession {
             }
             HTTP.performGetRequest("http://api.dragonet.org/cls/update_token.php?" + String.format("username=%s&oldtoken=%s&newtoken=%s", name, obj.get("token").getAsString(), authSvc.getAccessToken()));
             protocol = new MinecraftProtocol(authSvc.getSelectedProfile(), authSvc.getAccessToken());
-            downstream.connect(protocol, proxy.getRemoteServerAddress());
+            connectToServer(proxy.getConfig().getRemote_servers().get(proxy.getConfig().getDefault_server()));
         } else {
             protocol = new MinecraftProtocol(username);
-            downstream.connect(protocol, proxy.getRemoteServerAddress());
+            connectToServer(proxy.getConfig().getRemote_servers().get(proxy.getConfig().getDefault_server()));
         }
     }
     
@@ -258,7 +258,7 @@ public class UpstreamSession {
             ((PCDownstreamSession)downstream).setProtocol(protocol);
             ((PCDownstreamSession)downstream).connect(server.getRemoteAddr(), server.getRemotePort());
         }else{
-            
+            //TODO
         }
     }
 
@@ -337,7 +337,7 @@ public class UpstreamSession {
             sendChat(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS, username));
 
             proxy.getLogger().info(proxy.getLang().get(Lang.MESSAGE_ONLINE_LOGIN_SUCCESS_CONSOLE, username, remoteAddress, username));
-            downstream.connect(protocol, proxy.getRemoteServerAddress());
+            connectToServer(proxy.getConfig().getRemote_servers().get(proxy.getConfig().getDefault_server()));
         });
     }
 }
